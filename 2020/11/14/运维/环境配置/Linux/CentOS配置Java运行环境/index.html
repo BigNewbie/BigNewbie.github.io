@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"luxiang.wiki","root":"/","images":"/images","scheme":"Mist","version":"8.0.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="CentOS 7 jdk 1.8   CentOS 7 jdk的安装 清理系统默认自带的jdk首先使用rpm -qa | grep jdk查看一家安装的jdk,然后使用sudo yum remove XXX(XXX)为上一个命令查询到的结果 安装jdk使用sudo rpm -ivh jdk-xxx-linux-x64.rpm 进行安装,默认安装路径是：&#x2F;usr&#x2F;java 添加环境变量使用sud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS配置Java运行环境">
+<meta property="og:url" content="http://luxiang.wiki/2020/11/14/%E8%BF%90%E7%BB%B4/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/Linux/CentOS%E9%85%8D%E7%BD%AEJava%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="洛阳城上看洛阳">
+<meta property="og:description" content="CentOS 7 jdk 1.8   CentOS 7 jdk的安装 清理系统默认自带的jdk首先使用rpm -qa | grep jdk查看一家安装的jdk,然后使用sudo yum remove XXX(XXX)为上一个命令查询到的结果 安装jdk使用sudo rpm -ivh jdk-xxx-linux-x64.rpm 进行安装,默认安装路径是：&#x2F;usr&#x2F;java 添加环境变量使用sud">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-14T03:38:07.000Z">
+<meta property="article:modified_time" content="2020-11-14T13:21:28.804Z">
+<meta property="article:author" content="洛阳城上看洛阳">
+<meta property="article:tag" content="环境配置">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="ContOS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://luxiang.wiki/2020/11/14/%E8%BF%90%E7%BB%B4/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/Linux/CentOS%E9%85%8D%E7%BD%AEJava%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CentOS配置Java运行环境 | 洛阳城上看洛阳</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f92e00905df3abe2e37be14a11ab83d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">洛阳城上看洛阳</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS-7-jdk%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">CentOS 7 jdk的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS-7-tomcat%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">CentOS 7 tomcat的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContOS-7-maven%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">ContOS 7 maven的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContOS-7-vsftpd%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">ContOS 7 vsftpd配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContOS-7-%E5%AE%89%E8%A3%85nginx"><span class="nav-number">5.</span> <span class="nav-text">ContOS 7 安装nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContOS-7-%E9%85%8D%E7%BD%AE%E5%BC%80%E6%94%BE%E7%AB%AF%E5%8F%A3"><span class="nav-number">6.</span> <span class="nav-text">ContOS 7 配置开放端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ContOS-7-%E5%AE%89%E8%A3%85mysql"><span class="nav-number">7.</span> <span class="nav-text">ContOS 7 安装mysql</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="洛阳城上看洛阳"
+      src="/images/custom-logo.jpg">
+  <p class="site-author-name" itemprop="name">洛阳城上看洛阳</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BigNewbie" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BigNewbie" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1625966193@qq.com" title="E-Mail → mailto:1625966193@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/14/%E8%BF%90%E7%BB%B4/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/Linux/CentOS%E9%85%8D%E7%BD%AEJava%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/custom-logo.jpg">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CentOS配置Java运行环境
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-14 11:38:07 / 修改时间：21:21:28" itemprop="dateCreated datePublished" datetime="2020-11-14T11:38:07+08:00">2020-11-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BF%90%E7%BB%B4/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BF%90%E7%BB%B4/Linux/CentOS/" itemprop="url" rel="index"><span itemprop="name">CentOS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<ul>
+<li>CentOS 7</li>
+<li>jdk 1.8</li>
+</ul>
+</blockquote>
+<h2 id="CentOS-7-jdk的安装"><a href="#CentOS-7-jdk的安装" class="headerlink" title="CentOS 7 jdk的安装"></a>CentOS 7 jdk的安装</h2><ol>
+<li>清理系统默认自带的jdk<br>首先使用<code>rpm -qa | grep jdk</code>查看一家安装的jdk,然后使用<code>sudo yum remove XXX</code>(XXX)为上一个命令查询到的结果</li>
+<li>安装jdk<br>使用<code>sudo rpm -ivh jdk-xxx-linux-x64.rpm</code> 进行安装,默认安装路径是：<code>/usr/java</code></li>
+<li>添加环境变量<br>使用<code>sudo vim /etc/profile</code>命令编辑文件,在文件底部增加:<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdkx.x.x_xx</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></tbody></table></figure>
+使配置生效:<code>. /etc/profile</code></li>
+</ol>
+<h2 id="CentOS-7-tomcat的安装"><a href="#CentOS-7-tomcat的安装" class="headerlink" title="CentOS 7 tomcat的安装"></a>CentOS 7 tomcat的安装</h2><ol>
+<li>到<code>tomcat</code>官网<code>https://tomcat.apache.org/</code>下载对应版本tomcat,这里使用的是<code>apache-tomcat-8.5.40.tar.gz</code></li>
+<li>使用<code>tar -zxvf apache-tomcat-8.5.40.tar.gz</code>命令解压</li>
+<li>添加环境变量 使用vim /etc/profile 编辑文件 在底部添加:<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export TOMCAT_HOME=/usr/tomcat</span><br><span class="line">export CATALINA_HOME=/usr/tomcat</span><br></pre></td></tr></tbody></table></figure>
+并在上面增加的<code>PATH</code>路径后面追加上<code>tomcat</code>的<code>bin</code>地址<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:$JAVA_HOME/bin:$TOMCAT_HOME/bin</span><br></pre></td></tr></tbody></table></figure>
+
+</li>
+</ol>
+<h2 id="ContOS-7-maven的配置"><a href="#ContOS-7-maven的配置" class="headerlink" title="ContOS 7 maven的配置"></a>ContOS 7 maven的配置</h2><ol>
+<li>到<code>maven</code>官网<code>http://maven.apache.org</code>下载对应版本maven,这里使用的是<code>apache-maven-3.6.1-bin.tar.gz</code></li>
+<li>使用<code>tar -zxvf apache-maven-3.6.1-bin.tar.gz</code>命令解压</li>
+<li>添加环境变量 使用vim /etc/profile 编辑文件 在底部添加:<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export MAVEN_HOME=/usr/maven</span><br></pre></td></tr></tbody></table></figure>
+并在上面增加的<code>PATH</code>路径后面追加上<code>maven</code>的<code>bin</code>地址<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:$JAVA_HOME/bin:$TOMCAT_HOME/bin:$MAVEN_HOME/bin</span><br></pre></td></tr></tbody></table></figure>
+
+</li>
+</ol>
+<h2 id="ContOS-7-vsftpd配置"><a href="#ContOS-7-vsftpd配置" class="headerlink" title="ContOS 7 vsftpd配置"></a>ContOS 7 vsftpd配置</h2><ol>
+<li><p>查看是否安装了vsftpd</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep vsftpd</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>安装vsftpd</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y vsftpd</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>新建ftp根目录</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /ftproot</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>添加一个ftp用户并设置主目录并指定文件的拥有者,和禁止ssh连接(useradd xxx)</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useradd testftp -d /ftproot/testftp/ -s /sbin/nologin</span><br><span class="line"># 或者</span><br><span class="line">useradd testftp -s /sbin/nologin</span><br><span class="line">usermod testftp -d /ftproot/testftp/</span><br><span class="line"># 指定文件拥有者为创建的用户:</span><br><span class="line">sudo chown -R testftp.testftp ./testftp/</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>给ftp用户添加密码(passwd xxx)</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd testftp</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>防火墙开放21端口</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=21/tcp --permanent</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>防火墙添加FTP服务</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --permanent --zone=public --add-service=ftp</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>无法连接ftp解决办法:</p>
+<blockquote>
+<ul>
+<li>查看ftp的Selinux状态：<code>getsebool -a | grep ftp</code></li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ftpd_anon_write --&gt; off</span><br><span class="line">ftpd_connect_all_unreserved --&gt; off</span><br><span class="line">ftpd_connect_db --&gt; off</span><br><span class="line">ftpd_full_access --&gt; off</span><br><span class="line">ftpd_use_cifs --&gt; off</span><br><span class="line">ftpd_use_fusefs --&gt; off</span><br><span class="line">ftpd_use_nfs --&gt; off</span><br><span class="line">ftpd_use_passive_mode --&gt; off</span><br><span class="line">httpd_can_connect_ftp --&gt; off</span><br><span class="line">httpd_enable_ftp_server --&gt; off</span><br><span class="line">tftp_anon_write --&gt; off</span><br><span class="line">tftp_home_dir --&gt; off</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<ul>
+<li>在结果中可以看到:<code>tftp_home_dir --&gt; off</code>、<code>ftpd_full_access --&gt; off</code></li>
+<li>将状态改为on:<code>setsebool -P tftp_home_dir on</code>、<code>setsebool -P ftpd_full_access on</code></li>
+<li>重启vsftpd服务:<code>systemctl restart vsftpd.service</code></li>
+<li>重启firewall服务:<code>systemctl restart firewalld.service</code></li>
+</ul>
+</blockquote>
+</li>
+<li><p>开启ftp被动模式</p>
+<blockquote>
+<ul>
+<li>打开vsftpd.conf文件，在后面加上</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pasv_min_port=30000</span><br><span class="line">pasv_max_port=30999</span><br></pre></td></tr></tbody></table></figure>
+<p>并开放30000-30999端口</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=30000-30999/tcp --permanent </span><br><span class="line">firewall-cmd --zone=public --add-port=30000-30999/udp --permanent </span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>设置开机启动vsftpd</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable vsftpd.service</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>不允许用户切出当前目录(只有在chroot_list_file指定的文件中出现的用户才能切换到上级目录)</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chroot_local_user=YES</span><br><span class="line">chroot_list_enable=NO</span><br><span class="line">chroot_list_file=/etc/vsftpd/chroot_list</span><br><span class="line">allow_writeable_chroot=YES</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p>ftpusers和user_list&nbsp; 文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">vsftpd有两个默认存放用户名单的文件（默认在/etc/vsftpd/ 目录下），来对访问FTP服务的用户身份进行管理和限制。</span><br><span class="line">vsftpd会分别检查两个配置文件，只要是被任何一个文件所禁止的用户，FTP访问到本机的请求都会被拒。</span><br><span class="line"></span><br><span class="line">user_list：可以作为用户白名单，或者是黑名单，或者无效名单。完全由userlist_enable和userlist_deny这两个参数决定。</span><br><span class="line">ftpusers：只能是用户黑名单，不受任何参数限制。</span><br><span class="line"></span><br><span class="line"> userlist_enable和userlist_deny参数</span><br><span class="line">决定user_list文件性质的参数 userlist_enable和userlist_deny</span><br><span class="line"></span><br><span class="line">(vsftpd服务程序的主配置文件默认位置 /etc/vsftpd/vsftpd.conf)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">userlist_enable=YES   userlist_deny=YES  黑名单，拒绝文件中的用户FTP访问</span><br><span class="line"> </span><br><span class="line">userlist_enable=YES   userlist_deny=NO   白名单，拒绝除文件中的用户外的用户FTP访问</span><br><span class="line"> </span><br><span class="line">userlist_enable=NO   userlist_deny=YES/NO  无效名单，表示没有对任何用户限制FTP访问</span><br><span class="line"></span><br><span class="line">总之，要想让user_list有效，userlist_enable=YES</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>==注意！！！！ 一定要把<code>/etc/pam.d/vsftpd</code>文件中的 auth       required    pam_shells.so给注释掉,否则会检查当前用户是否有登录ssh的权限,为nologin的用户会无法连接ftp==</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="ContOS-7-安装nginx"><a href="#ContOS-7-安装nginx" class="headerlink" title="ContOS 7 安装nginx"></a>ContOS 7 安装nginx</h2><ol>
+<li>安装nginx所需要的依赖环境<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># gcc</span><br><span class="line">sudo yum install gcc-c++</span><br><span class="line"># pcre</span><br><span class="line">sudo yum install pcre pcre-devel</span><br><span class="line"># zlib</span><br><span class="line">sudo yum install -y zlib zlib-devel</span><br><span class="line"># openssl</span><br><span class="line">sudo yum install openssl openssl-devel</span><br></pre></td></tr></tbody></table></figure></li>
+<li>到<code>nginx</code>官网<code>http://nginx.org/en/download.html</code>下载nginx,并使用命令行解压、安装<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nginx-1.15.12.tar.gz </span><br><span class="line">cd nginx-1.15.12/</span><br><span class="line">sudo ./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></tbody></table></figure>
+
+</li>
+</ol>
+<p>3.<code>nginx</code>常用命令</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload  ：修改配置后重新加载生效</span><br><span class="line">nginx -s reopen  ：重新打开日志文件</span><br><span class="line">nginx -t -c /path/to/nginx.conf 测试nginx配置文件是否正确</span><br><span class="line"></span><br><span class="line">关闭nginx：</span><br><span class="line">nginx -s stop  :快速停止nginx</span><br><span class="line">         quit  ：完整有序的停止nginx</span><br><span class="line"></span><br><span class="line">其他的停止nginx 方式：</span><br><span class="line"></span><br><span class="line">ps -ef | grep nginx</span><br><span class="line"></span><br><span class="line">kill -QUIT 主进程号     ：从容停止Nginx</span><br><span class="line">kill -TERM 主进程号     ：快速停止Nginx</span><br><span class="line">pkill -9 nginx          ：强制停止Nginx</span><br><span class="line"></span><br><span class="line">启动nginx:</span><br><span class="line">nginx -c /path/to/nginx.conf</span><br><span class="line"></span><br><span class="line">平滑重启nginx：</span><br><span class="line">kill -HUP 主进程号</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="4">
+<li>配置<code>nginx</code></li>
+</ol>
+<ul>
+<li><p>首先在<code>conf</code>目录的<code>nginx.conf</code>中server:{}结尾后添加一行:<code>include vhost/*.conf;</code></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#user  nobody;  如果访问文件服务器  这里修改为ftp的用户名  可以解决403</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">#error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line">#pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events {</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http {</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '</span><br><span class="line">    #                  '$status $body_bytes_sent "$http_referer" '</span><br><span class="line">    #                  '"$http_user_agent" "$http_x_forwarded_for"';</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    server {</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / {</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html {</span><br><span class="line">            root   html;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ {</span><br><span class="line">        #    proxy_pass   http://127.0.0.1;</span><br><span class="line">        #}</span><br><span class="line"></span><br><span class="line">        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ {</span><br><span class="line">        #    root           html;</span><br><span class="line">        #    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        #    fastcgi_index  index.php;</span><br><span class="line">        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span><br><span class="line">        #    include        fastcgi_params;</span><br><span class="line">        #}</span><br><span class="line"></span><br><span class="line">        # deny access to .htaccess files, if Apache's document root</span><br><span class="line">        # concurs with nginx's one</span><br><span class="line">        #</span><br><span class="line">        #location ~ /\.ht {</span><br><span class="line">        #    deny  all;</span><br><span class="line">        #}</span><br><span class="line">    </span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    ##########################vhost#####################################</span><br><span class="line">    include vhost/*.conf;  #这里添加一行!!!!!</span><br><span class="line"></span><br><span class="line">    # another virtual host using mix of IP-, name-, and port-based configuration</span><br><span class="line">    #</span><br><span class="line">    #server {</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / {</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    }</span><br><span class="line">    #}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # HTTPS server</span><br><span class="line">    #</span><br><span class="line">    #server {</span><br><span class="line">    #    listen       443 ssl;</span><br><span class="line">    #    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #    ssl_certificate      cert.pem;</span><br><span class="line">    #    ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">    #    ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #    ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">    #    ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #    ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">    #    location / {</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    }</span><br><span class="line">    #}</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>然后新建一个<code>vhost</code>文件夹,里面可以放置<code>*.conf</code>的配置文件,两个简单的配置示例:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> # 配置反向代理到指定端口</span><br><span class="line"> server {</span><br><span class="line">    listen 80;</span><br><span class="line">    autoindex on;</span><br><span class="line">    server_name codedog.link;</span><br><span class="line">    access_log /usr/local/nginx/logs/access.log combined;</span><br><span class="line">    index index.html index.htm index.jsp index.php;</span><br><span class="line">    if ( $query_string ~* ".*[\;'\&lt;\&gt;].*" ){</span><br><span class="line">        return 404;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    location / {</span><br><span class="line">        proxy_pass http://127.0.0.1:8080/;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"># 配置反向代理到指定目录</span><br><span class="line">server {</span><br><span class="line">    listen 80;</span><br><span class="line">    autoindex off;</span><br><span class="line">    server_name codedog.link;</span><br><span class="line">    access_log /usr/local/nginx/logs/access.log combined;</span><br><span class="line">    index index.html index.htm index.jsp index.php;</span><br><span class="line">    #error_page 404 /404.html;</span><br><span class="line">    if ( $query_string ~* ".*[\;'\&lt;\&gt;].*" ){</span><br><span class="line">        return 404;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    location / {</span><br><span class="line">        root /product/ftpfile/img/;</span><br><span class="line">        add_header Access-Control-Allow-Origin *;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+</li>
+</ul>
+<h2 id="ContOS-7-配置开放端口"><a href="#ContOS-7-配置开放端口" class="headerlink" title="ContOS 7 配置开放端口"></a>ContOS 7 配置开放端口</h2><p>ContOS 7 的防火墙是：<code>firewalld</code></p>
+<ul>
+<li>基本用法：</li>
+<li>启动： <code>systemctl start firewalld</code></li>
+<li>查看状态： <code>systemctl status firewalld</code> </li>
+<li>停止： <code>systemctl disable firewalld</code></li>
+<li>禁用： <code>systemctl stop firewalld</code></li>
+<li>添加一个端口: <code>firewall-cmd --zone=public --add-port=80/tcp --permanent    （--permanent永久生效，没有此参数重启后失效）</code></li>
+<li>重新载入:<code>firewall-cmd --reload</code></li>
+<li>查看:<code>firewall-cmd --zone= public --query-port=80/tcp</code></li>
+<li>删除:<code>firewall-cmd --zone= public --remove-port=80/tcp --permanent</code></li>
+</ul>
+<h2 id="ContOS-7-安装mysql"><a href="#ContOS-7-安装mysql" class="headerlink" title="ContOS 7 安装mysql"></a>ContOS 7 安装mysql</h2><ol>
+<li>打开<code>mysql</code>官网<code>https://www.mysql.com/</code>下载对应版本yum源的安装包</li>
+<li>把下载的安装包上传到<code>CentOS</code>服务器上</li>
+<li>执行命令:<code>yum install mysql-community-server</code></li>
+<li>安装完成后使用命令:<code>service mysqld start</code>启动mysql</li>
+<li>mysql启动后使用<code>grep 'temporary password' /var/log/mysqld.log</code>查看安装时默认设置的密码</li>
+<li>使用命令:<code>ALTER USER 'root'@'localhost' IDENTIFIED BY 'newpassword';</code>修改默认密码</li>
+<li>把root的登录地址修改为任意地址: <code>update user set host =’%' where user =’root’;</code></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="tag"># 环境配置</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/ContOS/" rel="tag"># ContOS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/14/Golang/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/Go%E7%BB%9F%E4%B8%80%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" rel="prev" title="Go统一错误处理">
+                  <i class="fa fa-chevron-left"></i> Go统一错误处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/14/%E8%BF%90%E7%BB%B4/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/nginx/NGINX%E9%85%8D%E7%BD%AEHTTPS/" rel="next" title="NGINX配置HTTPS">
+                  NGINX配置HTTPS <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">洛阳城上看洛阳</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

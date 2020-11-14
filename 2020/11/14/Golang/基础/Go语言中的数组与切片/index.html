@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"luxiang.wiki","root":"/","images":"/images","scheme":"Mist","version":"8.0.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="数组与切片123456789101112131415161718192021222324252627func test1() {	arr :&#x3D; [5]int{1, 2, 3, 4, 5}	&#x2F;&#x2F; 切片是对数组的引用 因此切片是引用类型	slices :&#x3D; arr[1:3] 	fmt.Println(slices) &#x2F;&#x2F;[2 3]	&#x2F;&#x2F; 切片的长度是指切片中元素的个数	fmt.Printf(&quot;slic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言中的数组与切片">
+<meta property="og:url" content="http://luxiang.wiki/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/index.html">
+<meta property="og:site_name" content="洛阳城上看洛阳">
+<meta property="og:description" content="数组与切片123456789101112131415161718192021222324252627func test1() {	arr :&#x3D; [5]int{1, 2, 3, 4, 5}	&#x2F;&#x2F; 切片是对数组的引用 因此切片是引用类型	slices :&#x3D; arr[1:3] 	fmt.Println(slices) &#x2F;&#x2F;[2 3]	&#x2F;&#x2F; 切片的长度是指切片中元素的个数	fmt.Printf(&quot;slic">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/Go%E5%88%87%E7%89%87%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/string%E7%9A%84%E5%BA%95%E5%B1%82%E5%B8%83%E5%B1%80.png-suofang">
+<meta property="article:published_time" content="2020-11-14T02:48:55.000Z">
+<meta property="article:modified_time" content="2020-11-14T13:21:28.667Z">
+<meta property="article:author" content="洛阳城上看洛阳">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://files.codedog.link/blog/typecho/Go%E5%88%87%E7%89%87%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png">
+
+
+<link rel="canonical" href="http://luxiang.wiki/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Go语言中的数组与切片 | 洛阳城上看洛阳</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f92e00905df3abe2e37be14a11ab83d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">洛阳城上看洛阳</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87"><span class="nav-number">1.</span> <span class="nav-text">数组与切片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="nav-number">2.</span> <span class="nav-text">切片的内存布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%9A%84%E8%BF%BD%E5%8A%A0%E4%B8%8E%E6%8B%B7%E8%B4%9D"><span class="nav-number">3.</span> <span class="nav-text">切片的追加与拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#string%E4%B8%8Eslice"><span class="nav-number">4.</span> <span class="nav-text">string与slice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">5.</span> <span class="nav-text">数组的排序与二分查找</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="洛阳城上看洛阳"
+      src="/images/custom-logo.jpg">
+  <p class="site-author-name" itemprop="name">洛阳城上看洛阳</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BigNewbie" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BigNewbie" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1625966193@qq.com" title="E-Mail → mailto:1625966193@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/custom-logo.jpg">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go语言中的数组与切片
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-14 10:48:55 / 修改时间：21:21:28" itemprop="dateCreated datePublished" datetime="2020-11-14T10:48:55+08:00">2020-11-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="数组与切片"><a href="#数组与切片" class="headerlink" title="数组与切片"></a>数组与切片</h3><figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test1</span><span class="params">()</span></span> {</span><br><span class="line">	arr := [<span class="number">5</span>]<span class="keyword">int</span>{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}</span><br><span class="line">	<span class="comment">// 切片是对数组的引用 因此切片是引用类型</span></span><br><span class="line">	slices := arr[<span class="number">1</span>:<span class="number">3</span>] </span><br><span class="line">	fmt.Println(slices) <span class="comment">//[2 3]</span></span><br><span class="line">	<span class="comment">// 切片的长度是指切片中元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的长度:%d\n"</span>, <span class="built_in">len</span>(slices)) <span class="comment">//slice的长度:2</span></span><br><span class="line">	<span class="comment">// 切片的容量是指切片所指向的数组的元素到其最后一个元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的容量:%d\n"</span>, <span class="built_in">cap</span>(slices)) <span class="comment">//slice的容量:4</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> slices {</span><br><span class="line">		fmt.Println(v) <span class="comment">//2 、3</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的最大长度为其容量，修改切片的长度和容量一样，会显示出切片所指向数组的元素到其最后一个元素</span></span><br><span class="line">	slices = slices[:<span class="built_in">cap</span>(slices)]</span><br><span class="line">	fmt.Printf(<span class="string">"修改后:%v\n"</span>, slices) <span class="comment">// 修改后:[2 3 4 5]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的地址是其所指向数组的第一个值的地址</span></span><br><span class="line">	fmt.Printf(<span class="string">"slices的地址:%p,所指向数组值的地址:%p\n"</span>, slices, &amp;arr[<span class="number">1</span>])</span><br><span class="line">        <span class="comment">//slices的地址:0xc00008e038,所指向数组值的地址:0xc00008e038</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<a id="more"></a>
+
+<h3 id="切片的内存布局"><a href="#切片的内存布局" class="headerlink" title="切片的内存布局"></a>切片的内存布局</h3><p><img src="http://files.codedog.link/blog/typecho/Go%E5%88%87%E7%89%87%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png" alt="切片的内存布局" title="Go切片的内存模型"></p>
+<h3 id="切片的追加与拷贝"><a href="#切片的追加与拷贝" class="headerlink" title="切片的追加与拷贝"></a>切片的追加与拷贝</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">func test2() {</span><br><span class="line">	fmt.Printf("\n------------切片的追加与拷贝------------------\n\n")</span><br><span class="line">	slice1 := make([]int, 5, 10)</span><br><span class="line">	slice2 := []int{1, 2, 3, 4, 5}</span><br><span class="line">	fmt.Printf("slice1:%v,slice2:%v\n", slice1, slice2)</span><br><span class="line">	// 切片的追加</span><br><span class="line">	slice1 = append(slice1, slice2...)</span><br><span class="line">	fmt.Printf("slice1 append slice2:%v\n", slice1)</span><br><span class="line">	slice3 := make([]int, 10, 10)</span><br><span class="line">	// 切片的拷贝</span><br><span class="line">	copy(slice3, slice1)</span><br><span class="line">	fmt.Printf("slice3 copy slice1:%v", slice3)</span><br><span class="line">}</span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line">---------------------------------------------</span><br><span class="line"></span><br><span class="line">slice1:[0 0 0 0 0],slice2:[1 2 3 4 5]</span><br><span class="line">slice1 append slice2:[0 0 0 0 0 1 2 3 4 5]</span><br><span class="line">slice3 copy slice1:[0 0 0 0 0 1 2 3 4 5]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="string与slice"><a href="#string与slice" class="headerlink" title="string与slice"></a>string与slice</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">func test3() {</span><br><span class="line">	fmt.Printf("\n------------string与slice------------------\n\n")</span><br><span class="line">	// string的底层是一个byte的数组,因此也可以进行切片操作</span><br><span class="line">	str := "hello world"</span><br><span class="line">	slice1 := str[:]</span><br><span class="line">	fmt.Printf("slice:%v,len:%d\n", slice1, len(slice1))</span><br><span class="line">	// string本身是不可变的，因此，需要改变string中的字符，需要如下操作:</span><br><span class="line">	// slice1[0] = 'c'  错误的操作</span><br><span class="line">	str1 := []byte(str) //这里[]byte()是字节数组,如果操作中文,建议使用字符数组[]rune()</span><br><span class="line">	str1[0] = 'H'</span><br><span class="line">	str = string(str1)</span><br><span class="line">	fmt.Println(str)</span><br><span class="line"></span><br><span class="line">	str2 := "你好，世界"</span><br><span class="line">	str3 := []rune(str2)</span><br><span class="line">	str3[0] = '您'</span><br><span class="line">	str2 = string(str3)</span><br><span class="line">	fmt.Printf("处理中文:%v", str2)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test3()</span><br><span class="line">}</span><br><span class="line">-----------------</span><br><span class="line">slice:hello world,len:11</span><br><span class="line">Hello world</span><br><span class="line">处理中文:您好，世界</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="http://files.codedog.link/blog/typecho/string%E7%9A%84%E5%BA%95%E5%B1%82%E5%B8%83%E5%B1%80.png-suofang" alt="Go中string的底层布局" title="Go中string的底层布局"></p>
+<h3 id="数组的排序与二分查找"><a href="#数组的排序与二分查找" class="headerlink" title="数组的排序与二分查找"></a>数组的排序与二分查找</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">func test4() {</span><br><span class="line">	fmt.Printf("\n------------数组排序------------------\n\n")</span><br><span class="line">	arr := [5]int{3, 2, 1, 5, 4}</span><br><span class="line">	//数组是值类型的传递 当作参数传递时,传递的是副本 因此sort不能直接对数组进行排序,需要传入数组的slice进行排序</span><br><span class="line">	sort.Ints(arr[:])</span><br><span class="line">	fmt.Printf("排序后：%v\n", arr)</span><br><span class="line">	strarr := [5]string{"A", "a", "C", "eafa", "aEf"}</span><br><span class="line">	sort.Strings(strarr[:])</span><br><span class="line">	fmt.Printf("排序后：%v\n", strarr)</span><br><span class="line">	fmt.Printf("\n------------数组查找------------------\n\n")</span><br><span class="line">	// sort.search返回的是排序后的元素位置</span><br><span class="line">	i := sort.SearchInts(arr[:], 5)</span><br><span class="line">	fmt.Printf("数字5在数组arr中的位置下标为:%v\n", i)</span><br><span class="line">	i1 := sort.SearchStrings(strarr[:], "a")</span><br><span class="line">	fmt.Printf("字母A在数组strarr中的位置下标为:%v\n", i1)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test4()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">------------数组排序------------------</span><br><span class="line"></span><br><span class="line">排序后：[1 2 3 4 5]</span><br><span class="line">排序后：[A C a aEf eafa]</span><br><span class="line"></span><br><span class="line">------------数组查找------------------</span><br><span class="line"></span><br><span class="line">数字5在数组arr中的位置下标为:4</span><br><span class="line">字母A在数组strarr中的位置下标为:2</span><br></pre></td></tr></tbody></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Golang/" rel="tag"># Golang</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84/" rel="prev" title="Go语言中的数组">
+                  <i class="fa fa-chevron-left"></i> Go语言中的数组
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84map/" rel="next" title="Go语言中的map">
+                  Go语言中的map <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">洛阳城上看洛阳</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

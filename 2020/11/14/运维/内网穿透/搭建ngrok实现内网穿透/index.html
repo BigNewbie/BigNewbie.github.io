@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"luxiang.wiki","root":"/","images":"/images","scheme":"Mist","version":"8.0.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="背景公司突然要做微信开发，需要做内网穿透,本人一开始使用过www.ngrok.cc,价格不贵,也很方便,不过自己比较喜欢折腾,于是自己查询资料，可以使用ngrok在云服务器上搭建来实现多客户端的内网穿透，配置上自己的域名还是很好的。 服务器选择个人有一台阿里云服务器Ubuntu 16.04 1核1G,一般使用绝对是没问题的,其他的linux发行版本也是没有问题的。 搭建域名配置这里用到的域名是ng">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建ngrok实现内网穿透">
+<meta property="og:url" content="http://luxiang.wiki/2020/11/14/%E8%BF%90%E7%BB%B4/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%90%AD%E5%BB%BAngrok%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/index.html">
+<meta property="og:site_name" content="洛阳城上看洛阳">
+<meta property="og:description" content="背景公司突然要做微信开发，需要做内网穿透,本人一开始使用过www.ngrok.cc,价格不贵,也很方便,不过自己比较喜欢折腾,于是自己查询资料，可以使用ngrok在云服务器上搭建来实现多客户端的内网穿透，配置上自己的域名还是很好的。 服务器选择个人有一台阿里云服务器Ubuntu 16.04 1核1G,一般使用绝对是没问题的,其他的linux发行版本也是没有问题的。 搭建域名配置这里用到的域名是ng">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/1.png">
+<meta property="article:published_time" content="2020-11-14T03:45:17.000Z">
+<meta property="article:modified_time" content="2020-11-14T13:21:28.800Z">
+<meta property="article:author" content="洛阳城上看洛阳">
+<meta property="article:tag" content="环境配置">
+<meta property="article:tag" content="ngrok">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://files.codedog.link/blog/typecho/1.png">
+
+
+<link rel="canonical" href="http://luxiang.wiki/2020/11/14/%E8%BF%90%E7%BB%B4/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%90%AD%E5%BB%BAngrok%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>搭建ngrok实现内网穿透 | 洛阳城上看洛阳</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f92e00905df3abe2e37be14a11ab83d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">洛阳城上看洛阳</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%80%89%E6%8B%A9"><span class="nav-number">2.</span> <span class="nav-text">服务器选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA"><span class="nav-number">3.</span> <span class="nav-text">搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">域名配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEgo%E8%AF%AD%E9%9F%B3%E7%8E%AF%E5%A2%83"><span class="nav-number">4.1.</span> <span class="nav-text">配置go语音环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%BD%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">4.2.</span> <span class="nav-text">创建软连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">4.3.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85ngrok"><span class="nav-number">5.</span> <span class="nav-text">安装ngrok</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="nav-number">5.1.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6"><span class="nav-number">5.2.</span> <span class="nav-text">生成证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">5.3.</span> <span class="nav-text">编译服务端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%90%84%E5%A4%A7%E5%B9%B3%E5%8F%B0%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">6.</span> <span class="nav-text">编译各大平台客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux"><span class="nav-number">6.1.</span> <span class="nav-text">linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mac"><span class="nav-number">6.2.</span> <span class="nav-text">mac</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows"><span class="nav-number">6.3.</span> <span class="nav-text">windows</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%9C%A8-ngrok-bin-%E7%9B%AE%E5%BD%95%E4%B8%8B%EF%BC%8C%E6%AF%8F%E4%B8%AA%E5%B9%B3%E5%8F%B0%E5%AF%B9%E5%BA%94%E9%83%BD%E6%9C%89%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">6.3.0.0.1.</span> <span class="nav-text">生成的可执行文件在 ngrok&#x2F;bin 目录下，每个平台对应都有文件夹</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">7.</span> <span class="nav-text">启动服务端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">客户端配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="nav-number">9.</span> <span class="nav-text">内网穿透</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="洛阳城上看洛阳"
+      src="/images/custom-logo.jpg">
+  <p class="site-author-name" itemprop="name">洛阳城上看洛阳</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BigNewbie" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BigNewbie" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1625966193@qq.com" title="E-Mail → mailto:1625966193@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/14/%E8%BF%90%E7%BB%B4/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/%E6%90%AD%E5%BB%BAngrok%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/custom-logo.jpg">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          搭建ngrok实现内网穿透
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-14 11:45:17 / 修改时间：21:21:28" itemprop="dateCreated datePublished" datetime="2020-11-14T11:45:17+08:00">2020-11-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BF%90%E7%BB%B4/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">内网穿透</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BF%90%E7%BB%B4/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/ngrok/" itemprop="url" rel="index"><span itemprop="name">ngrok</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>公司突然要做微信开发，需要做内网穿透,本人一开始使用过<code>www.ngrok.cc</code>,价格不贵,也很方便,不过自己比较喜欢折腾,于是自己查询资料，可以使用<code>ngrok</code>在云服务器上搭建来实现多客户端的内网穿透，配置上自己的域名还是很好的。</p>
+<h1 id="服务器选择"><a href="#服务器选择" class="headerlink" title="服务器选择"></a>服务器选择</h1><p>个人有一台阿里云服务器<code>Ubuntu 16.04 1核1G</code>,一般使用绝对是没问题的,其他的linux发行版本也是没有问题的。</p>
+<h1 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h1><h1 id="域名配置"><a href="#域名配置" class="headerlink" title="域名配置"></a>域名配置</h1><p>这里用到的域名是<code>ngrok.codedog.link</code>,需要将<code>ngrok.codedog.link</code>和<code>*.ngrok.codedog.link</code>解析到该云服务器上。</p>
+<blockquote>
+<p>注：博主换过域名,以前用的是<code>codedog.link</code>,后来感觉有点搞自己,现在用自己名字重新注册了一个<code>luxiang.wiki</code></p>
+</blockquote>
+<h2 id="配置go语音环境"><a href="#配置go语音环境" class="headerlink" title="配置go语音环境"></a>配置go语音环境</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#下载</span><br><span class="line">wget https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz</span><br><span class="line">#解压</span><br><span class="line">tar -zxvf go1.9.1.linux-amd64.tar.gz</span><br><span class="line">#移动到local目录</span><br><span class="line">mv go /usr/local</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="创建软连接"><a href="#创建软连接" class="headerlink" title="创建软连接"></a>创建软连接</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#进入/usr/bin</span><br><span class="line">cd /usr/bin</span><br><span class="line">ln -s /usr/local/go/bin/go ./</span><br><span class="line">ln -s /usr/local/go/bin/godoc ./</span><br><span class="line">ln -s /usr/local/go/bin/gofmt ./</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">go env</span><br><span class="line">GOARCH="amd64"</span><br><span class="line">GOBIN=""</span><br><span class="line">GOEXE=""</span><br><span class="line">GOHOSTARCH="amd64"</span><br><span class="line">GOHOSTOS="linux"</span><br><span class="line">GOOS="linux"</span><br><span class="line">GOPATH="/root/go"</span><br><span class="line">GORACE=""</span><br><span class="line">GOROOT="/usr/local/go"</span><br><span class="line">GOTOOLDIR="/usr/local/go/pkg/tool/linux_amd64"</span><br><span class="line">GCCGO="gccgo"</span><br><span class="line">CC="gcc"</span><br><span class="line">GOGCCFLAGS="-fPIC -m64 -pthread -fmessage-length=0 -fdebug-prefix-map=/tmp/go-build025512091=/tmp/go-build -gno-record-gcc-switches"</span><br><span class="line">CXX="g++"</span><br><span class="line">CGO_ENABLED="1"</span><br><span class="line">CGO_CFLAGS="-g -O2"</span><br><span class="line">CGO_CPPFLAGS=""</span><br><span class="line">CGO_CXXFLAGS="-g -O2"</span><br><span class="line">CGO_FFLAGS="-g -O2"</span><br><span class="line">CGO_LDFLAGS="-g -O2"</span><br><span class="line">PKG_CONFIG="pkg-config"</span><br></pre></td></tr></tbody></table></figure>
+<p>至此<code>go</code>语言环境配置完成。</p>
+<h1 id="安装ngrok"><a href="#安装ngrok" class="headerlink" title="安装ngrok"></a>安装ngrok</h1><h2 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/inconshreveable/ngrok.git</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 进入ngrok源码的目录</span><br><span class="line">cd ngrok</span><br><span class="line"># 创建保存自定义签名证书的文件夹  这里叫myssl</span><br><span class="line">mkdir myssl</span><br><span class="line"># 进入</span><br><span class="line">cd myssl</span><br><span class="line"># 设置域名，这里使用  ngrok.codedog.link</span><br><span class="line">export NGROK_DOMAIN="ngrok.codedog.link"</span><br><span class="line"># 然后依次执行以下命令即可</span><br><span class="line">openssl genrsa -out rootCA.key 2048</span><br><span class="line">openssl req -x509 -new -nodes -key rootCA.key -subj "/CN=$NGROK_DOMAIN" -days 5000 -out rootCA.pem</span><br><span class="line">openssl genrsa -out device.key 2048</span><br><span class="line">openssl req -new -key device.key -subj "/CN=$NGROK_DOMAIN" -out device.csr</span><br><span class="line">openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 5000</span><br><span class="line"># 替换原来证书</span><br><span class="line">cp rootCA.pem ../assets/client/tls/ngrokroot.crt</span><br><span class="line">cp device.crt ../assets/server/tls/snakeoil.crt</span><br><span class="line">cp device.key ../assets/server/tls/snakeoil.key</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="编译服务端"><a href="#编译服务端" class="headerlink" title="编译服务端"></a>编译服务端</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在ngrok目录执行</span><br><span class="line">export GOOS=linux</span><br><span class="line">export GOARCH=386</span><br><span class="line">make release-server</span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="编译各大平台客户端"><a href="#编译各大平台客户端" class="headerlink" title="编译各大平台客户端"></a>编译各大平台客户端</h1><h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GOOS=linux</span><br><span class="line">export GOARCH=386</span><br><span class="line">make release-client</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="mac"><a href="#mac" class="headerlink" title="mac"></a>mac</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GOOS=darwin</span><br><span class="line">export GOARCH=amd64</span><br><span class="line">make release-client</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GOOS=windows</span><br><span class="line">export GOARCH=amd64</span><br><span class="line">make release-client</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="生成的可执行文件在-ngrok-bin-目录下，每个平台对应都有文件夹"><a href="#生成的可执行文件在-ngrok-bin-目录下，每个平台对应都有文件夹" class="headerlink" title="生成的可执行文件在 ngrok/bin 目录下，每个平台对应都有文件夹"></a>生成的可执行文件在 <code>ngrok/bin</code> 目录下，每个平台对应都有文件夹</h5><h1 id="启动服务端"><a href="#启动服务端" class="headerlink" title="启动服务端"></a>启动服务端</h1><p>由于服务器本身启动了<code>80</code>和<code>443</code>端口，因此这里改为<code>8000</code>和<code>444</code>端口，启动命令如下：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./ngrokd -domain="ngrok.codedog.link" -httpAddr=":8000" -httpsAddr=":444"</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="http://files.codedog.link/blog/typecho/1.png" alt="命令行" title="服务端启动效果"><br>上图可以看出使用了<code>4443</code>端口进行通讯</p>
+<ul>
+<li>注意：阿里云等有安全组的服务器,需要把端口加入白名单,一共需要开启白名单(<code>8000</code>,<code>444</code>,<code>4443</code>)</li>
+</ul>
+<h1 id="客户端配置文件"><a href="#客户端配置文件" class="headerlink" title="客户端配置文件"></a>客户端配置文件</h1><p>将上面生成的客户端可执行文件拷贝到需要内网穿透的设备上即可，这里直接说多域名和多TCP内网穿透配置文件，直接在客户端同级目录下创建<code>ngrok.cfg</code>配置文件，内容如下（只放了部分）：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server_addr: ngrok.codedog.link:4443</span><br><span class="line">trust_host_root_certs: false</span><br><span class="line">tunnels:</span><br><span class="line"> weixin:</span><br><span class="line">  subdomain: weixin</span><br><span class="line">  proto:</span><br><span class="line">   http: 8002</span><br><span class="line"> about:</span><br><span class="line">  subdomain: about</span><br><span class="line">  proto:</span><br><span class="line">   http: 192.168.0.1:80</span><br><span class="line"> ssh:</span><br><span class="line">  remote_port: 2020</span><br><span class="line">  proto:</span><br><span class="line">   tcp: 22</span><br></pre></td></tr></tbody></table></figure>
+<p>采用严格的单空格缩进，可以代理其他主机，直接跟端口默认是本主机，还要注意防火墙的配置。</p>
+<h1 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h1><p>启动特定的转发:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ngrok -config ngrok.cfg start weixin</span><br></pre></td></tr></tbody></table></figure>
+<p>将所有配置转发:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ngrok -config ngrok.cfg start-all</span><br></pre></td></tr></tbody></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="tag"># 环境配置</a>
+              <a href="/tags/ngrok/" rel="tag"># ngrok</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/14/%E8%BF%90%E7%BB%B4/Docker/Docker%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98%E7%9A%84%E5%9D%91/" rel="prev" title="Docker时区问题的坑">
+                  <i class="fa fa-chevron-left"></i> Docker时区问题的坑
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/14/Java/%E5%B7%A5%E5%85%B7%E7%B1%BB/HttpClient%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="next" title="HttpClient的使用">
+                  HttpClient的使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">洛阳城上看洛阳</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
