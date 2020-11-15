@@ -29,17 +29,14 @@
 <meta property="og:url" content="http://luxiang.wiki/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E9%87%8D%E5%AD%A6MySQL/index.html">
 <meta property="og:site_name" content="洛阳城上看洛阳">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://luxiang.wiki/images/mysql.jpg">
-<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8">
-<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8">
-<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/mysql.jpg">
 <meta property="article:published_time" content="2020-11-14T13:25:05.000Z">
-<meta property="article:modified_time" content="2020-11-14T14:43:58.509Z">
+<meta property="article:modified_time" content="2020-11-15T14:01:44.245Z">
 <meta property="article:author" content="洛阳城上看洛阳">
 <meta property="article:tag" content="MySQL">
 <meta property="article:tag" content="重学MySQL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://luxiang.wiki/images/mysql.jpg">
+<meta name="twitter:image" content="http://files.codedog.link/blog/typecho/mysql.jpg">
 
 
 <link rel="canonical" href="http://luxiang.wiki/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E9%87%8D%E5%AD%A6MySQL/">
@@ -227,7 +224,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">MySQL介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">目录</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">下载并安装MySQL</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">目录</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">下载并安装MySQL(上)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8B-%E7%AD%89%E5%BE%85%E6%9B%B4%E6%96%B0"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">下载并安装MySQL(下) 等待更新</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -328,10 +325,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-11-14 21:25:05 / 修改时间：22:43:58" itemprop="dateCreated datePublished" datetime="2020-11-14T21:25:05+08:00">2020-11-14</time>
+      <time title="创建时间：2020-11-14 21:25:05" itemprop="dateCreated datePublished" datetime="2020-11-14T21:25:05+08:00">2020-11-14</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-15 22:01:44" itemprop="dateModified" datetime="2020-11-15T22:01:44+08:00">2020-11-15</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -356,16 +359,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="/images/mysql.jpg" alt="MySQL"></p>
+        <p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
 <a id="more"></a>
 
 <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>大家好，我是洛阳，欢迎来到我的博客，作为一位后端开发者，免不了要与数据库打交道，而<code>MySQL</code>相信也是大家最熟悉的数据库之一，今天起，博主就要带领大家(自己)从头再次学习一次<code>MySQL</code>，当然，学习之前你肯定要使用过<code>MySQL</code>或者其它关系型数据库，本文并非数据库入门文章，所有内容仅仅是博主按照自己这几年使用的经验以及博主自己想要了解、学习的方向进行编写，不会对基本的增删改查语法进行过多的解释，另外本博主并非大厂出身。也不是能“徒手撕源码”、“光脚造轮子”、“吊打面试官”的大佬，所以如果本文以及后续文章中出现不正确或者有误导性的言论，还请您指出，大家共同学习，共同进步！</p>
-<h3 id="关系型数据库"><a href="#关系型数据库" class="headerlink" title="关系型数据库"></a>关系型数据库</h3><p>关系型数据库，是指采用了关系模型来组织数据的数据库，其以行和列的形式存储数据，以便于用户理解，关系型数据库这一系列的行和列被称为表，一组表组成了数据库。用户通过查询来检索数据库中的数据，而查询是一个用于限定数据库中某些区域的执行代码。关系模型可以简单理解为二维表格模型，而一个关系型数据库就是由二维表及其之间的关系组成的一个数据组织。</p>
-<h3 id="MySQL介绍"><a href="#MySQL介绍" class="headerlink" title="MySQL介绍"></a>MySQL介绍</h3><p>MySQL是一种开放源代码的关系型数据库管理系统（RDBMS），使用最常用的数据库管理语言–结构化查询语言（SQL）进行数据库管理。<br>MySQL是开放源代码的，因此任何人都可以在General Public License的许可下下载并根据个性化的需要对其进行修改。<br>MySQL因为其速度、可靠性和适应性而备受关注。大多数人都认为在不需要事务化处理的情况下，MySQL是管理内容最好的选择。</p>
-<blockquote>
-<p>上面这段话是博主百度百科复制来的，知道它并没有什么用，但是如果你不知道的话，最好百度了解一下，毕竟保不准有的面试官会问：“关系型数据库与非关系型数据库NoSql有什么区别？”（博主答：“我不懂! <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>”）</p>
-</blockquote>
-<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><h6 id=""><a href="#" class="headerlink" title=""></a><a href="/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/" title="下载并安装MySQL">下载并安装MySQL</a></h6>
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><h6 id=""><a href="#" class="headerlink" title=""></a><a href="/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL(%E4%B8%8A)/" title="下载并安装MySQL(上)">下载并安装MySQL(上)</a></h6><h6 id="下载并安装MySQL-下-等待更新"><a href="#下载并安装MySQL-下-等待更新" class="headerlink" title="下载并安装MySQL(下) 等待更新"></a>下载并安装MySQL(下) 等待更新</h6>
     </div>
 
     
@@ -387,8 +385,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/" rel="next" title="《重学MySQL》下载并安装Mysql">
-                  《重学MySQL》下载并安装Mysql <i class="fa fa-chevron-right"></i>
+                <a href="/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL(%E4%B8%8A)/" rel="next" title="《重学MySQL》下载并安装Mysql(上)">
+                  《重学MySQL》下载并安装Mysql(上) <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
