@@ -24,21 +24,33 @@
     var CONFIG = {"hostname":"luxiang.wiki","root":"/","images":"/images","scheme":"Mist","version":"8.0.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="SPU:标准化产品单元SPU &#x3D; Standard Product Unit （标准化产品单元）,SPU是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。 SKU:库存量单位SKU&#x3D;stock keeping unit(库存量单位) SKU即库存进出计量的单位（买家购买、商家进货、供应商备货、工厂生产都是依据SKU进行的），在服装、鞋类商品中使用最多最普">
-<meta property="og:type" content="article">
-<meta property="og:title" content="商品的spu、sku及其之间的关系">
-<meta property="og:url" content="http://luxiang.wiki/2020/11/13/%E6%A6%82%E5%BF%B5%E8%A7%A3%E9%87%8A/%E5%95%86%E5%93%81%E7%9A%84spu%E3%80%81sku%E5%8F%8A%E5%85%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="《重学MySQL》下载并安装Mysql(上)">
+<meta property="og:url" content="http://luxiang.wiki/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8A/index.html">
 <meta property="og:site_name" content="洛阳城上看洛阳">
-<meta property="og:description" content="SPU:标准化产品单元SPU &#x3D; Standard Product Unit （标准化产品单元）,SPU是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。 SKU:库存量单位SKU&#x3D;stock keeping unit(库存量单位) SKU即库存进出计量的单位（买家购买、商家进货、供应商备货、工厂生产都是依据SKU进行的），在服装、鞋类商品中使用最多最普">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-13T15:43:32.000Z">
-<meta property="article:modified_time" content="2020-11-14T13:21:28.791Z">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/mysql.jpg">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/MySQL.png">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/MySQL-MySQL-Downloads.png">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/MySQL-MySQL-Community-Downloads-a.png">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/MySQL-Download-MySQL-Installer.png">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/MySQL-Begin-Your-Download.png">
+<meta property="article:published_time" content="2020-11-14T14:25:05.000Z">
+<meta property="article:modified_time" content="2020-11-16T11:57:50.457Z">
 <meta property="article:author" content="洛阳城上看洛阳">
-<meta property="article:tag" content="概念">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="重学MySQL">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://files.codedog.link/blog/typecho/mysql.jpg">
 
 
-<link rel="canonical" href="http://luxiang.wiki/2020/11/13/%E6%A6%82%E5%BF%B5%E8%A7%A3%E9%87%8A/%E5%95%86%E5%93%81%E7%9A%84spu%E3%80%81sku%E5%8F%8A%E5%85%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">
+<link rel="canonical" href="http://luxiang.wiki/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8A/">
 
 
 <script class="page-configurations">
@@ -51,7 +63,7 @@
   };
 </script>
 
-  <title>商品的spu、sku及其之间的关系 | 洛阳城上看洛阳</title>
+  <title>《重学MySQL》下载并安装Mysql(上) | 洛阳城上看洛阳</title>
   
 
 
@@ -223,7 +235,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPU-%E6%A0%87%E5%87%86%E5%8C%96%E4%BA%A7%E5%93%81%E5%8D%95%E5%85%83"><span class="nav-number">1.</span> <span class="nav-text">SPU:标准化产品单元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SKU-%E5%BA%93%E5%AD%98%E9%87%8F%E5%8D%95%E4%BD%8D"><span class="nav-number">2.</span> <span class="nav-text">SKU:库存量单位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">举例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sku-%E5%BD%B1%E5%93%8D%E4%BB%B7%E6%A0%BC%E5%92%8C%E5%BA%93%E5%AD%98%E7%9A%84-%E5%B1%9E%E6%80%A7%E9%9B%86%E5%90%88-%E4%B8%8E%E5%95%86%E5%93%81%E6%98%AF%E5%A4%9A%E5%AF%B9%E4%B8%80%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%8C%E5%8D%B3%E4%B8%80%E4%B8%AA%E5%95%86%E5%93%81%E6%9C%89%E5%A4%9A%E4%B8%AASKU%E3%80%82"><span class="nav-number">4.</span> <span class="nav-text">sku : 影响价格和库存的 属性集合, 与商品是多对一的关系，即一个商品有多个SKU。</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">MySQL介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E4%BC%98%E5%8A%BF"><span class="nav-number">3.</span> <span class="nav-text">MySQL优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDMySQL"><span class="nav-number">4.</span> <span class="nav-text">下载MySQL</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -301,7 +313,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/13/%E6%A6%82%E5%BF%B5%E8%A7%A3%E9%87%8A/%E5%95%86%E5%93%81%E7%9A%84spu%E3%80%81sku%E5%8F%8A%E5%85%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">
+    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/custom-logo.jpg">
@@ -314,7 +326,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          商品的spu、sku及其之间的关系
+          《重学MySQL》下载并安装Mysql(上)
         </h1>
 
         <div class="post-meta-container">
@@ -325,14 +337,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-11-13 23:43:32" itemprop="dateCreated datePublished" datetime="2020-11-13T23:43:32+08:00">2020-11-13</time>
+      <time title="创建时间：2020-11-14 22:25:05" itemprop="dateCreated datePublished" datetime="2020-11-14T22:25:05+08:00">2020-11-14</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-14 21:21:28" itemprop="dateModified" datetime="2020-11-14T21:21:28+08:00">2020-11-14</time>
+        <time title="修改时间：2020-11-16 19:57:50" itemprop="dateModified" datetime="2020-11-16T19:57:50+08:00">2020-11-16</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -340,7 +352,15 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%A6%82%E5%BF%B5%E8%A7%A3%E9%87%8A/" itemprop="url" rel="index"><span itemprop="name">概念解释</span></a>
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/%E9%87%8D%E5%AD%A6MySQL/" itemprop="url" rel="index"><span itemprop="name">重学MySQL</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/" itemprop="url" rel="index"><span itemprop="name">下载并安装MySQL</span></a>
         </span>
     </span>
 
@@ -354,91 +374,28 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h3 id="SPU-标准化产品单元"><a href="#SPU-标准化产品单元" class="headerlink" title="SPU:标准化产品单元"></a>SPU:标准化产品单元</h3><p>SPU = Standard Product Unit （标准化产品单元）,SPU是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。</p>
-<h3 id="SKU-库存量单位"><a href="#SKU-库存量单位" class="headerlink" title="SKU:库存量单位"></a>SKU:库存量单位</h3><p>SKU=stock keeping unit(库存量单位) SKU即库存进出计量的单位（买家购买、商家进货、供应商备货、工厂生产都是依据SKU进行的），在服装、鞋类商品中使用最多最普遍。 例如纺织品中一个SKU通常表示：规格、颜色、款式。<br>KU是物理上不可分割的最小存货单元。也就是说一款商品，<strong>可以根据SKU来确定具体的货物存量。</strong></p>
+        <p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
 <a id="more"></a>
 
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><blockquote>
-<p>spu : 属性(不会影响到库存和价格的属性, 又叫关键属性)</p>
+
+<h3 id="关系型数据库"><a href="#关系型数据库" class="headerlink" title="关系型数据库"></a>关系型数据库</h3><p>关系型数据库，是指采用了关系模型来组织数据的数据库，其以行和列的形式存储数据，以便于用户理解，关系型数据库这一系列的行和列被称为表，一组表组成了数据库。用户通过查询来检索数据库中的数据，而查询是一个用于限定数据库中某些区域的执行代码。关系模型可以简单理解为二维表格模型，而一个关系型数据库就是由二维表及其之间的关系组成的一个数据组织。</p>
+<blockquote>
+<p>上面这段话是博主百度百科复制来的，知道它并没有什么用，但是如果你不知道的话，最好百度了解一下，毕竟保不准有的面试官会问：“关系型数据库与非关系型数据库NoSql有什么区别？”（博主答：“我不懂! <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>”）</p>
 </blockquote>
-<p>以 <code>HUAWEI MATE 30</code> 为例，HUAWEI MATE 30是这件商品的SPU的名称，其SPU是一组属性的集合：</p>
-<p><strong>【主体】</strong> </p>
-<table>
-<thead>
-<tr>
-<th>上市年份</th>
-<th>2019年</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>品牌</td>
-<td>华为（HUAWEI）</td>
-</tr>
-<tr>
-<td>上市月份</td>
-<td>9月</td>
-</tr>
-<tr>
-<td>入网型号</td>
-<td>TAS-AL00</td>
-</tr>
-<tr>
-<td>产品名称</td>
-<td>HUAWEI MAT 30</td>
-</tr>
-</tbody></table>
-<p><strong>【存储】</strong> </p>
-<table>
-<thead>
-<tr>
-<th>运行内存</th>
-<th>6G</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>机身存储</td>
-<td>128G</td>
-</tr>
-<tr>
-<td>最大存储扩展</td>
-<td>256G</td>
-</tr>
-<tr>
-<td>存储卡</td>
-<td>NM存储卡</td>
-</tr>
-</tbody></table>
-<p><strong>【基本信息】</strong> </p>
-<table>
-<thead>
-<tr>
-<th>机身宽度（mm）</th>
-<th>76.1</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>机身厚度（mm）</td>
-<td>其他</td>
-</tr>
-<tr>
-<td>机身长度（mm）</td>
-<td>160.8</td>
-</tr>
-<tr>
-<td>机身重量（g）</td>
-<td>其他</td>
-</tr>
-<tr>
-<td>机身材质分类</td>
-<td>金属边框</td>
-</tr>
-<tr>
-<td>机身材质分类</td>
-<td>玻璃后盖</td>
-</tr>
-</tbody></table>
-<p>还包括<strong>摄像头、数据接口、屏幕、硬件配置</strong>等一系列属性一起构成了一个SPU，这个SPU的名称叫做<code>HUAWEI MATE 30</code> </p>
-<h3 id="sku-影响价格和库存的-属性集合-与商品是多对一的关系，即一个商品有多个SKU。"><a href="#sku-影响价格和库存的-属性集合-与商品是多对一的关系，即一个商品有多个SKU。" class="headerlink" title="sku : 影响价格和库存的 属性集合, 与商品是多对一的关系，即一个商品有多个SKU。"></a>sku : 影响价格和库存的 属性集合, 与商品是多对一的关系，即一个商品有多个SKU。</h3><p>如<code>HUAWEI MATE 30</code>有四种颜色（亮黑色、星河银、翡冷翠、罗兰紫）还有两种配置（全网通6+128g、全网通8+128G）<br>那么其一共有（4*2）8个SKU组合，且每个SKU都有不同的库存</p>
+<h3 id="MySQL介绍"><a href="#MySQL介绍" class="headerlink" title="MySQL介绍"></a>MySQL介绍</h3><p>MySQL是一种开放源代码的关系型数据库管理系统（RDBMS），使用最常用的数据库管理语言–结构化查询语言（SQL）进行数据库管理。<br>MySQL是开放源代码的，因此任何人都可以在General Public License的许可下下载并根据个性化的需要对其进行修改。<br>MySQL因为其速度、可靠性和适应性而备受关注。大多数人都认为在不需要事务化处理的情况下，MySQL是管理内容最好的选择。</p>
+<h3 id="MySQL优势"><a href="#MySQL优势" class="headerlink" title="MySQL优势"></a>MySQL优势</h3><p>由于 MySQL 数据库体积小、速度快、总体拥有成本低、开放源代码，其有着广泛的应用，一般中小型网站的开发都选择 MySQL 作为网站数据库。由于其社区版的性能卓越，因此搭配 PHP 和 Apache 服务器可组成良好的开发环境。</p>
+<blockquote>
+<p>总结来说就是：免费、开源、跨平台、性能好，活好还不要钱，谁不喜欢呢<span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span><span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+</blockquote>
+<h3 id="下载MySQL"><a href="#下载MySQL" class="headerlink" title="下载MySQL"></a>下载MySQL</h3><p>首先我们打开<a target="_blank" rel="noopener" href="https://www.mysql.com/">MySQL官网</a><code>https://www.mysql.com/</code>,在官网的首页有一个大大的<code>DOWNLOADS</code>，如下图:<br><img src="http://files.codedog.link/blog/typecho/MySQL.png" alt="MySQL.png"></p>
+<p>点击后会跳转到下图所示的页面，直接拉到页面底部点击<a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/">MySQL Community (GPL) Downloads »</a><br><img src="http://files.codedog.link/blog/typecho/MySQL-MySQL-Downloads.png" alt="下载"></p>
+<p>接着会跳转到分类下载页面,常用的链接我给做了标注(“其实其它的部分没用过，部分不认识”)，如果你是<code>Windows</code>系统，直接点击<a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/windows/">MySQL Installer for Windows</a>即可，如果是<code>Linux</code>可以按照你的<code>Linux</code>发行版本点击<a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/repo/yum/">MySQL Yum Repository</a>或者<a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/repo/apt/">MySQL APT Repository</a>进行安装</p>
+<blockquote>
+<p>不知道你们发现没有，上面两段话中所有带下划线的文字都可以点击，并且会直接跳转到文字描述的页面 <span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+</blockquote>
+<p><img src="http://files.codedog.link/blog/typecho/MySQL-MySQL-Community-Downloads-a.png" alt="下载"><br>点击完对应的链接就到了选择<code>MySQL</code>版本的页面啦，可以按照需求进行选择下载安装包,这里我会进行<code>Windows</code>和<code>Ubuntu 18</code>下的安装演示(“没用过MacOS,需要的话也可以自行百度看一下”)，当前默认下载的版本是<code>MySQL 8.0</code>你也可以点击右上角的<code>Looking for previous GA versions?</code>进行版本选择</p>
+<p><img src="http://files.codedog.link/blog/typecho/MySQL-Download-MySQL-Installer.png" alt="Windows"></p>
+<p>接下来点击<code>No thanks, just start my download.</code>就可以进行下载啦，当然你也可以选择登录后再下载<br><img src="http://files.codedog.link/blog/typecho/MySQL-Begin-Your-Download.png" alt="No thanks, just start my download."></p>
 
     </div>
 
@@ -448,20 +405,21 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%A6%82%E5%BF%B5/" rel="tag"># 概念</a>
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+              <a href="/tags/%E9%87%8D%E5%AD%A6MySQL/" rel="tag"># 重学MySQL</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/11/13/Java/Spring%20Framework/%E7%90%86%E8%AE%BA/%E6%B5%85%E8%B0%88IOC/" rel="prev" title="浅谈IOC">
-                  <i class="fa fa-chevron-left"></i> 浅谈IOC
+                <a href="/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E9%87%8D%E5%AD%A6MySQL/" rel="prev" title="《重学MySQL》">
+                  <i class="fa fa-chevron-left"></i> 《重学MySQL》
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E7%9A%84%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0/" rel="next" title="Go的内置函数与递归函数">
-                  Go的内置函数与递归函数 <i class="fa fa-chevron-right"></i>
+                <a href="/2020/11/16/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8B/" rel="next" title="下载并安装MySQL(下)">
+                  下载并安装MySQL(下) <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

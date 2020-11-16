@@ -233,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -286,6 +286,92 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/custom-logo.jpg">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/" class="post-title-link" itemprop="url">Go语言中的数组与切片</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-14 10:48:55 / 修改时间：21:21:28" itemprop="dateCreated datePublished" datetime="2020-11-14T10:48:55+08:00">2020-11-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="数组与切片"><a href="#数组与切片" class="headerlink" title="数组与切片"></a>数组与切片</h3><figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test1</span><span class="params">()</span></span> {</span><br><span class="line">	arr := [<span class="number">5</span>]<span class="keyword">int</span>{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}</span><br><span class="line">	<span class="comment">// 切片是对数组的引用 因此切片是引用类型</span></span><br><span class="line">	slices := arr[<span class="number">1</span>:<span class="number">3</span>] </span><br><span class="line">	fmt.Println(slices) <span class="comment">//[2 3]</span></span><br><span class="line">	<span class="comment">// 切片的长度是指切片中元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的长度:%d\n"</span>, <span class="built_in">len</span>(slices)) <span class="comment">//slice的长度:2</span></span><br><span class="line">	<span class="comment">// 切片的容量是指切片所指向的数组的元素到其最后一个元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的容量:%d\n"</span>, <span class="built_in">cap</span>(slices)) <span class="comment">//slice的容量:4</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> slices {</span><br><span class="line">		fmt.Println(v) <span class="comment">//2 、3</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的最大长度为其容量，修改切片的长度和容量一样，会显示出切片所指向数组的元素到其最后一个元素</span></span><br><span class="line">	slices = slices[:<span class="built_in">cap</span>(slices)]</span><br><span class="line">	fmt.Printf(<span class="string">"修改后:%v\n"</span>, slices) <span class="comment">// 修改后:[2 3 4 5]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的地址是其所指向数组的第一个值的地址</span></span><br><span class="line">	fmt.Printf(<span class="string">"slices的地址:%p,所指向数组值的地址:%p\n"</span>, slices, &amp;arr[<span class="number">1</span>])</span><br><span class="line">        <span class="comment">//slices的地址:0xc00008e038,所指向数组值的地址:0xc00008e038</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 

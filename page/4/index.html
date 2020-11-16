@@ -233,7 +233,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -286,6 +286,87 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/14/Golang/%E6%8E%A5%E5%8F%A3/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/custom-logo.jpg">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/14/Golang/%E6%8E%A5%E5%8F%A3/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/" class="post-title-link" itemprop="url">Go语言中的类型断言</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-14 11:04:17 / 修改时间：21:21:28" itemprop="dateCreated datePublished" datetime="2020-11-14T11:04:17+08:00">2020-11-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Golang/%E6%8E%A5%E5%8F%A3/" itemprop="url" rel="index"><span itemprop="name">接口</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="类型断言"><a href="#类型断言" class="headerlink" title="类型断言"></a>类型断言</h3><blockquote>
+<p>类型断言，由于接口是一般类型，不知道具体类型，如果要转成具体类型<br>可以采用以下方法进行转换：</p>
+</blockquote>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">func test1() {</span><br><span class="line">	var a interface{}</span><br><span class="line">	var b int = 10</span><br><span class="line">	a = b</span><br><span class="line">	fmt.Printf("a type is %T value is %d\n", a, a)</span><br><span class="line">	// 断言</span><br><span class="line">	c, ok := a.(int)</span><br><span class="line">	if ok == false {</span><br><span class="line">		fmt.Println("conversion fail")</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("c type is %T value is %d\n", c, c)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line">------------</span><br><span class="line">a type is int value is 10</span><br><span class="line">c type is int value is 10</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">type Student struct{}</span><br><span class="line"></span><br><span class="line">func assertion(item ...interface{}) {</span><br><span class="line">	for i, v := range item {</span><br><span class="line">		switch v.(type) {</span><br><span class="line">		case bool:</span><br><span class="line">			fmt.Printf("%d param is bool value is %v\n", i, v)</span><br><span class="line">		case string:</span><br><span class="line">			fmt.Printf("%d param is string value is %v\n", i, v)</span><br><span class="line">		case float32, float64:</span><br><span class="line">			fmt.Printf("%d param is float value is %v\n", i, v)</span><br><span class="line">		case int, int32, int64:</span><br><span class="line">			fmt.Printf("%d param is int value is %v\n", i, v)</span><br><span class="line">		case Student:</span><br><span class="line">			fmt.Printf("%d param is Student value is %v\n", i, v)</span><br><span class="line">		case *Student:</span><br><span class="line">			fmt.Printf("%d param is Student Pointer value is %v\n", i, v)</span><br><span class="line">		default:</span><br><span class="line">			fmt.Printf("%d param type is unknown value is %v\n", i, v)</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	var stu Student</span><br><span class="line">	assertion(true, stu, 1, 1.2, "test", &amp;Student{})</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line">--------------</span><br><span class="line">0 param is bool value is true</span><br><span class="line">1 param is Student value is {}</span><br><span class="line">2 param is int value is 1</span><br><span class="line">3 param is float value is 1.2</span><br><span class="line">4 param is string value is test</span><br><span class="line">5 param is Student Pointer value is &amp;{}</span><br></pre></td></tr></tbody></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1053,92 +1134,6 @@
 <h3 id="map排序"><a href="#map排序" class="headerlink" title="map排序"></a>map排序</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">func test5() {</span><br><span class="line">	fmt.Printf("---------------map排序-----------------\n")</span><br><span class="line">	// Go的map是无序的 只在fmt.print打印时候有序</span><br><span class="line">	a := make(map[string]string, 5)</span><br><span class="line"></span><br><span class="line">	a["3"] = "hij"</span><br><span class="line">	a["1"] = "abc"</span><br><span class="line">	a["2"] = "def"</span><br><span class="line">	a["4"] = "opq"</span><br><span class="line"></span><br><span class="line">	for k, v := range a {</span><br><span class="line">		fmt.Printf("%s,%s\n", k, v)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	// 把map的key取出来放入slice进行排序</span><br><span class="line">	slices := make([]string, 0, 5)</span><br><span class="line">	for k, _ := range a {</span><br><span class="line">		slices = append(slices, k)</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("排序前，key:%v\n", slices)</span><br><span class="line">	sort.Strings(slices)</span><br><span class="line">	fmt.Printf("排序后，key:%v\n", slices)</span><br><span class="line"></span><br><span class="line">	for _, v := range slices {</span><br><span class="line">		fmt.Printf("map[%s]:%s\n", v, a[v])</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test5()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">---------------map排序-----------------</span><br><span class="line">3,hij</span><br><span class="line">1,abc</span><br><span class="line">2,def</span><br><span class="line">4,opq</span><br><span class="line">排序前，key:[3 1 2 4]</span><br><span class="line">排序后，key:[1 2 3 4]</span><br><span class="line">map[1]:abc</span><br><span class="line">map[2]:def</span><br><span class="line">map[3]:hij</span><br><span class="line">map[4]:opq</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="map反转"><a href="#map反转" class="headerlink" title="map反转"></a>map反转</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">func test6() {</span><br><span class="line">	fmt.Printf("---------------map反转-----------------\n")</span><br><span class="line">	a := make(map[int]string, 5)</span><br><span class="line">	b := make(map[string]int, 5)</span><br><span class="line"></span><br><span class="line">	a[1] = "a"</span><br><span class="line">	a[2] = "b"</span><br><span class="line">	a[3] = "c"</span><br><span class="line">	a[4] = "d"</span><br><span class="line">	a[5] = "e"</span><br><span class="line"></span><br><span class="line">	for k, v := range a {</span><br><span class="line">		b[v] = k</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("反转后:%v\n", b)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test6()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">---------------map反转-----------------</span><br><span class="line">反转后:map[a:1 b:2 c:3 d:4 e:5]</span><br></pre></td></tr></tbody></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/custom-logo.jpg">
-      <meta itemprop="name" content="洛阳城上看洛阳">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="洛阳城上看洛阳">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/" class="post-title-link" itemprop="url">Go语言中的数组与切片</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-14 10:48:55 / 修改时间：21:21:28" itemprop="dateCreated datePublished" datetime="2020-11-14T10:48:55+08:00">2020-11-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Golang/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="数组与切片"><a href="#数组与切片" class="headerlink" title="数组与切片"></a>数组与切片</h3><figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test1</span><span class="params">()</span></span> {</span><br><span class="line">	arr := [<span class="number">5</span>]<span class="keyword">int</span>{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}</span><br><span class="line">	<span class="comment">// 切片是对数组的引用 因此切片是引用类型</span></span><br><span class="line">	slices := arr[<span class="number">1</span>:<span class="number">3</span>] </span><br><span class="line">	fmt.Println(slices) <span class="comment">//[2 3]</span></span><br><span class="line">	<span class="comment">// 切片的长度是指切片中元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的长度:%d\n"</span>, <span class="built_in">len</span>(slices)) <span class="comment">//slice的长度:2</span></span><br><span class="line">	<span class="comment">// 切片的容量是指切片所指向的数组的元素到其最后一个元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的容量:%d\n"</span>, <span class="built_in">cap</span>(slices)) <span class="comment">//slice的容量:4</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> slices {</span><br><span class="line">		fmt.Println(v) <span class="comment">//2 、3</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的最大长度为其容量，修改切片的长度和容量一样，会显示出切片所指向数组的元素到其最后一个元素</span></span><br><span class="line">	slices = slices[:<span class="built_in">cap</span>(slices)]</span><br><span class="line">	fmt.Printf(<span class="string">"修改后:%v\n"</span>, slices) <span class="comment">// 修改后:[2 3 4 5]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的地址是其所指向数组的第一个值的地址</span></span><br><span class="line">	fmt.Printf(<span class="string">"slices的地址:%p,所指向数组值的地址:%p\n"</span>, slices, &amp;arr[<span class="number">1</span>])</span><br><span class="line">        <span class="comment">//slices的地址:0xc00008e038,所指向数组值的地址:0xc00008e038</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
