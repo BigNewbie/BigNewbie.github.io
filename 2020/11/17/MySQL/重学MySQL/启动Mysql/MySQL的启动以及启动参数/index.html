@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"luxiang.wiki","root":"/","images":"/images","scheme":"Mist","version":"8.0.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="《重学MySQL》MySQL的启动以及启动参数">
+<meta property="og:url" content="http://luxiang.wiki/2020/11/17/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E5%90%AF%E5%8A%A8Mysql/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/index.html">
+<meta property="og:site_name" content="洛阳城上看洛阳">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/mysql.jpg">
+<meta property="og:image" content="http://files.codedog.link/blog/typecho/mysql%E5%9B%BE%E4%BE%8B.jpg">
+<meta property="article:published_time" content="2020-11-17T12:44:25.000Z">
+<meta property="article:modified_time" content="2020-11-20T14:55:28.127Z">
+<meta property="article:author" content="洛阳城上看洛阳">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="重学MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://files.codedog.link/blog/typecho/mysql.jpg">
+
+
+<link rel="canonical" href="http://luxiang.wiki/2020/11/17/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E5%90%AF%E5%8A%A8Mysql/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>《重学MySQL》MySQL的启动以及启动参数 | 洛阳城上看洛阳</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f92e00905df3abe2e37be14a11ab83d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">洛阳城上看洛阳</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysqld"><span class="nav-number">1.</span> <span class="nav-text">mysqld</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysqld-safe"><span class="nav-number">2.</span> <span class="nav-text">mysqld_safe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysqld-multi"><span class="nav-number">3.</span> <span class="nav-text">mysqld_multi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql-server"><span class="nav-number">4.</span> <span class="nav-text">mysql.server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8MySQL%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">5.</span> <span class="nav-text">启动MySQL服务端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8MySQL%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">6.</span> <span class="nav-text">启动MySQL客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%80%9A%E8%AE%AF"><span class="nav-number">7.</span> <span class="nav-text">客户端和服务器通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A4%84%E7%90%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">服务器处理客户端的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">9.</span> <span class="nav-text">存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">10.</span> <span class="nav-text">如何选择存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB"><span class="nav-number">10.1.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MyISAM"><span class="nav-number">10.2.</span> <span class="nav-text">MyISAM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MEMORY"><span class="nav-number">10.3.</span> <span class="nav-text">MEMORY</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%92%8C%E4%BF%AE%E6%94%B9%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">11.</span> <span class="nav-text">设置和修改存储引擎的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">12.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="洛阳城上看洛阳"
+      src="/images/custom-logo.jpg">
+  <p class="site-author-name" itemprop="name">洛阳城上看洛阳</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BigNewbie" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BigNewbie" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1625966193@qq.com" title="E-Mail → mailto:1625966193@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://luxiang.wiki/2020/11/17/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E5%90%AF%E5%8A%A8Mysql/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/custom-logo.jpg">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洛阳城上看洛阳">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《重学MySQL》MySQL的启动以及启动参数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-17 20:44:25" itemprop="dateCreated datePublished" datetime="2020-11-17T20:44:25+08:00">2020-11-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-20 22:55:28" itemprop="dateModified" datetime="2020-11-20T22:55:28+08:00">2020-11-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/%E9%87%8D%E5%AD%A6MySQL/" itemprop="url" rel="index"><span itemprop="name">重学MySQL</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/%E9%87%8D%E5%AD%A6MySQL/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">MySQL的启动以及启动参数</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
+<a id="more"></a>
+
+<p><code>MySQL</code>的安装以及结束，接下来就要启动<code>MySQL</code>了，在启动之前，我们先打开安装好的<code>MySQL</code>目录看一下其有哪些可运行的程序，博主用的是<code>windows</code>操作系统，我的安装目录是<code>C:\Program Files\MySQL\MySQL Server 5.7</code>，如果你的和我不一样，可以打开你自己的目录。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bin     # 存放可执行文件</span><br><span class="line">docs    # 存放一些文档</span><br><span class="line">include # 存放一些头文件，如：mysql.h、mysql_ername.h等。</span><br><span class="line">lib     # 存放一系列库文件。</span><br><span class="line">share   # 存放字符集、语言等信息。</span><br><span class="line">LICENSE # 放在文本文档中打开看是啥 </span><br><span class="line">README  # 放在文本文档中打开看是啥 </span><br></pre></td></tr></tbody></table></figure>
+<p>上面以及表明了每个目录的作用，既然我们要运行<code>MySQL</code>，就打开<code>bin</code>目录，看看它下面有存放着哪些可执行程序:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">innochecksum.exe                    # 脱机innodb数据文件校验和检查</span><br><span class="line">lz4_decompress.exe                  # 用来解压缩 mysqlpump的LZ4压缩输出（说实话没关注过，后面博主会了解下）</span><br><span class="line">myisamchk.exe                       # 可以用来获得有关你的数据库表的统计信息或检查、修复、优化他们</span><br><span class="line">myisamlog.exe                       # 显示MyISAM日志文件内容</span><br><span class="line">myisampack.exe                      # 可以压缩MyISAM表</span><br><span class="line">myisam_ftdump.exe                   # 显示全文索引信息。</span><br><span class="line">mysql.exe                           # mysql客户端，用来连接并操作mysql服务的 （黑黑的那个窗口）</span><br><span class="line">mysqladmin.exe                      # 用于管理MySQL服务器客户端，修改密码等功能。</span><br><span class="line">mysqlbinlog.exe                     # 处理二进制日志文件的。</span><br><span class="line">mysqlcheck.exe                      # 表维护程序。</span><br><span class="line">mysqld.exe                          # mysql的服务端，我们口头意义上的连接mysql就是连接它.</span><br><span class="line">mysqldump.exe                       # 数据库备份程序。</span><br><span class="line">mysqlimport.exe                     # 数据导入程序。</span><br><span class="line">mysqlpump.exe                       # 数据库备份程序，比mysqldump更强。</span><br><span class="line">mysqlshow.exe                       # 显示数据库、表和列的信息。</span><br><span class="line">mysqlslap.exe                       # 负载仿真客户端。</span><br><span class="line">mysql_config_editor.exe             # MySQL的配置实用程序（后面会讲到）。</span><br><span class="line">mysql_embedded.exe</span><br><span class="line">mysql_plugin.exe                    # 配置MySQL服务器插件。</span><br><span class="line">mysql_secure_installation.exe       # 提高MySQL安装的安全性。</span><br><span class="line">mysql_ssl_rsa_setup.exe             # 创建 SSL/RSA 文件。</span><br><span class="line">mysql_tzinfo_to_sql.exe             # 加载时区表。</span><br><span class="line">mysql_upgrade.exe                   # 检查并升级MySQL表。</span><br><span class="line">my_print_defaults.exe               # 显示选项文件的选项。</span><br><span class="line">perror.exe                          # 解释错误代码。</span><br><span class="line">resolveip.exe                       # 解析主机名到IP地址或反之亦然。</span><br><span class="line">zlib_decompress.exe                 # 解压缩mysqlpump zlib压缩输出。</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<p>文章写了一半，博主突然脑子一热给自己笔记本装了黑苹果，后面的文章可能就要以<code>MacOS</code>作为演示平台了😂<br>这里博主再展示下在<code>MacOS</code>下的<code>MySQL</code>文件目录结构</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">lrwxr-xr-x   1 root  wheel         36 11 19 20:15 libprotobuf-lite.3.11.4.dylib -&gt; ../lib/libprotobuf-lite.3.11.4.dylib</span><br><span class="line">lrwxr-xr-x   1 root  wheel         31 11 19 20:15 libprotobuf.3.11.4.dylib -&gt; ../lib/libprotobuf.3.11.4.dylib</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6954720  9 25 05:44 lz4_decompress</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6878176  9 25 05:44 my_print_defaults</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7226816  9 25 05:44 myisam_ftdump</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7399536  9 25 05:44 myisamchk</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7175712  9 25 05:44 myisamlog</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7261536  9 25 05:44 myisampack</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8313088  9 25 05:44 mysql</span><br><span class="line">-rwxr-xr-x   1 root  wheel       5023  9 25 03:48 mysql_config</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6899536  9 25 05:44 mysql_config_editor</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7940400  9 25 05:44 mysql_secure_installation</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6939104  9 25 05:44 mysql_ssl_rsa_setup</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6803536  9 25 05:44 mysql_tzinfo_to_sql</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8186544  9 25 05:44 mysql_upgrade</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7951296  9 25 05:44 mysqladmin</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8582480  9 25 05:44 mysqlbinlog</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7969328  9 25 05:44 mysqlcheck</span><br><span class="line">-rwxr-xr-x   1 root  wheel   73581760  9 25 05:44 mysqld</span><br><span class="line">-rwxr-xr-x   1 root  wheel  269357824  9 25 05:44 mysqld-debug</span><br><span class="line">-rwxr-xr-x   1 root  wheel      27513  9 25 03:48 mysqld_multi</span><br><span class="line">-rwxr-xr-x   1 root  wheel      29164  9 25 03:48 mysqld_safe   # 我是启动脚本</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8051216  9 25 05:44 mysqldump</span><br><span class="line">-rwxr-xr-x   1 root  wheel       7690  9 25 03:48 mysqldumpslow</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7950928  9 25 05:44 mysqlimport</span><br><span class="line">-rwxr-xr-x   1 root  wheel    9011456  9 25 05:44 mysqlpump</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7941824  9 25 05:44 mysqlshow</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7973312  9 25 05:44 mysqlslap</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7597712  9 25 05:44 perror</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6831648  9 25 05:44 zlib_decompress</span><br></pre></td></tr></tbody></table></figure>
+<p>上面就是<code>bin</code>目录下可执行程序以及其作用，这里有很多我们不太需要去关注，目前只需要关注几个可执行程序：</p>
+<h3 id="mysqld"><a href="#mysqld" class="headerlink" title="mysqld"></a>mysqld</h3><p><code>mysqld</code>这个文件就是<code>MySQL</code>服务器程序，运行这个文件就可以直接启动一个<code>MySQL</code>服务进程。</p>
+<h3 id="mysqld-safe"><a href="#mysqld-safe" class="headerlink" title="mysqld_safe"></a>mysqld_safe</h3><p><code>mysqld_safe</code>脚本会在启动MySQL服务器后继续监控其运行情况，并在其死机时重新启动它。它通常做如下事情：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">检查系统和选项。</span><br><span class="line">检查MyISAM表。</span><br><span class="line">保持MySQL服务器窗口。</span><br><span class="line">启动并监视mysqld，如果因错误终止则重启。</span><br><span class="line">将mysqld的错误消息发送到数据目录中的host_name.err 文件。</span><br><span class="line">将mysqld_safe的屏幕输出发送到数据目录中的host_name.safe文件。</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="mysqld-multi"><a href="#mysqld-multi" class="headerlink" title="mysqld_multi"></a>mysqld_multi</h3><p><code>mysql</code>多实例，捡来理解就是在一台服务器上，运行多个<code>mysql</code>服务进程，这些<code>mysql</code>服务进程通过不同的socket来监听不同的数据端口，进而互不干涉的提供各自的服务</p>
+<h3 id="mysql-server"><a href="#mysql-server" class="headerlink" title="mysql.server"></a>mysql.server</h3><p><code>mysql.server</code>同样是服务端启动脚本，主要作用就是为了方便启动和关闭<code>mysql</code>服务，这个脚本会调用<code>mysql_safe</code>来启动<code>mysql</code>,需要注意的是这个文件并不在<code>bin</code>目录下，它的实际目录是安装目录的<code>support-files</code>文件夹下</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/mysql                               # 我的mysql安装目录</span><br><span class="line">/usr/local/mysql/support-files/mysql.server    # mysql.server文件位置</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="启动MySQL服务端"><a href="#启动MySQL服务端" class="headerlink" title="启动MySQL服务端"></a>启动MySQL服务端</h3><p>在<code>MacOS</code>下我使用如下命令启动<code>MySQL</code></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/mysql/support-files/mysql.server start   # 启动MySQL</span><br><span class="line">sudo /usr/local/mysql/support-files/mysql.server stop   # 停止MySQL</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>在Windows下可以在cmd中输入以下命令启动mysql，当然前提是你已经把mysql注册为服务了</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">net start MySQL # 启动MySQL</span><br><span class="line">net stop MySQL  # 停止MySQL</span><br><span class="line"></span><br><span class="line">"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysqld" --install # 用于注册服务</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="启动MySQL客户端"><a href="#启动MySQL客户端" class="headerlink" title="启动MySQL客户端"></a>启动MySQL客户端</h3><p>成功启动MySQL服务后，就可以运行客户端连接到启动的服务器了，MySQL的bin目录下也为我们提供了一系列的客户端程序,比如：<br><code>mysqladmin</code>、<code>mysqldump</code>、<code>mysql</code>等等，这里博主先重点介绍一下<code>mysql</code>，通过这个可执行文件可以让我们和刚刚启动的数据库服务程序进行交互，启动这个文件时需要一些参数，比如连接的服务器ip、端口、账号、密码，格式如下：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h [ip地址] -P [端口] -u [用户名] -p[密码]</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>注意：这里的参数<code>h、P、u、p</code>都是短形式的参数，参数p与值之间不能有空格，其余参数没有强制要求，还有这里的参数区分大小写，比如答谢的P代表的是端口号而小写的p是指密码。</p>
+</blockquote>
+<p>如果是服务器程序和客户端程序在一台电脑上（就像我们现在这样），可以省略掉部分参数，就像下面这样</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u[用户名] -p[密码]</span><br></pre></td></tr></tbody></table></figure>
+<p>而mysql默认有一个用户名为<code>root</code>的用户，密码就是安装的时候设置的密码我们可以使用上面的命令尝试和服务程序进行连接</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">lu@ludeMacBook-Pro bin % sudo ./mysql -uroot -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 11</span><br><span class="line">Server version: 8.0.22 MySQL Community Server - GPL</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br></pre></td></tr></tbody></table></figure>
+<p>这里可以看到，博主的命令<code>-p</code>后面并没有输入密码，这是mysql为了防止在你输入密码的时候，身边有其他人而你恰好不想让他看到你的密码。<br>如果我们想断开客户端与服务器的连接，可以在<code>mysql&gt;</code>后输入：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">quit</span><br><span class="line">exit</span><br><span class="line">\q</span><br></pre></td></tr></tbody></table></figure>
+<p>上面三个命令其中任意一个都可以断开客户端与服务端的连接并且关闭客户端，这里我们尝试输入<code>exit</code>:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; exit</span><br><span class="line">Bye</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>注意，这里只是关闭客户端与服务器的连接，并不是关闭服务器哦</p>
+</blockquote>
+<h3 id="客户端和服务器通讯"><a href="#客户端和服务器通讯" class="headerlink" title="客户端和服务器通讯"></a>客户端和服务器通讯</h3><p>mysql客户端和服务器之间的通讯协议是“半双工”的，这意味着，在任何一个时刻，要么由服务器向客户端发送数据，要么由客户端向服务器发送数据，这两个动作不能同时发生。这种协议让mysql通信简单快速，但也限制了mysql。一个明显的限制是，这意味着没办法进行流量限制。一旦一端开始发生消息，另一端要接收完整个消息才能响应他。<br>客户端用一个单独的数据包将查询传给服务器。一旦客户端发送了请求，他能做的事情就只是等待结果了。<br>相反的，一般服务器响应给用户的数据通常很多，由多个数据包组成。当服务器开始响应客户端请求时，客户端必须完整的接受整个返回结果，而不是简单的只收取前面几条结果，然后让服务器停止发送数据。<br>多数连接mysql的库函数都可以获得全部结果并缓存到内存里，还可以逐行获取所需要的数据。默认一般是获得全部结果并缓存到内存中。mysql通常需要等所有的数据都已经发送给客户端才能释放这条查询所占用的资源，所以接受全部结果并缓存通常可以减少服务器的压力，让查询能够早点结束、早点释放对应的资源。</p>
+<h3 id="服务器处理客户端的流程"><a href="#服务器处理客户端的流程" class="headerlink" title="服务器处理客户端的流程"></a>服务器处理客户端的流程</h3><p>在日常执行mysql语句的过程中,都是客户端进程向服务器进程发送一段文本(MySQL语句),服务器进程处理后再向客户端进程发送一段文本(处理结果). 看似很简单,其实不然,这内容有很多东西是需要注意的.下面用一张图来说明.<br><img src="http://files.codedog.link/blog/typecho/mysql%E5%9B%BE%E4%BE%8B.jpg"><br>用文字说明一下上面图片中的内容：</p>
+<ul>
+<li>客户端发送一条查询给服务器</li>
+<li>服务器先到查询缓存中查询，如果命中了缓存，则立刻返回存储在缓存中的结果，否则继续往下执行</li>
+<li>服务器对sql进行解析、预处理、在优化器生存对应的执行计划</li>
+<li>执行引擎根据生成的执行计划调用存储引擎来执行查询</li>
+<li>将结果返回给客户端</li>
+</ul>
+<h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><p>数据库存储引擎是数据库底层软件模块，它提供创建、查询、更新和删除等操作，不同的存储引擎提供不同的存储机制，所采用的存取算法也可能不同。而使用不同的存储引擎还可以获得特定的功能。在客户端中我们可以使用<code>show engines</code>来查看mysql支持的所有存储引擎</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show engines;</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |</span><br><span class="line">| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |</span><br><span class="line">| MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |</span><br><span class="line">| FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |</span><br><span class="line">| MyISAM             | YES     | MyISAM storage engine                                          | NO           | NO   | NO         |</span><br><span class="line">| PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |</span><br><span class="line">| InnoDB             | DEFAULT | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |</span><br><span class="line">| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |</span><br><span class="line">| CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>Support 列的值表示某种引擎是否能使用，YES表示可以使用，NO表示不能使用，DEFAULT表示该引擎为当前默认的存储引擎。</p>
+</blockquote>
+<h3 id="如何选择存储引擎"><a href="#如何选择存储引擎" class="headerlink" title="如何选择存储引擎"></a>如何选择存储引擎</h3><p>不同的存储引擎都有各自的特点，以适应不同的需求。如表所示：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>MylSAM</th>
+<th>MEMORY</th>
+<th>InnoDB</th>
+<th>Archive</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储限制</td>
+<td>256TB</td>
+<td>RAM</td>
+<td>64TB</td>
+<td>None</td>
+</tr>
+<tr>
+<td>支持事务</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持全文索引</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持树索引</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持哈希索引</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持数据缓存</td>
+<td>No</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持外键</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody></table>
+<p>不过实际上我们常用的存储引擎也就两三种，这里给大家介绍一下</p>
+<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><p>支持事务处理，支持外键，支持崩溃修复能力和并发控制。如果需要对事务的完整性要求比较高（比如银行），要求实现并发控制（比如售票），那选择InnoDB有很大的优势。如果需要频繁的更新、删除操作的数据库，也可以选择InnoDB，因为支持事务的提交（commit）和回滚（rollback）。</p>
+<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><p>插入数据快，空间和内存使用比较低。如果表主要是用于插入新记录和读出记录，那么选择MyISAM能实现处理高效率。如果应用的完整性、并发性要求比较低，也可以使用。</p>
+<h4 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h4><p>所有的数据都在内存中，数据的处理速度快，但是安全性不高。如果需要很快的读写速度，对数据的安全性要求较低，可以选择MEMOEY。它对表的大小有要求，不能建立太大的表。所以，这类数据库只使用在相对较小的数据库表。</p>
+<blockquote>
+<p>吧啦吧啦了一通，自己看着其实也很头痛，大部分的内容其实没有必要都记住，只是让大家做个了解，如果有兴趣的话，可以自己再百度找篇博客深入了解下</p>
+</blockquote>
+<h3 id="设置和修改存储引擎的方法"><a href="#设置和修改存储引擎的方法" class="headerlink" title="设置和修改存储引擎的方法"></a>设置和修改存储引擎的方法</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建表时设定</span><br><span class="line">CREATE TABLE [表名] (id int, .....) ENGINE = [存储引擎]</span><br><span class="line"># 修改</span><br><span class="line">ALTER TABLE [表名] ENGINE = [存储引擎];</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>好啦，到这里本篇博客就结束了，这篇博客我也写了两三天，中间查资料，修修改改，还给笔记本装了个黑苹果😂第一次一个系列去写文章，和平时的感觉完全是两样，中间需要查询的资料很多，当然对我的提升也是很大的，下面一章估计也会写个几天，慢慢来吧，加油！！！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+              <a href="/tags/%E9%87%8D%E5%AD%A6MySQL/" rel="tag"># 重学MySQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/16/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8B/" rel="prev" title="《重学MySQL》下载并安装MySQL(下)">
+                  <i class="fa fa-chevron-left"></i> 《重学MySQL》下载并安装MySQL(下)
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">洛阳城上看洛阳</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
