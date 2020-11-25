@@ -166,24 +166,24 @@
       </tags>
   </entry>
   <entry>
-    <title>Go语言中的json操作</title>
-    <url>/2020/11/14/Golang/IO/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84json%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h3 id="Json序列化与反序列化"><a href="#Json序列化与反序列化" class="headerlink" title="Json序列化与反序列化"></a>Json序列化与反序列化</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">import (</span><br><span class="line">	"encoding/json"</span><br><span class="line">	"fmt"</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// 反序列化</span><br><span class="line">type User struct {</span><br><span class="line">	UserName string `json:"username"`</span><br><span class="line">	Age      int    `json:"age"`</span><br><span class="line">	Sex      string `json:"sex"`</span><br><span class="line">	Phone    string `json:"phone"`</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 结构体转json</span><br><span class="line">func structForJson() (jsonStr string) {</span><br><span class="line">	u := &amp;User{</span><br><span class="line">		UserName: "root",</span><br><span class="line">		Age:      18,</span><br><span class="line">		Sex:      "男",</span><br><span class="line">		Phone:    "13160000001",</span><br><span class="line">	}</span><br><span class="line">	j, err := json.Marshal(u)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("struct for json err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	jsonStr = string(j)</span><br><span class="line">	return</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// json转结构体</span><br><span class="line">func jsonForStruct() {</span><br><span class="line">	var u User</span><br><span class="line">	jsonStr := structForJson()</span><br><span class="line">	err := json.Unmarshal([]byte(jsonStr), &amp;u)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("json for struct err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("struct is %v\n", u)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// map转json</span><br><span class="line">func mapForJson() (jsonStr string) {</span><br><span class="line">	var m map[string]interface{}</span><br><span class="line">	m = make(map[string]interface{})</span><br><span class="line">	m["username"] = "admin"</span><br><span class="line">	m["age"] = 19</span><br><span class="line">	m["sex"] = "男"</span><br><span class="line">	m["phone"] = "13770000000"</span><br><span class="line">	mj, err := json.Marshal(m)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("map for json err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	jsonStr = string(mj)</span><br><span class="line">	return</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// json转map</span><br><span class="line">func jsonForMap() {</span><br><span class="line">	var m map[string]interface{}</span><br><span class="line">	m = make(map[string]interface{})</span><br><span class="line">	jsonStr := mapForJson()</span><br><span class="line">	err := json.Unmarshal([]byte(jsonStr), &amp;m)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("json for map err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("map is %v\n", m)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// slice转json</span><br><span class="line">func sliceForJson() (jsonStr string) {</span><br><span class="line">	var l []*User</span><br><span class="line">	u1 := &amp;User{</span><br><span class="line">		UserName: "u1",</span><br><span class="line">		Age:      18,</span><br><span class="line">		Sex:      "男",</span><br><span class="line">		Phone:    "110",</span><br><span class="line">	}</span><br><span class="line">	u2 := &amp;User{</span><br><span class="line">		UserName: "u2",</span><br><span class="line">		Age:      28,</span><br><span class="line">		Sex:      "男",</span><br><span class="line">		Phone:    "120",</span><br><span class="line">	}</span><br><span class="line">	l = append(l, u1)</span><br><span class="line">	l = append(l, u2)</span><br><span class="line">	lj, err := json.Marshal(l)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("slice for json err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	jsonStr = string(lj)</span><br><span class="line">	return</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// json转slice</span><br><span class="line">func jsonForSlice() {</span><br><span class="line">	var l []User</span><br><span class="line">	var u1 User</span><br><span class="line">	var u2 User</span><br><span class="line">	l = append(l, u1)</span><br><span class="line">	l = append(l, u2)</span><br><span class="line">	jsonStr := sliceForJson()</span><br><span class="line">	err := json.Unmarshal([]byte(jsonStr), &amp;l)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("json for map err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("map is %v\n", l)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	jsonForStruct()</span><br><span class="line">	jsonForMap()</span><br><span class="line">	jsonForSlice()</span><br><span class="line">}</span><br><span class="line">----------------------</span><br><span class="line">struct is {root 18 男 13160000001}</span><br><span class="line">map is map[age:19 phone:13770000000 sex:男 username:admin]</span><br><span class="line">map is [{u1 18 男 110} {u2 28 男 120}]</span><br></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>Golang</category>
-        <category>IO</category>
-      </categories>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Go语言中的反射</title>
     <url>/2020/11/14/Golang/%E5%8F%8D%E5%B0%84/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/</url>
     <content><![CDATA[<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    "fmt"</span><br><span class="line">    "reflect"</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type FooIF interface {</span><br><span class="line">    DoSomething()</span><br><span class="line">    DoSomethingWithArg(a string)</span><br><span class="line">    DoSomethingWithUnCertenArg(a ... string)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">type Foo struct {</span><br><span class="line">    A int</span><br><span class="line">    B string</span><br><span class="line">    C struct {</span><br><span class="line">        C1 int</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (f *Foo) DoSomething() {</span><br><span class="line">    fmt.Println(f.A, f.B)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (f *Foo) DoSomethingWithArg(a string) {</span><br><span class="line">    fmt.Println(f.A, f.B, a)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (f *Foo) DoSomethingWithUnCertenArg(a ... string) {</span><br><span class="line">    fmt.Println(f.A, f.B, a[0])</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (f *Foo) returnOneResult() int {</span><br><span class="line">    return 2</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">    var simpleObj Foo</span><br><span class="line">    var pointer2obj = &amp;simpleObj</span><br><span class="line">    var simpleIntArray = [3]int{1, 2, 3}</span><br><span class="line">    var simpleMap = map[string]string{</span><br><span class="line">        "a": "b",</span><br><span class="line">    }</span><br><span class="line">    var simpleChan = make(chan int, 1)</span><br><span class="line">    var x uint64</span><br><span class="line">    var y uint32</span><br><span class="line"></span><br><span class="line">    varType := reflect.TypeOf(simpleObj)</span><br><span class="line">    varPointerType := reflect.TypeOf(pointer2obj)</span><br><span class="line"></span><br><span class="line">    // 对齐之后要多少容量</span><br><span class="line">    fmt.Println("Align: ", varType.Align())</span><br><span class="line">    // 作为结构体的`field`要对其之后要多少容量</span><br><span class="line">    fmt.Println("FieldAlign: ", varType.FieldAlign())</span><br><span class="line">    // 叫啥</span><br><span class="line">    fmt.Println("Name: ", varType.Name())</span><br><span class="line">    // 绝对引入路径</span><br><span class="line">    fmt.Println("PkgPath: ", varType.PkgPath())</span><br><span class="line">    // 实际上用了多少内存</span><br><span class="line">    fmt.Println("Size: ", varType.Size())</span><br><span class="line">    // 到底啥类型的</span><br><span class="line">    fmt.Println("Kind: ", varType.Kind())</span><br><span class="line"></span><br><span class="line">    // 有多少函数</span><br><span class="line">    fmt.Println("NumMethod: ", varPointerType.NumMethod())</span><br><span class="line"></span><br><span class="line">    // 通过名字获取一个函数</span><br><span class="line">    m, success := varPointerType.MethodByName("DoSomethingWithArg")</span><br><span class="line">    if success {</span><br><span class="line">        m.Func.Call([]reflect.Value{</span><br><span class="line">            reflect.ValueOf(pointer2obj),</span><br><span class="line">            reflect.ValueOf("sad"),</span><br><span class="line">        })</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    // 通过索引获取函数</span><br><span class="line">    m = varPointerType.Method(1)</span><br><span class="line">    m.Func.Call([]reflect.Value{</span><br><span class="line">        reflect.ValueOf(pointer2obj),</span><br><span class="line">        reflect.ValueOf("sad2"),</span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    // 是否实现了某个接口</span><br><span class="line">    fmt.Println("Implements:", varPointerType.Implements(reflect.TypeOf((*FooIF)(nil)).Elem()))</span><br><span class="line"></span><br><span class="line">    //  看看指针多少bit</span><br><span class="line">    fmt.Println("Bits: ", reflect.TypeOf(x).Bits())</span><br><span class="line"></span><br><span class="line">    // 查看array, chan, map, ptr, slice的元素类型</span><br><span class="line">    fmt.Println("Elem: ", reflect.TypeOf(simpleIntArray).Elem().Kind())</span><br><span class="line"></span><br><span class="line">    // 查看Array长度</span><br><span class="line">    fmt.Println("Len: ", reflect.TypeOf(simpleIntArray).Len())</span><br><span class="line"></span><br><span class="line">    // 查看结构体field</span><br><span class="line">    fmt.Println("Field", varType.Field(1))</span><br><span class="line"></span><br><span class="line">    // 查看结构体field</span><br><span class="line">    fmt.Println("FieldByIndex", varType.FieldByIndex([]int{2, 0}))</span><br><span class="line"></span><br><span class="line">    // 查看结构提field</span><br><span class="line">    fi, success2 := varType.FieldByName("A")</span><br><span class="line">    if success2 {</span><br><span class="line">        fmt.Println("FieldByName", fi)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    // 查看结构体field</span><br><span class="line">    fi, success2 = varType.FieldByNameFunc(func(fieldName string) bool {</span><br><span class="line">        return fieldName == "A"</span><br><span class="line">    })</span><br><span class="line">    if success2 {</span><br><span class="line">        fmt.Println("FieldByName", fi)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    //  查看结构体数量</span><br><span class="line">    fmt.Println("NumField", varType.NumField())</span><br><span class="line"></span><br><span class="line">    // 查看map的key类型</span><br><span class="line">    fmt.Println("Key: ", reflect.TypeOf(simpleMap).Key().Name())</span><br><span class="line"></span><br><span class="line">    // 查看函数有多少个参数</span><br><span class="line">    fmt.Println("NumIn: ", reflect.TypeOf(pointer2obj.DoSomethingWithUnCertenArg).NumIn())</span><br><span class="line"></span><br><span class="line">    // 查看函数参数的类型</span><br><span class="line">    fmt.Println("In: ", reflect.TypeOf(pointer2obj.DoSomethingWithUnCertenArg).In(0))</span><br><span class="line"></span><br><span class="line">    // 查看最后一个参数，是否解构了</span><br><span class="line">    fmt.Println("IsVariadic: ", reflect.TypeOf(pointer2obj.DoSomethingWithUnCertenArg).IsVariadic())</span><br><span class="line"></span><br><span class="line">    // 查看函数有多少输出</span><br><span class="line">    fmt.Println("NumOut: ", reflect.TypeOf(pointer2obj.DoSomethingWithUnCertenArg).NumOut())</span><br><span class="line"></span><br><span class="line">    // 查看函数输出的类型</span><br><span class="line">    fmt.Println("Out: ", reflect.TypeOf(pointer2obj.returnOneResult).Out(0))</span><br><span class="line"></span><br><span class="line">    // 查看通道的方向, 3双向。</span><br><span class="line">    fmt.Println("ChanDir: ", int(reflect.TypeOf(simpleChan).ChanDir()))</span><br><span class="line"></span><br><span class="line">    // 查看该类型是否可以比较。不能比较的slice, map, func</span><br><span class="line">    fmt.Println("Comparable: ", varPointerType.Comparable())</span><br><span class="line"></span><br><span class="line">    // 查看类型是否可以转化成另外一种类型</span><br><span class="line">    fmt.Println("ConvertibleTo: ", varPointerType.ConvertibleTo(reflect.TypeOf("a")))</span><br><span class="line"></span><br><span class="line">    // 该类型的值是否可以另外一个类型</span><br><span class="line">    fmt.Println("AssignableTo: ", reflect.TypeOf(x).AssignableTo(reflect.TypeOf(y)))</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>Golang</category>
         <category>反射</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go语言中的json操作</title>
+    <url>/2020/11/14/Golang/IO/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84json%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h3 id="Json序列化与反序列化"><a href="#Json序列化与反序列化" class="headerlink" title="Json序列化与反序列化"></a>Json序列化与反序列化</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">import (</span><br><span class="line">	"encoding/json"</span><br><span class="line">	"fmt"</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// 反序列化</span><br><span class="line">type User struct {</span><br><span class="line">	UserName string `json:"username"`</span><br><span class="line">	Age      int    `json:"age"`</span><br><span class="line">	Sex      string `json:"sex"`</span><br><span class="line">	Phone    string `json:"phone"`</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 结构体转json</span><br><span class="line">func structForJson() (jsonStr string) {</span><br><span class="line">	u := &amp;User{</span><br><span class="line">		UserName: "root",</span><br><span class="line">		Age:      18,</span><br><span class="line">		Sex:      "男",</span><br><span class="line">		Phone:    "13160000001",</span><br><span class="line">	}</span><br><span class="line">	j, err := json.Marshal(u)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("struct for json err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	jsonStr = string(j)</span><br><span class="line">	return</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// json转结构体</span><br><span class="line">func jsonForStruct() {</span><br><span class="line">	var u User</span><br><span class="line">	jsonStr := structForJson()</span><br><span class="line">	err := json.Unmarshal([]byte(jsonStr), &amp;u)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("json for struct err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("struct is %v\n", u)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// map转json</span><br><span class="line">func mapForJson() (jsonStr string) {</span><br><span class="line">	var m map[string]interface{}</span><br><span class="line">	m = make(map[string]interface{})</span><br><span class="line">	m["username"] = "admin"</span><br><span class="line">	m["age"] = 19</span><br><span class="line">	m["sex"] = "男"</span><br><span class="line">	m["phone"] = "13770000000"</span><br><span class="line">	mj, err := json.Marshal(m)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("map for json err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	jsonStr = string(mj)</span><br><span class="line">	return</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// json转map</span><br><span class="line">func jsonForMap() {</span><br><span class="line">	var m map[string]interface{}</span><br><span class="line">	m = make(map[string]interface{})</span><br><span class="line">	jsonStr := mapForJson()</span><br><span class="line">	err := json.Unmarshal([]byte(jsonStr), &amp;m)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("json for map err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("map is %v\n", m)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// slice转json</span><br><span class="line">func sliceForJson() (jsonStr string) {</span><br><span class="line">	var l []*User</span><br><span class="line">	u1 := &amp;User{</span><br><span class="line">		UserName: "u1",</span><br><span class="line">		Age:      18,</span><br><span class="line">		Sex:      "男",</span><br><span class="line">		Phone:    "110",</span><br><span class="line">	}</span><br><span class="line">	u2 := &amp;User{</span><br><span class="line">		UserName: "u2",</span><br><span class="line">		Age:      28,</span><br><span class="line">		Sex:      "男",</span><br><span class="line">		Phone:    "120",</span><br><span class="line">	}</span><br><span class="line">	l = append(l, u1)</span><br><span class="line">	l = append(l, u2)</span><br><span class="line">	lj, err := json.Marshal(l)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("slice for json err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	jsonStr = string(lj)</span><br><span class="line">	return</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// json转slice</span><br><span class="line">func jsonForSlice() {</span><br><span class="line">	var l []User</span><br><span class="line">	var u1 User</span><br><span class="line">	var u2 User</span><br><span class="line">	l = append(l, u1)</span><br><span class="line">	l = append(l, u2)</span><br><span class="line">	jsonStr := sliceForJson()</span><br><span class="line">	err := json.Unmarshal([]byte(jsonStr), &amp;l)</span><br><span class="line">	if err != nil {</span><br><span class="line">		fmt.Printf("json for map err:%v\n", err)</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("map is %v\n", l)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	jsonForStruct()</span><br><span class="line">	jsonForMap()</span><br><span class="line">	jsonForSlice()</span><br><span class="line">}</span><br><span class="line">----------------------</span><br><span class="line">struct is {root 18 男 13160000001}</span><br><span class="line">map is map[age:19 phone:13770000000 sex:男 username:admin]</span><br><span class="line">map is [{u1 18 男 110} {u2 28 男 120}]</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>Golang</category>
+        <category>IO</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -234,25 +234,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Go语言中的数组与切片</title>
-    <url>/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/</url>
-    <content><![CDATA[<h3 id="数组与切片"><a href="#数组与切片" class="headerlink" title="数组与切片"></a>数组与切片</h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test1</span><span class="params">()</span></span> {</span><br><span class="line">	arr := [<span class="number">5</span>]<span class="keyword">int</span>{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}</span><br><span class="line">	<span class="comment">// 切片是对数组的引用 因此切片是引用类型</span></span><br><span class="line">	slices := arr[<span class="number">1</span>:<span class="number">3</span>] </span><br><span class="line">	fmt.Println(slices) <span class="comment">//[2 3]</span></span><br><span class="line">	<span class="comment">// 切片的长度是指切片中元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的长度:%d\n"</span>, <span class="built_in">len</span>(slices)) <span class="comment">//slice的长度:2</span></span><br><span class="line">	<span class="comment">// 切片的容量是指切片所指向的数组的元素到其最后一个元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的容量:%d\n"</span>, <span class="built_in">cap</span>(slices)) <span class="comment">//slice的容量:4</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> slices {</span><br><span class="line">		fmt.Println(v) <span class="comment">//2 、3</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的最大长度为其容量，修改切片的长度和容量一样，会显示出切片所指向数组的元素到其最后一个元素</span></span><br><span class="line">	slices = slices[:<span class="built_in">cap</span>(slices)]</span><br><span class="line">	fmt.Printf(<span class="string">"修改后:%v\n"</span>, slices) <span class="comment">// 修改后:[2 3 4 5]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的地址是其所指向数组的第一个值的地址</span></span><br><span class="line">	fmt.Printf(<span class="string">"slices的地址:%p,所指向数组值的地址:%p\n"</span>, slices, &amp;arr[<span class="number">1</span>])</span><br><span class="line">        <span class="comment">//slices的地址:0xc00008e038,所指向数组值的地址:0xc00008e038</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-<a id="more"></a>
-
-<h3 id="切片的内存布局"><a href="#切片的内存布局" class="headerlink" title="切片的内存布局"></a>切片的内存布局</h3><p><img src="http://files.codedog.link/blog/typecho/Go%E5%88%87%E7%89%87%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png" alt="切片的内存布局" title="Go切片的内存模型"></p>
-<h3 id="切片的追加与拷贝"><a href="#切片的追加与拷贝" class="headerlink" title="切片的追加与拷贝"></a>切片的追加与拷贝</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test2() {</span><br><span class="line">	fmt.Printf("\n------------切片的追加与拷贝------------------\n\n")</span><br><span class="line">	slice1 := make([]int, 5, 10)</span><br><span class="line">	slice2 := []int{1, 2, 3, 4, 5}</span><br><span class="line">	fmt.Printf("slice1:%v,slice2:%v\n", slice1, slice2)</span><br><span class="line">	// 切片的追加</span><br><span class="line">	slice1 = append(slice1, slice2...)</span><br><span class="line">	fmt.Printf("slice1 append slice2:%v\n", slice1)</span><br><span class="line">	slice3 := make([]int, 10, 10)</span><br><span class="line">	// 切片的拷贝</span><br><span class="line">	copy(slice3, slice1)</span><br><span class="line">	fmt.Printf("slice3 copy slice1:%v", slice3)</span><br><span class="line">}</span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line">---------------------------------------------</span><br><span class="line"></span><br><span class="line">slice1:[0 0 0 0 0],slice2:[1 2 3 4 5]</span><br><span class="line">slice1 append slice2:[0 0 0 0 0 1 2 3 4 5]</span><br><span class="line">slice3 copy slice1:[0 0 0 0 0 1 2 3 4 5]</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="string与slice"><a href="#string与slice" class="headerlink" title="string与slice"></a>string与slice</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test3() {</span><br><span class="line">	fmt.Printf("\n------------string与slice------------------\n\n")</span><br><span class="line">	// string的底层是一个byte的数组,因此也可以进行切片操作</span><br><span class="line">	str := "hello world"</span><br><span class="line">	slice1 := str[:]</span><br><span class="line">	fmt.Printf("slice:%v,len:%d\n", slice1, len(slice1))</span><br><span class="line">	// string本身是不可变的，因此，需要改变string中的字符，需要如下操作:</span><br><span class="line">	// slice1[0] = 'c'  错误的操作</span><br><span class="line">	str1 := []byte(str) //这里[]byte()是字节数组,如果操作中文,建议使用字符数组[]rune()</span><br><span class="line">	str1[0] = 'H'</span><br><span class="line">	str = string(str1)</span><br><span class="line">	fmt.Println(str)</span><br><span class="line"></span><br><span class="line">	str2 := "你好，世界"</span><br><span class="line">	str3 := []rune(str2)</span><br><span class="line">	str3[0] = '您'</span><br><span class="line">	str2 = string(str3)</span><br><span class="line">	fmt.Printf("处理中文:%v", str2)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test3()</span><br><span class="line">}</span><br><span class="line">-----------------</span><br><span class="line">slice:hello world,len:11</span><br><span class="line">Hello world</span><br><span class="line">处理中文:您好，世界</span><br></pre></td></tr></tbody></table></figure>
-<p><img src="http://files.codedog.link/blog/typecho/string%E7%9A%84%E5%BA%95%E5%B1%82%E5%B8%83%E5%B1%80.png-suofang" alt="Go中string的底层布局" title="Go中string的底层布局"></p>
-<h3 id="数组的排序与二分查找"><a href="#数组的排序与二分查找" class="headerlink" title="数组的排序与二分查找"></a>数组的排序与二分查找</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test4() {</span><br><span class="line">	fmt.Printf("\n------------数组排序------------------\n\n")</span><br><span class="line">	arr := [5]int{3, 2, 1, 5, 4}</span><br><span class="line">	//数组是值类型的传递 当作参数传递时,传递的是副本 因此sort不能直接对数组进行排序,需要传入数组的slice进行排序</span><br><span class="line">	sort.Ints(arr[:])</span><br><span class="line">	fmt.Printf("排序后：%v\n", arr)</span><br><span class="line">	strarr := [5]string{"A", "a", "C", "eafa", "aEf"}</span><br><span class="line">	sort.Strings(strarr[:])</span><br><span class="line">	fmt.Printf("排序后：%v\n", strarr)</span><br><span class="line">	fmt.Printf("\n------------数组查找------------------\n\n")</span><br><span class="line">	// sort.search返回的是排序后的元素位置</span><br><span class="line">	i := sort.SearchInts(arr[:], 5)</span><br><span class="line">	fmt.Printf("数字5在数组arr中的位置下标为:%v\n", i)</span><br><span class="line">	i1 := sort.SearchStrings(strarr[:], "a")</span><br><span class="line">	fmt.Printf("字母A在数组strarr中的位置下标为:%v\n", i1)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test4()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">------------数组排序------------------</span><br><span class="line"></span><br><span class="line">排序后：[1 2 3 4 5]</span><br><span class="line">排序后：[A C a aEf eafa]</span><br><span class="line"></span><br><span class="line">------------数组查找------------------</span><br><span class="line"></span><br><span class="line">数字5在数组arr中的位置下标为:4</span><br><span class="line">字母A在数组strarr中的位置下标为:2</span><br></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>Golang</category>
-        <category>基础</category>
-      </categories>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Go语言中的数组</title>
     <url>/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<h3 id="数组的定义与初始化"><a href="#数组的定义与初始化" class="headerlink" title="数组的定义与初始化"></a>数组的定义与初始化</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func arrs1() {</span><br><span class="line">	// 数组的定义与初始化</span><br><span class="line">	var arr [5]int</span><br><span class="line"></span><br><span class="line">	var arr1 [5]int = [5]int{1, 2, 3, 4, 5}</span><br><span class="line"></span><br><span class="line">	var arr2 = [5]int{1, 2, 3, 4, 5}</span><br><span class="line"></span><br><span class="line">	var arr3 = [...]int{1, 2, 3, 4, 5}</span><br><span class="line"></span><br><span class="line">	var arr4 = [...]int{0: 1, 4: 3}</span><br><span class="line"></span><br><span class="line">	arr5 := make([]int, 5)</span><br><span class="line"></span><br><span class="line">	fmt.Println(arr)</span><br><span class="line">	fmt.Println(arr1)</span><br><span class="line">	fmt.Println(arr2)</span><br><span class="line">	fmt.Println(arr3)</span><br><span class="line">	fmt.Println(arr4)</span><br><span class="line">	fmt.Println(arr5)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	arrs1()</span><br><span class="line">}</span><br><span class="line">----------------------</span><br><span class="line">[0 0 0 0 0]</span><br><span class="line">[1 2 3 4 5]</span><br><span class="line">[1 2 3 4 5]</span><br><span class="line">[1 2 3 4 5]</span><br><span class="line">[1 0 0 0 3]</span><br><span class="line">[0 0 0 0 0]</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
@@ -266,6 +247,25 @@
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func arrs3() {</span><br><span class="line"></span><br><span class="line">	arr := [3]int{1, 2, 3}</span><br><span class="line"></span><br><span class="line">	arr1 := arr</span><br><span class="line">	// 数组是值类型  改变副本的值并不会改变本身的值</span><br><span class="line">	arr1[2] = 5</span><br><span class="line">	fmt.Printf("arr:%v\n", arr)</span><br><span class="line">	fmt.Printf("arr1:%v\n", arr1)</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	arrs2()</span><br><span class="line">}</span><br><span class="line">--------------------</span><br><span class="line">arr:[1 2 3]</span><br><span class="line">arr1:[1 2 5]</span><br></pre></td></tr></tbody></table></figure>
 <h3 id="使用数组实现斐波那契数列"><a href="#使用数组实现斐波那契数列" class="headerlink" title="使用数组实现斐波那契数列"></a>使用数组实现斐波那契数列</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func fab() {</span><br><span class="line">	// 使用数组的方式打印斐波那契数列</span><br><span class="line">	arr := make([]int, 10)</span><br><span class="line"></span><br><span class="line">	arr[0] = 1</span><br><span class="line">	arr[1] = 1</span><br><span class="line">	for i := 2; i &lt; 10; i++ {</span><br><span class="line">		arr[i] = arr[i-1] + arr[i-2]</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("斐波那契数列:%v\n", arr)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	fab()</span><br><span class="line">}</span><br><span class="line">--------------------</span><br><span class="line">斐波那契数列:[1 1 2 3 5 8 13 21 34 55]</span><br></pre></td></tr></tbody></table></figure>
 <h3 id="遍历二维数组"><a href="#遍历二维数组" class="headerlink" title="遍历二维数组"></a>遍历二维数组</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func arrs4() {</span><br><span class="line">	// 多维数组</span><br><span class="line">	arr := [2][3]int{{1, 2, 3}, {4, 5, 6}}</span><br><span class="line"></span><br><span class="line">	for i, v := range arr {</span><br><span class="line">		for _, v1 := range v {</span><br><span class="line">			fmt.Printf("第[%d]行:%d ", i, v1)</span><br><span class="line">		}</span><br><span class="line">		fmt.Println()</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	fab()</span><br><span class="line">}</span><br><span class="line">--------------------</span><br><span class="line">第[0]行:1 第[0]行:2 第[0]行:3</span><br><span class="line">第[1]行:4 第[1]行:5 第[1]行:6</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>Golang</category>
+        <category>基础</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go语言中的数组与切片</title>
+    <url>/2020/11/14/Golang/%E5%9F%BA%E7%A1%80/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%8E%E5%88%87%E7%89%87/</url>
+    <content><![CDATA[<h3 id="数组与切片"><a href="#数组与切片" class="headerlink" title="数组与切片"></a>数组与切片</h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test1</span><span class="params">()</span></span> {</span><br><span class="line">	arr := [<span class="number">5</span>]<span class="keyword">int</span>{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}</span><br><span class="line">	<span class="comment">// 切片是对数组的引用 因此切片是引用类型</span></span><br><span class="line">	slices := arr[<span class="number">1</span>:<span class="number">3</span>] </span><br><span class="line">	fmt.Println(slices) <span class="comment">//[2 3]</span></span><br><span class="line">	<span class="comment">// 切片的长度是指切片中元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的长度:%d\n"</span>, <span class="built_in">len</span>(slices)) <span class="comment">//slice的长度:2</span></span><br><span class="line">	<span class="comment">// 切片的容量是指切片所指向的数组的元素到其最后一个元素的个数</span></span><br><span class="line">	fmt.Printf(<span class="string">"slice的容量:%d\n"</span>, <span class="built_in">cap</span>(slices)) <span class="comment">//slice的容量:4</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> slices {</span><br><span class="line">		fmt.Println(v) <span class="comment">//2 、3</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的最大长度为其容量，修改切片的长度和容量一样，会显示出切片所指向数组的元素到其最后一个元素</span></span><br><span class="line">	slices = slices[:<span class="built_in">cap</span>(slices)]</span><br><span class="line">	fmt.Printf(<span class="string">"修改后:%v\n"</span>, slices) <span class="comment">// 修改后:[2 3 4 5]</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 切片的地址是其所指向数组的第一个值的地址</span></span><br><span class="line">	fmt.Printf(<span class="string">"slices的地址:%p,所指向数组值的地址:%p\n"</span>, slices, &amp;arr[<span class="number">1</span>])</span><br><span class="line">        <span class="comment">//slices的地址:0xc00008e038,所指向数组值的地址:0xc00008e038</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<a id="more"></a>
+
+<h3 id="切片的内存布局"><a href="#切片的内存布局" class="headerlink" title="切片的内存布局"></a>切片的内存布局</h3><p><img src="http://files.codedog.link/blog/typecho/Go%E5%88%87%E7%89%87%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.png" alt="切片的内存布局" title="Go切片的内存模型"></p>
+<h3 id="切片的追加与拷贝"><a href="#切片的追加与拷贝" class="headerlink" title="切片的追加与拷贝"></a>切片的追加与拷贝</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test2() {</span><br><span class="line">	fmt.Printf("\n------------切片的追加与拷贝------------------\n\n")</span><br><span class="line">	slice1 := make([]int, 5, 10)</span><br><span class="line">	slice2 := []int{1, 2, 3, 4, 5}</span><br><span class="line">	fmt.Printf("slice1:%v,slice2:%v\n", slice1, slice2)</span><br><span class="line">	// 切片的追加</span><br><span class="line">	slice1 = append(slice1, slice2...)</span><br><span class="line">	fmt.Printf("slice1 append slice2:%v\n", slice1)</span><br><span class="line">	slice3 := make([]int, 10, 10)</span><br><span class="line">	// 切片的拷贝</span><br><span class="line">	copy(slice3, slice1)</span><br><span class="line">	fmt.Printf("slice3 copy slice1:%v", slice3)</span><br><span class="line">}</span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line">---------------------------------------------</span><br><span class="line"></span><br><span class="line">slice1:[0 0 0 0 0],slice2:[1 2 3 4 5]</span><br><span class="line">slice1 append slice2:[0 0 0 0 0 1 2 3 4 5]</span><br><span class="line">slice3 copy slice1:[0 0 0 0 0 1 2 3 4 5]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="string与slice"><a href="#string与slice" class="headerlink" title="string与slice"></a>string与slice</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test3() {</span><br><span class="line">	fmt.Printf("\n------------string与slice------------------\n\n")</span><br><span class="line">	// string的底层是一个byte的数组,因此也可以进行切片操作</span><br><span class="line">	str := "hello world"</span><br><span class="line">	slice1 := str[:]</span><br><span class="line">	fmt.Printf("slice:%v,len:%d\n", slice1, len(slice1))</span><br><span class="line">	// string本身是不可变的，因此，需要改变string中的字符，需要如下操作:</span><br><span class="line">	// slice1[0] = 'c'  错误的操作</span><br><span class="line">	str1 := []byte(str) //这里[]byte()是字节数组,如果操作中文,建议使用字符数组[]rune()</span><br><span class="line">	str1[0] = 'H'</span><br><span class="line">	str = string(str1)</span><br><span class="line">	fmt.Println(str)</span><br><span class="line"></span><br><span class="line">	str2 := "你好，世界"</span><br><span class="line">	str3 := []rune(str2)</span><br><span class="line">	str3[0] = '您'</span><br><span class="line">	str2 = string(str3)</span><br><span class="line">	fmt.Printf("处理中文:%v", str2)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test3()</span><br><span class="line">}</span><br><span class="line">-----------------</span><br><span class="line">slice:hello world,len:11</span><br><span class="line">Hello world</span><br><span class="line">处理中文:您好，世界</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="http://files.codedog.link/blog/typecho/string%E7%9A%84%E5%BA%95%E5%B1%82%E5%B8%83%E5%B1%80.png-suofang" alt="Go中string的底层布局" title="Go中string的底层布局"></p>
+<h3 id="数组的排序与二分查找"><a href="#数组的排序与二分查找" class="headerlink" title="数组的排序与二分查找"></a>数组的排序与二分查找</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test4() {</span><br><span class="line">	fmt.Printf("\n------------数组排序------------------\n\n")</span><br><span class="line">	arr := [5]int{3, 2, 1, 5, 4}</span><br><span class="line">	//数组是值类型的传递 当作参数传递时,传递的是副本 因此sort不能直接对数组进行排序,需要传入数组的slice进行排序</span><br><span class="line">	sort.Ints(arr[:])</span><br><span class="line">	fmt.Printf("排序后：%v\n", arr)</span><br><span class="line">	strarr := [5]string{"A", "a", "C", "eafa", "aEf"}</span><br><span class="line">	sort.Strings(strarr[:])</span><br><span class="line">	fmt.Printf("排序后：%v\n", strarr)</span><br><span class="line">	fmt.Printf("\n------------数组查找------------------\n\n")</span><br><span class="line">	// sort.search返回的是排序后的元素位置</span><br><span class="line">	i := sort.SearchInts(arr[:], 5)</span><br><span class="line">	fmt.Printf("数字5在数组arr中的位置下标为:%v\n", i)</span><br><span class="line">	i1 := sort.SearchStrings(strarr[:], "a")</span><br><span class="line">	fmt.Printf("字母A在数组strarr中的位置下标为:%v\n", i1)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test4()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">------------数组排序------------------</span><br><span class="line"></span><br><span class="line">排序后：[1 2 3 4 5]</span><br><span class="line">排序后：[A C a aEf eafa]</span><br><span class="line"></span><br><span class="line">------------数组查找------------------</span><br><span class="line"></span><br><span class="line">数字5在数组arr中的位置下标为:4</span><br><span class="line">字母A在数组strarr中的位置下标为:2</span><br></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>Golang</category>
         <category>基础</category>
@@ -336,6 +336,20 @@
       </tags>
   </entry>
   <entry>
+    <title>Go语言中的定时器</title>
+    <url>/2020/11/14/Golang/%E5%B9%B6%E5%8F%91/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8/</url>
+    <content><![CDATA[<h3 id="定时器的创建和初始化"><a href="#定时器的创建和初始化" class="headerlink" title="定时器的创建和初始化:"></a>定时器的创建和初始化:</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">// 定时器</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	t := time.NewTicker(time.Second)</span><br><span class="line">	for v := range t.C {</span><br><span class="line">		fmt.Println(v)</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="一次性定时器-time-After-和-time-NewTicker-的区别-："><a href="#一次性定时器-time-After-和-time-NewTicker-的区别-：" class="headerlink" title="一次性定时器(time.After() 和 time.NewTicker()的区别)："></a>一次性定时器(time.After() 和 time.NewTicker()的区别)：</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">// 一次性定时器</span><br><span class="line">func test1() {</span><br><span class="line">	var ch chan int</span><br><span class="line">	var ch1 chan int</span><br><span class="line">	ch = make(chan int, 10)</span><br><span class="line">	ch1 = make(chan int, 10)</span><br><span class="line">	go func() {</span><br><span class="line">		for i := 0; i &lt; 10; i++ {</span><br><span class="line">			ch &lt;- i</span><br><span class="line">			ch1 &lt;- i * i</span><br><span class="line">			time.Sleep(time.Second)</span><br><span class="line">		}</span><br><span class="line">	}()</span><br><span class="line"></span><br><span class="line">	for {</span><br><span class="line">		select {</span><br><span class="line">		case v := &lt;-ch:</span><br><span class="line">			fmt.Printf("ch:%d\n", v)</span><br><span class="line">		case v := &lt;-ch1:</span><br><span class="line">			fmt.Printf("ch1:%d\n", v)</span><br><span class="line">			// 设置超时时间为1秒 不建议使用After 容易造成内存泄漏</span><br><span class="line">		case t := &lt;-time.After(time.Second):</span><br><span class="line">			fmt.Println("get data time out:", t)</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	var ch chan int</span><br><span class="line">	var ch1 chan int</span><br><span class="line">	ch = make(chan int, 10)</span><br><span class="line">	ch1 = make(chan int, 10)</span><br><span class="line">	go func() {</span><br><span class="line">		for i := 0; i &lt; 10; i++ {</span><br><span class="line">			ch &lt;- i</span><br><span class="line">			ch1 &lt;- i * i</span><br><span class="line">			time.Sleep(time.Second)</span><br><span class="line">		}</span><br><span class="line">	}()</span><br><span class="line"></span><br><span class="line">	for {</span><br><span class="line">		t := time.NewTicker(time.Second)</span><br><span class="line">		select {</span><br><span class="line">		case v := &lt;-ch:</span><br><span class="line">			fmt.Printf("ch:%d\n", v)</span><br><span class="line">		case v := &lt;-ch1:</span><br><span class="line">			fmt.Printf("ch1:%d\n", v)</span><br><span class="line">			// 设置超时时间为1秒 推荐使用</span><br><span class="line">		case t := &lt;-t.C:</span><br><span class="line">			fmt.Println("get data time out:", t)</span><br><span class="line">		}</span><br><span class="line">		// 使用完手动关闭</span><br><span class="line">		t.Stop()</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>Golang</category>
+        <category>并发</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Go语言中的线程同步-锁机制</title>
     <url>/2020/11/14/Golang/%E5%B9%B6%E5%8F%91/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5-%E9%94%81%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<h3 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h3><blockquote>
@@ -349,20 +363,6 @@
 </blockquote>
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">var rwlock sync.RWMutex</span><br><span class="line"></span><br><span class="line">func read(i int) {</span><br><span class="line">	fmt.Println(i, "read start")</span><br><span class="line">	rwlock.RLock()</span><br><span class="line">	start := 0</span><br><span class="line">	pr := "read"</span><br><span class="line"></span><br><span class="line">	for {</span><br><span class="line">		if start &gt; 10 {</span><br><span class="line">			break</span><br><span class="line">		}</span><br><span class="line">		time.Sleep(time.Millisecond)</span><br><span class="line">		pr += "."</span><br><span class="line">		fmt.Println(i, pr)</span><br><span class="line">		start++</span><br><span class="line">	}</span><br><span class="line">	rwlock.RUnlock()</span><br><span class="line">	fmt.Println(i, "read end")</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func write(i int) {</span><br><span class="line">	fmt.Println(i, "write start")</span><br><span class="line">	rwlock.Lock()</span><br><span class="line">	start := 0</span><br><span class="line">	pr := "write"</span><br><span class="line"></span><br><span class="line">	for {</span><br><span class="line">		if start &gt; 10 {</span><br><span class="line">			break</span><br><span class="line">		}</span><br><span class="line">		time.Sleep(time.Millisecond)</span><br><span class="line">		pr += "."</span><br><span class="line">		fmt.Println(i, pr)</span><br><span class="line">		start++</span><br><span class="line">	}</span><br><span class="line">	rwlock.Unlock()</span><br><span class="line">	fmt.Println(i, "write end")</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	// 读写锁,适合用在读多写少的情况下</span><br><span class="line">	// 进行读操作的时候无需等待读锁的结束</span><br><span class="line">	go read(1)</span><br><span class="line">	go write(1)</span><br><span class="line">	go read(2)</span><br><span class="line">	go write(2)</span><br><span class="line">	time.Sleep(time.Second * 5)</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line">--------------------------</span><br><span class="line">1 read start</span><br><span class="line">2 read start</span><br><span class="line">1 write start</span><br><span class="line">2 write start</span><br><span class="line">1 read.</span><br><span class="line">2 read.</span><br><span class="line">1 read..</span><br><span class="line">2 read..</span><br><span class="line">1 read...</span><br><span class="line">1 read....</span><br><span class="line">2 read...</span><br><span class="line">2 read....</span><br><span class="line">1 read.....</span><br><span class="line">2 read.....</span><br><span class="line">1 read......</span><br><span class="line">1 read.......</span><br><span class="line">2 read......</span><br><span class="line">1 read........</span><br><span class="line">2 read.......</span><br><span class="line">1 read.........</span><br><span class="line">2 read........</span><br><span class="line">2 read.........</span><br><span class="line">1 read..........</span><br><span class="line">2 read..........</span><br><span class="line">1 read...........</span><br><span class="line">1 read end</span><br><span class="line">2 read...........</span><br><span class="line">2 read end</span><br><span class="line">1 write.</span><br><span class="line">1 write..</span><br><span class="line">1 write...</span><br><span class="line">1 write....</span><br><span class="line">1 write.....</span><br><span class="line">1 write......</span><br><span class="line">1 write.......</span><br><span class="line">1 write........</span><br><span class="line">1 write.........</span><br><span class="line">1 write..........</span><br><span class="line">1 write...........</span><br><span class="line">1 write end</span><br><span class="line">2 write.</span><br><span class="line">2 write..</span><br><span class="line">2 write...</span><br><span class="line">2 write....</span><br><span class="line">2 write.....</span><br><span class="line">2 write......</span><br><span class="line">2 write.......</span><br><span class="line">2 write........</span><br><span class="line">2 write.........</span><br><span class="line">2 write..........</span><br><span class="line">2 write...........</span><br><span class="line">2 write end</span><br></pre></td></tr></tbody></table></figure>
 ]]></content>
-      <categories>
-        <category>Golang</category>
-        <category>并发</category>
-      </categories>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Go语言中的定时器</title>
-    <url>/2020/11/14/Golang/%E5%B9%B6%E5%8F%91/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8/</url>
-    <content><![CDATA[<h3 id="定时器的创建和初始化"><a href="#定时器的创建和初始化" class="headerlink" title="定时器的创建和初始化:"></a>定时器的创建和初始化:</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">// 定时器</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	t := time.NewTicker(time.Second)</span><br><span class="line">	for v := range t.C {</span><br><span class="line">		fmt.Println(v)</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="一次性定时器-time-After-和-time-NewTicker-的区别-："><a href="#一次性定时器-time-After-和-time-NewTicker-的区别-：" class="headerlink" title="一次性定时器(time.After() 和 time.NewTicker()的区别)："></a>一次性定时器(time.After() 和 time.NewTicker()的区别)：</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">// 一次性定时器</span><br><span class="line">func test1() {</span><br><span class="line">	var ch chan int</span><br><span class="line">	var ch1 chan int</span><br><span class="line">	ch = make(chan int, 10)</span><br><span class="line">	ch1 = make(chan int, 10)</span><br><span class="line">	go func() {</span><br><span class="line">		for i := 0; i &lt; 10; i++ {</span><br><span class="line">			ch &lt;- i</span><br><span class="line">			ch1 &lt;- i * i</span><br><span class="line">			time.Sleep(time.Second)</span><br><span class="line">		}</span><br><span class="line">	}()</span><br><span class="line"></span><br><span class="line">	for {</span><br><span class="line">		select {</span><br><span class="line">		case v := &lt;-ch:</span><br><span class="line">			fmt.Printf("ch:%d\n", v)</span><br><span class="line">		case v := &lt;-ch1:</span><br><span class="line">			fmt.Printf("ch1:%d\n", v)</span><br><span class="line">			// 设置超时时间为1秒 不建议使用After 容易造成内存泄漏</span><br><span class="line">		case t := &lt;-time.After(time.Second):</span><br><span class="line">			fmt.Println("get data time out:", t)</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	var ch chan int</span><br><span class="line">	var ch1 chan int</span><br><span class="line">	ch = make(chan int, 10)</span><br><span class="line">	ch1 = make(chan int, 10)</span><br><span class="line">	go func() {</span><br><span class="line">		for i := 0; i &lt; 10; i++ {</span><br><span class="line">			ch &lt;- i</span><br><span class="line">			ch1 &lt;- i * i</span><br><span class="line">			time.Sleep(time.Second)</span><br><span class="line">		}</span><br><span class="line">	}()</span><br><span class="line"></span><br><span class="line">	for {</span><br><span class="line">		t := time.NewTicker(time.Second)</span><br><span class="line">		select {</span><br><span class="line">		case v := &lt;-ch:</span><br><span class="line">			fmt.Printf("ch:%d\n", v)</span><br><span class="line">		case v := &lt;-ch1:</span><br><span class="line">			fmt.Printf("ch1:%d\n", v)</span><br><span class="line">			// 设置超时时间为1秒 推荐使用</span><br><span class="line">		case t := &lt;-t.C:</span><br><span class="line">			fmt.Println("get data time out:", t)</span><br><span class="line">		}</span><br><span class="line">		// 使用完手动关闭</span><br><span class="line">		t.Stop()</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>Golang</category>
         <category>并发</category>
@@ -399,21 +399,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Go语言中的类型断言</title>
-    <url>/2020/11/14/Golang/%E6%8E%A5%E5%8F%A3/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/</url>
-    <content><![CDATA[<h3 id="类型断言"><a href="#类型断言" class="headerlink" title="类型断言"></a>类型断言</h3><blockquote>
-<p>类型断言，由于接口是一般类型，不知道具体类型，如果要转成具体类型<br>可以采用以下方法进行转换：</p>
-</blockquote>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test1() {</span><br><span class="line">	var a interface{}</span><br><span class="line">	var b int = 10</span><br><span class="line">	a = b</span><br><span class="line">	fmt.Printf("a type is %T value is %d\n", a, a)</span><br><span class="line">	// 断言</span><br><span class="line">	c, ok := a.(int)</span><br><span class="line">	if ok == false {</span><br><span class="line">		fmt.Println("conversion fail")</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("c type is %T value is %d\n", c, c)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line">------------</span><br><span class="line">a type is int value is 10</span><br><span class="line">c type is int value is 10</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">type Student struct{}</span><br><span class="line"></span><br><span class="line">func assertion(item ...interface{}) {</span><br><span class="line">	for i, v := range item {</span><br><span class="line">		switch v.(type) {</span><br><span class="line">		case bool:</span><br><span class="line">			fmt.Printf("%d param is bool value is %v\n", i, v)</span><br><span class="line">		case string:</span><br><span class="line">			fmt.Printf("%d param is string value is %v\n", i, v)</span><br><span class="line">		case float32, float64:</span><br><span class="line">			fmt.Printf("%d param is float value is %v\n", i, v)</span><br><span class="line">		case int, int32, int64:</span><br><span class="line">			fmt.Printf("%d param is int value is %v\n", i, v)</span><br><span class="line">		case Student:</span><br><span class="line">			fmt.Printf("%d param is Student value is %v\n", i, v)</span><br><span class="line">		case *Student:</span><br><span class="line">			fmt.Printf("%d param is Student Pointer value is %v\n", i, v)</span><br><span class="line">		default:</span><br><span class="line">			fmt.Printf("%d param type is unknown value is %v\n", i, v)</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	var stu Student</span><br><span class="line">	assertion(true, stu, 1, 1.2, "test", &amp;Student{})</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line">--------------</span><br><span class="line">0 param is bool value is true</span><br><span class="line">1 param is Student value is {}</span><br><span class="line">2 param is int value is 1</span><br><span class="line">3 param is float value is 1.2</span><br><span class="line">4 param is string value is test</span><br><span class="line">5 param is Student Pointer value is &amp;{}</span><br></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>Golang</category>
-        <category>接口</category>
-      </categories>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Go语言中的接口</title>
     <url>/2020/11/14/Golang/%E6%8E%A5%E5%8F%A3/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E6%8E%A5%E5%8F%A3/</url>
     <content><![CDATA[<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><blockquote>
@@ -432,6 +417,21 @@
 <p>一种事物的多种形态，都可以按照统一的接口进行操作</p>
 </blockquote>
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">type Persons interface {</span><br><span class="line">	eat()</span><br><span class="line">	sleep()</span><br><span class="line">	run()</span><br><span class="line">}</span><br><span class="line">type Students interface {</span><br><span class="line">	Persons</span><br><span class="line">	learn()</span><br><span class="line">	exam()</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">type Person struct {</span><br><span class="line">	Name string</span><br><span class="line">	Age  int</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">type Student struct {</span><br><span class="line">	Name string</span><br><span class="line">	Age  int</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (s Student) eat() {</span><br><span class="line">	fmt.Printf("%s 吃饭!\n", s.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (s Student) sleep() {</span><br><span class="line">	fmt.Printf("%s 睡觉!\n", s.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (s Student) run() {</span><br><span class="line">	fmt.Printf("%s 运动!\n", s.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (s Student) learn() {</span><br><span class="line">	fmt.Printf("%s 学习!\n", s.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (s Student) exam() {</span><br><span class="line">	fmt.Printf("%s 考试!\n", s.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (p Person) eat() {</span><br><span class="line">	fmt.Printf("%s 吃饭!\n", p.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (p Person) sleep() {</span><br><span class="line">	fmt.Printf("%s 睡觉!\n", p.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (p Person) run() {</span><br><span class="line">	fmt.Printf("%s 运动!\n", p.Name)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	var ps Persons</span><br><span class="line">	var s Student = Student{</span><br><span class="line">		Name: "张三",</span><br><span class="line">		Age:  18,</span><br><span class="line">	}</span><br><span class="line">	var p Person = Person{</span><br><span class="line">		Name: "李四",</span><br><span class="line">		Age:  18,</span><br><span class="line">	}</span><br><span class="line">	// 这里接口Persons可以是Person  也可以是Student </span><br><span class="line">	ps = s</span><br><span class="line">	ps.eat()</span><br><span class="line">	ps.run()</span><br><span class="line">	ps.sleep()</span><br><span class="line"></span><br><span class="line">	ps = p</span><br><span class="line">	ps.eat()</span><br><span class="line">	ps.run()</span><br><span class="line">	ps.sleep()</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line">--------------------</span><br><span class="line">张三 吃饭!</span><br><span class="line">张三 运动!</span><br><span class="line">张三 睡觉!</span><br><span class="line">李四 吃饭!</span><br><span class="line">李四 运动!</span><br><span class="line">李四 睡觉!</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>Golang</category>
+        <category>接口</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go语言中的类型断言</title>
+    <url>/2020/11/14/Golang/%E6%8E%A5%E5%8F%A3/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/</url>
+    <content><![CDATA[<h3 id="类型断言"><a href="#类型断言" class="headerlink" title="类型断言"></a>类型断言</h3><blockquote>
+<p>类型断言，由于接口是一般类型，不知道具体类型，如果要转成具体类型<br>可以采用以下方法进行转换：</p>
+</blockquote>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">func test1() {</span><br><span class="line">	var a interface{}</span><br><span class="line">	var b int = 10</span><br><span class="line">	a = b</span><br><span class="line">	fmt.Printf("a type is %T value is %d\n", a, a)</span><br><span class="line">	// 断言</span><br><span class="line">	c, ok := a.(int)</span><br><span class="line">	if ok == false {</span><br><span class="line">		fmt.Println("conversion fail")</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	fmt.Printf("c type is %T value is %d\n", c, c)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test1()</span><br><span class="line">}</span><br><span class="line">------------</span><br><span class="line">a type is int value is 10</span><br><span class="line">c type is int value is 10</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">type Student struct{}</span><br><span class="line"></span><br><span class="line">func assertion(item ...interface{}) {</span><br><span class="line">	for i, v := range item {</span><br><span class="line">		switch v.(type) {</span><br><span class="line">		case bool:</span><br><span class="line">			fmt.Printf("%d param is bool value is %v\n", i, v)</span><br><span class="line">		case string:</span><br><span class="line">			fmt.Printf("%d param is string value is %v\n", i, v)</span><br><span class="line">		case float32, float64:</span><br><span class="line">			fmt.Printf("%d param is float value is %v\n", i, v)</span><br><span class="line">		case int, int32, int64:</span><br><span class="line">			fmt.Printf("%d param is int value is %v\n", i, v)</span><br><span class="line">		case Student:</span><br><span class="line">			fmt.Printf("%d param is Student value is %v\n", i, v)</span><br><span class="line">		case *Student:</span><br><span class="line">			fmt.Printf("%d param is Student Pointer value is %v\n", i, v)</span><br><span class="line">		default:</span><br><span class="line">			fmt.Printf("%d param type is unknown value is %v\n", i, v)</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	var stu Student</span><br><span class="line">	assertion(true, stu, 1, 1.2, "test", &amp;Student{})</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test2()</span><br><span class="line">}</span><br><span class="line">--------------</span><br><span class="line">0 param is bool value is true</span><br><span class="line">1 param is Student value is {}</span><br><span class="line">2 param is int value is 1</span><br><span class="line">3 param is float value is 1.2</span><br><span class="line">4 param is string value is test</span><br><span class="line">5 param is Student Pointer value is &amp;{}</span><br></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>Golang</category>
         <category>接口</category>
@@ -535,6 +535,34 @@
       </tags>
   </entry>
   <entry>
+    <title>Go实现一个简单的二叉树</title>
+    <url>/2020/11/14/Golang/%E7%BB%93%E6%9E%84%E4%BD%93/Go%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">type Node struct {</span><br><span class="line">	Value       int</span><br><span class="line">	Left, Right *Node</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func createNode(value int) *Node {</span><br><span class="line">	return &amp;Node{</span><br><span class="line">		Value: value,</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func traversing(root *Node) {</span><br><span class="line"></span><br><span class="line">	if root == nil {</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	// 中序遍历</span><br><span class="line">	traversing(root.Left)</span><br><span class="line">	fmt.Printf("%d\n", root.Value)</span><br><span class="line">	traversing(root.Right)</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	var root *Node = createNode(3)</span><br><span class="line">	root.Left = createNode(1)</span><br><span class="line">	root.Right = createNode(5)</span><br><span class="line">	root.Left.Left = createNode(0)</span><br><span class="line">	root.Left.Right = createNode(2)</span><br><span class="line">	root.Right.Left = createNode(4)</span><br><span class="line">	root.Right.Right = createNode(6)</span><br><span class="line"></span><br><span class="line">	traversing(root)</span><br><span class="line">}</span><br><span class="line">------------------</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>上述代码在创建并初始化的二叉树结构如下图<br><img src="http://files.codedog.link/blog/typecho/%E4%BA%8C%E5%8F%89%E6%A0%91.png-suofang" alt="Go语言创建一个简单的二叉树" title="二叉树"></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Golang</category>
+        <category>结构体</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go实现一个简单的单向链表</title>
+    <url>/2020/11/14/Golang/%E7%BB%93%E6%9E%84%E4%BD%93/Go%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8/</url>
+    <content><![CDATA[<h3 id="单向链表的遍历、新增、删除操作"><a href="#单向链表的遍历、新增、删除操作" class="headerlink" title="单向链表的遍历、新增、删除操作"></a>单向链表的遍历、新增、删除操作</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">type linkedlist struct {</span><br><span class="line">	value string</span><br><span class="line">	next  *linkedlist</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 遍历链表</span><br><span class="line">func traversing(link *linkedlist) {</span><br><span class="line">	fmt.Printf("%s\n", (*link).value)</span><br><span class="line">	if link.next != nil {</span><br><span class="line">		traversing(link.next)</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 在链表最后插入一个元素</span><br><span class="line">func insertLink(root, target *linkedlist) *linkedlist {</span><br><span class="line">	if root.next != nil {</span><br><span class="line">		insertLink(root.next, target)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	if root.next == nil {</span><br><span class="line">		root.next = target</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	return root</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 删除指定value节点</span><br><span class="line">func delLink(root *linkedlist, name string) {</span><br><span class="line">	var prev *linkedlist = root</span><br><span class="line">	for root != nil {</span><br><span class="line">		if root.value == name {</span><br><span class="line">			prev.next = root.next</span><br><span class="line">			break</span><br><span class="line">		}</span><br><span class="line">		prev = root</span><br><span class="line">		root = root.next</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test1() {</span><br><span class="line">	link := &amp;linkedlist{</span><br><span class="line">		value: "1",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	s := &amp;linkedlist{</span><br><span class="line">		value: "2",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	s1 := &amp;linkedlist{</span><br><span class="line">		value: "3",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	link.next = s</span><br><span class="line">	s.next = s1</span><br><span class="line">	traversing(link)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	var root *linkedlist = &amp;linkedlist{</span><br><span class="line">		value: "root1",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	var p *linkedlist = root</span><br><span class="line"></span><br><span class="line">	for i := 1; i &lt; 10; i++ {</span><br><span class="line">		var s *linkedlist = &amp;linkedlist{</span><br><span class="line">			value: fmt.Sprintf("s%d", i),</span><br><span class="line">		}</span><br><span class="line">		fmt.Printf("%v\n", s)</span><br><span class="line">		p.next = s</span><br><span class="line">		p = s</span><br><span class="line">	}</span><br><span class="line">	traversing(root)</span><br><span class="line">	delLink(root, "s3")</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test3() {</span><br><span class="line">	var root *linkedlist = &amp;linkedlist{</span><br><span class="line">		value: "root1",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	for i := 1; i &lt; 10; i++ {</span><br><span class="line">		var s *linkedlist = &amp;linkedlist{</span><br><span class="line">			value: fmt.Sprintf("s%d", i),</span><br><span class="line">		}</span><br><span class="line">		insertLink(root, s)</span><br><span class="line">	}</span><br><span class="line">	traversing(root)</span><br><span class="line">	fmt.Printf("delete\n")</span><br><span class="line">	delLink(root, "s3")</span><br><span class="line">	traversing(root)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test3()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      <categories>
+        <category>Golang</category>
+        <category>结构体</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Go语言中的结构体《一》</title>
     <url>/2020/11/14/Golang/%E7%BB%93%E6%9E%84%E4%BD%93/Go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84%E4%BD%93%E3%80%8A%E4%B8%80%E3%80%8B/</url>
     <content><![CDATA[<h3 id="结构体的声明"><a href="#结构体的声明" class="headerlink" title="结构体的声明"></a>结构体的声明</h3><blockquote>
@@ -564,34 +592,6 @@
 <p>如果一个struct嵌套了另一个有名结构体，那么这个模式就叫组合。</p>
 </blockquote>
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">type car struct {</span><br><span class="line">	brand string</span><br><span class="line">	model string</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">type audi struct {</span><br><span class="line">	c     car</span><br><span class="line">	wheel int</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func (p car) run() {</span><br><span class="line">	fmt.Printf("%s run....\n", p.brand)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	var ad audi</span><br><span class="line">	ad.c.brand = "奥迪"</span><br><span class="line">	ad.c.model = "suv"</span><br><span class="line">	ad.wheel = 4</span><br><span class="line">	ad.c.run()</span><br><span class="line">}</span><br><span class="line">------</span><br><span class="line">奥迪 run....</span><br></pre></td></tr></tbody></table></figure>]]></content>
-      <categories>
-        <category>Golang</category>
-        <category>结构体</category>
-      </categories>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Go实现一个简单的二叉树</title>
-    <url>/2020/11/14/Golang/%E7%BB%93%E6%9E%84%E4%BD%93/Go%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">type Node struct {</span><br><span class="line">	Value       int</span><br><span class="line">	Left, Right *Node</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func createNode(value int) *Node {</span><br><span class="line">	return &amp;Node{</span><br><span class="line">		Value: value,</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func traversing(root *Node) {</span><br><span class="line"></span><br><span class="line">	if root == nil {</span><br><span class="line">		return</span><br><span class="line">	}</span><br><span class="line">	// 中序遍历</span><br><span class="line">	traversing(root.Left)</span><br><span class="line">	fmt.Printf("%d\n", root.Value)</span><br><span class="line">	traversing(root.Right)</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	var root *Node = createNode(3)</span><br><span class="line">	root.Left = createNode(1)</span><br><span class="line">	root.Right = createNode(5)</span><br><span class="line">	root.Left.Left = createNode(0)</span><br><span class="line">	root.Left.Right = createNode(2)</span><br><span class="line">	root.Right.Left = createNode(4)</span><br><span class="line">	root.Right.Right = createNode(6)</span><br><span class="line"></span><br><span class="line">	traversing(root)</span><br><span class="line">}</span><br><span class="line">------------------</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td></tr></tbody></table></figure>
-<blockquote>
-<p>上述代码在创建并初始化的二叉树结构如下图<br><img src="http://files.codedog.link/blog/typecho/%E4%BA%8C%E5%8F%89%E6%A0%91.png-suofang" alt="Go语言创建一个简单的二叉树" title="二叉树"></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Golang</category>
-        <category>结构体</category>
-      </categories>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Go实现一个简单的单向链表</title>
-    <url>/2020/11/14/Golang/%E7%BB%93%E6%9E%84%E4%BD%93/Go%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8/</url>
-    <content><![CDATA[<h3 id="单向链表的遍历、新增、删除操作"><a href="#单向链表的遍历、新增、删除操作" class="headerlink" title="单向链表的遍历、新增、删除操作"></a>单向链表的遍历、新增、删除操作</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">type linkedlist struct {</span><br><span class="line">	value string</span><br><span class="line">	next  *linkedlist</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 遍历链表</span><br><span class="line">func traversing(link *linkedlist) {</span><br><span class="line">	fmt.Printf("%s\n", (*link).value)</span><br><span class="line">	if link.next != nil {</span><br><span class="line">		traversing(link.next)</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 在链表最后插入一个元素</span><br><span class="line">func insertLink(root, target *linkedlist) *linkedlist {</span><br><span class="line">	if root.next != nil {</span><br><span class="line">		insertLink(root.next, target)</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	if root.next == nil {</span><br><span class="line">		root.next = target</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	return root</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 删除指定value节点</span><br><span class="line">func delLink(root *linkedlist, name string) {</span><br><span class="line">	var prev *linkedlist = root</span><br><span class="line">	for root != nil {</span><br><span class="line">		if root.value == name {</span><br><span class="line">			prev.next = root.next</span><br><span class="line">			break</span><br><span class="line">		}</span><br><span class="line">		prev = root</span><br><span class="line">		root = root.next</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test1() {</span><br><span class="line">	link := &amp;linkedlist{</span><br><span class="line">		value: "1",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	s := &amp;linkedlist{</span><br><span class="line">		value: "2",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	s1 := &amp;linkedlist{</span><br><span class="line">		value: "3",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	link.next = s</span><br><span class="line">	s.next = s1</span><br><span class="line">	traversing(link)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test2() {</span><br><span class="line">	var root *linkedlist = &amp;linkedlist{</span><br><span class="line">		value: "root1",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	var p *linkedlist = root</span><br><span class="line"></span><br><span class="line">	for i := 1; i &lt; 10; i++ {</span><br><span class="line">		var s *linkedlist = &amp;linkedlist{</span><br><span class="line">			value: fmt.Sprintf("s%d", i),</span><br><span class="line">		}</span><br><span class="line">		fmt.Printf("%v\n", s)</span><br><span class="line">		p.next = s</span><br><span class="line">		p = s</span><br><span class="line">	}</span><br><span class="line">	traversing(root)</span><br><span class="line">	delLink(root, "s3")</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func test3() {</span><br><span class="line">	var root *linkedlist = &amp;linkedlist{</span><br><span class="line">		value: "root1",</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	for i := 1; i &lt; 10; i++ {</span><br><span class="line">		var s *linkedlist = &amp;linkedlist{</span><br><span class="line">			value: fmt.Sprintf("s%d", i),</span><br><span class="line">		}</span><br><span class="line">		insertLink(root, s)</span><br><span class="line">	}</span><br><span class="line">	traversing(root)</span><br><span class="line">	fmt.Printf("delete\n")</span><br><span class="line">	delLink(root, "s3")</span><br><span class="line">	traversing(root)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">func main() {</span><br><span class="line">	test3()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>]]></content>
       <categories>
         <category>Golang</category>
         <category>结构体</category>
@@ -810,6 +810,23 @@
       </tags>
   </entry>
   <entry>
+    <title>《重学MySQL》</title>
+    <url>/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E9%87%8D%E5%AD%A6MySQL/</url>
+    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
+<a id="more"></a>
+
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>大家好，我是洛阳，欢迎来到我的博客，作为一位后端开发者，免不了要与数据库打交道，而<code>MySQL</code>相信也是大家最熟悉的数据库之一，今天起，博主就要带领大家(自己)从头再次学习一次<code>MySQL</code>，当然，学习之前你肯定要使用过<code>MySQL</code>或者其它关系型数据库，本文并非数据库入门文章，所有内容仅仅是博主按照自己这几年使用的经验以及博主自己想要了解、学习的方向进行编写，不会对基本的增删改查语法进行过多的解释，另外本博主并非大厂出身。也不是能“徒手撕源码”、“光脚造轮子”、“吊打面试官”的大佬，所以如果本文以及后续文章中出现不正确或者有误导性的言论，还请您指出，大家共同学习，共同进步！</p>
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><h6 id=""><a href="#" class="headerlink" title=""></a><a href="/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8A/" title="下载并安装MySQL(上)">下载并安装MySQL(上)</a></h6><h6 id="-1"><a href="#-1" class="headerlink" title=""></a><a href="#">Post not found: MySQL/重学MySQL/下载并安装MySQL/下载并安装MySQL(下) 下载并安装MySQL(下)</a></h6><h6 id="-2"><a href="#-2" class="headerlink" title=""></a><a href="/2020/11/17/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E5%90%AF%E5%8A%A8Mysql/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/" title="MySQL的启动以及启动参数">MySQL的启动以及启动参数</a></h6>]]></content>
+      <categories>
+        <category>MySQL</category>
+        <category>重学MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>重学MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>多模块Maven项目统一修改版本号</title>
     <url>/2020/11/14/Java/Maven/%E5%A4%9A%E6%A8%A1%E5%9D%97Maven%E9%A1%B9%E7%9B%AE%E7%BB%9F%E4%B8%80%E4%BF%AE%E6%94%B9%E7%89%88%E6%9C%AC%E5%8F%B7/</url>
     <content><![CDATA[<p>在编写多Module的Maven项目时，如果Module很多，并且存在复杂层级，那么修改项目版本号将会是一个大工程，我们需要去每个Module中修改当前Module的版本号，以及它依赖的parent的版本号。</p>
@@ -914,23 +931,6 @@
       <tags>
         <tag>Java</tag>
         <tag>HttpClient</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《重学MySQL》</title>
-    <url>/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E9%87%8D%E5%AD%A6MySQL/</url>
-    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
-<a id="more"></a>
-
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>大家好，我是洛阳，欢迎来到我的博客，作为一位后端开发者，免不了要与数据库打交道，而<code>MySQL</code>相信也是大家最熟悉的数据库之一，今天起，博主就要带领大家(自己)从头再次学习一次<code>MySQL</code>，当然，学习之前你肯定要使用过<code>MySQL</code>或者其它关系型数据库，本文并非数据库入门文章，所有内容仅仅是博主按照自己这几年使用的经验以及博主自己想要了解、学习的方向进行编写，不会对基本的增删改查语法进行过多的解释，另外本博主并非大厂出身。也不是能“徒手撕源码”、“光脚造轮子”、“吊打面试官”的大佬，所以如果本文以及后续文章中出现不正确或者有误导性的言论，还请您指出，大家共同学习，共同进步！</p>
-<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><h6 id=""><a href="#" class="headerlink" title=""></a><a href="/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8A/" title="下载并安装MySQL(上)">下载并安装MySQL(上)</a></h6><h6 id="-1"><a href="#-1" class="headerlink" title=""></a><a href="#">Post not found: MySQL/重学MySQL/下载并安装MySQL/下载并安装MySQL(下) 下载并安装MySQL(下)</a></h6><h6 id="-2"><a href="#-2" class="headerlink" title=""></a><a href="/2020/11/17/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E5%90%AF%E5%8A%A8Mysql/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/" title="MySQL的启动以及启动参数">MySQL的启动以及启动参数</a></h6>]]></content>
-      <categories>
-        <category>MySQL</category>
-        <category>重学MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>重学MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -1043,6 +1043,76 @@
       <tags>
         <tag>环境配置</tag>
         <tag>ngrok</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《重学MySQL》下载并安装Mysql(上)</title>
+    <url>/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8A/</url>
+    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
+<a id="more"></a>
+
+
+<h3 id="关系型数据库"><a href="#关系型数据库" class="headerlink" title="关系型数据库"></a>关系型数据库</h3><p>关系型数据库，是指采用了关系模型来组织数据的数据库，其以行和列的形式存储数据，以便于用户理解，关系型数据库这一系列的行和列被称为表，一组表组成了数据库。用户通过查询来检索数据库中的数据，而查询是一个用于限定数据库中某些区域的执行代码。关系模型可以简单理解为二维表格模型，而一个关系型数据库就是由二维表及其之间的关系组成的一个数据组织。</p>
+<blockquote>
+<p>上面这段话是博主百度百科复制来的，知道它并没有什么用，但是如果你不知道的话，最好百度了解一下，毕竟保不准有的面试官会问：“关系型数据库与非关系型数据库NoSql有什么区别？”（博主答：“我不懂! <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>”）</p>
+</blockquote>
+<h3 id="MySQL介绍"><a href="#MySQL介绍" class="headerlink" title="MySQL介绍"></a>MySQL介绍</h3><p>MySQL是一种开放源代码的关系型数据库管理系统（RDBMS），使用最常用的数据库管理语言–结构化查询语言（SQL）进行数据库管理。<br>MySQL是开放源代码的，因此任何人都可以在General Public License的许可下下载并根据个性化的需要对其进行修改。<br>MySQL因为其速度、可靠性和适应性而备受关注。大多数人都认为在不需要事务化处理的情况下，MySQL是管理内容最好的选择。</p>
+<h3 id="MySQL优势"><a href="#MySQL优势" class="headerlink" title="MySQL优势"></a>MySQL优势</h3><p>由于 MySQL 数据库体积小、速度快、总体拥有成本低、开放源代码，其有着广泛的应用，一般中小型网站的开发都选择 MySQL 作为网站数据库。由于其社区版的性能卓越，因此搭配 PHP 和 Apache 服务器可组成良好的开发环境。</p>
+<blockquote>
+<p>总结来说就是：免费、开源、跨平台、性能好，活好还不要钱，谁不喜欢呢<span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span><span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+</blockquote>
+<h3 id="下载MySQL"><a href="#下载MySQL" class="headerlink" title="下载MySQL"></a>下载MySQL</h3><p>首先我们打开<a href="https://www.mysql.com/">MySQL官网</a><code>https://www.mysql.com/</code>,在官网的首页有一个大大的<code>DOWNLOADS</code>，如下图:<br><img src="http://files.codedog.link/blog/typecho/MySQL.png" alt="MySQL.png"></p>
+<p>点击后会跳转到下图所示的页面，直接拉到页面底部点击<a href="https://dev.mysql.com/downloads/">MySQL Community (GPL) Downloads »</a><br><img src="http://files.codedog.link/blog/typecho/MySQL-MySQL-Downloads.png" alt="下载"></p>
+<p>接着会跳转到分类下载页面,常用的链接我给做了标注(“其实其它的部分没用过，部分不认识”)，如果你是<code>Windows</code>系统，直接点击<a href="https://dev.mysql.com/downloads/windows/">MySQL Installer for Windows</a>即可，如果是<code>Linux</code>可以按照你的<code>Linux</code>发行版本点击<a href="https://dev.mysql.com/downloads/repo/yum/">MySQL Yum Repository</a>或者<a href="https://dev.mysql.com/downloads/repo/apt/">MySQL APT Repository</a>进行安装</p>
+<blockquote>
+<p>不知道你们发现没有，上面两段话中所有带下划线的文字都可以点击，并且会直接跳转到文字描述的页面 <span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+</blockquote>
+<p><img src="http://files.codedog.link/blog/typecho/MySQL-MySQL-Community-Downloads-a.png" alt="下载"><br>点击完对应的链接就到了选择<code>MySQL</code>版本的页面啦，可以按照需求进行选择下载安装包,这里我会进行<code>Windows</code>和<code>Ubuntu 18</code>下的安装演示(“没用过MacOS,需要的话也可以自行百度看一下”)，当前默认下载的版本是<code>MySQL 8.0</code>你也可以点击右上角的<code>Looking for previous GA versions?</code>进行版本选择</p>
+<p><img src="http://files.codedog.link/blog/typecho/MySQL-Download-MySQL-Installer.png" alt="Windows"></p>
+<p>接下来点击<code>No thanks, just start my download.</code>就可以进行下载啦，当然你也可以选择登录后再下载<br><img src="http://files.codedog.link/blog/typecho/MySQL-Begin-Your-Download.png" alt="No thanks, just start my download."></p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+        <category>重学MySQL</category>
+        <category>下载并安装MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>重学MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《重学MySQL》下载并安装MySQL(下)</title>
+    <url>/2020/11/16/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8B/</url>
+    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
+<a id="more"></a>
+
+<blockquote>
+<p>废话一下，为什么下载和安装还要分两章写？因为博主只在晚上写博客，而自己的语言组织能力的确太差了，来来回回写，来来回回改，再加上调整配图，写完一篇洗个澡也差不多要睡觉了 </p>
+</blockquote>
+<h3 id="Windows下安装MySQL"><a href="#Windows下安装MySQL" class="headerlink" title="Windows下安装MySQL"></a>Windows下安装MySQL</h3><p>接下来进行Windows下MySQL的安装，在这之前请确保你已经下载了MySQL安装包，如果没有安装包，可以参考上一篇文章下载哦<br>双击运行下载的MySQL Installer，然后按照下图顺序即可（其实就是一路next<span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>）<br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-1.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-2.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-3.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-4.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-5.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-6.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-7.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-8.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-9.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-10.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-11.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-12.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-13.png" alt="MySQL-Installer"><br>到这里<code>windows</code>下的安装就基本结束了</p>
+<h3 id="Ubuntu-18下安装MySQL"><a href="#Ubuntu-18下安装MySQL" class="headerlink" title="Ubuntu 18下安装MySQL"></a>Ubuntu 18下安装MySQL</h3><p>在<code>Ubuntu 18</code>下，如果你没有版本的要求，则可以直接在命令行输入：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get update  #更新软件源</span><br><span class="line">sudo apt-get install mysql-server  #安装mysql</span><br></pre></td></tr></tbody></table></figure>
+<p>上述命令会安装以下包：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">apparmor</span><br><span class="line">mysql-client-5.7</span><br><span class="line">mysql-common</span><br><span class="line">mysql-server</span><br><span class="line">mysql-server-5.7</span><br><span class="line">mysql-server-core-5.7</span><br></pre></td></tr></tbody></table></figure>
+<p>因此无需再安装<code>mysql-client</code>等。安装过程会提示设置<code>mysql</code> <code>root</code>用户的密码，设置完成后等待自动安装即可。默认安装完成就启动了<code>mysql</code>。启动MySQL命令:<code>service mysql start</code>,关闭MySQL命令:<code>service mysql stop</code></p>
+<h3 id="Ubuntu-18下安装MySQL-8-0"><a href="#Ubuntu-18下安装MySQL-8-0" class="headerlink" title="Ubuntu 18下安装MySQL 8.0"></a>Ubuntu 18下安装MySQL 8.0</h3><p>如果你必须要使用<code>MySQL 8</code>,则需要执行以下命令删除已有的<code>MySQL</code>以及其依赖</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get remove mysql-common</span><br><span class="line">sudo apt-get autoremove --purge mysql-server-5.7 #最后的版本数字根据自己具体的版本进行相应的修改</span><br><span class="line">dpkg -l|grep ^rc|awk '{print$2}'|sudo xargs dpkg -P</span><br><span class="line">sudo apt-get autoremove --purge mysql-apt-config</span><br></pre></td></tr></tbody></table></figure>
+<p>接下来就是安装存储库软件包，需要使用上一章中下载的<code>mysql-apt-config_0.8.16-1_all.deb</code>,如果你没有下载可以去官网下载，下载后需要将其上传到服务器<br>也可以直接使用命令直接下载到服务器上</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">wget -c https://repo.mysql.com//mysql-apt-config_0.8.16-1_all.deb</span><br></pre></td></tr></tbody></table></figure>
+<p>接下来使用命令安装上一步下载的安装包</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo dpkg -i mysql-apt-config_0.8.16-1_all.deb</span><br></pre></td></tr></tbody></table></figure>
+<p>安装过程中提示选择安装版本，默认安装的就是8.0版本，所以直接选择“OK”确认即可，安装完成后同样执行:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get update  #更新软件源</span><br><span class="line">sudo apt-get install mysql-server  #安装mysql</span><br></pre></td></tr></tbody></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+        <category>重学MySQL</category>
+        <category>下载并安装MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>重学MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -1201,213 +1271,6 @@
       </tags>
   </entry>
   <entry>
-    <title>《重学MySQL》下载并安装Mysql(上)</title>
-    <url>/2020/11/14/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8A/</url>
-    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
-<a id="more"></a>
-
-
-<h3 id="关系型数据库"><a href="#关系型数据库" class="headerlink" title="关系型数据库"></a>关系型数据库</h3><p>关系型数据库，是指采用了关系模型来组织数据的数据库，其以行和列的形式存储数据，以便于用户理解，关系型数据库这一系列的行和列被称为表，一组表组成了数据库。用户通过查询来检索数据库中的数据，而查询是一个用于限定数据库中某些区域的执行代码。关系模型可以简单理解为二维表格模型，而一个关系型数据库就是由二维表及其之间的关系组成的一个数据组织。</p>
-<blockquote>
-<p>上面这段话是博主百度百科复制来的，知道它并没有什么用，但是如果你不知道的话，最好百度了解一下，毕竟保不准有的面试官会问：“关系型数据库与非关系型数据库NoSql有什么区别？”（博主答：“我不懂! <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji"><span>😳</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f633.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>”）</p>
-</blockquote>
-<h3 id="MySQL介绍"><a href="#MySQL介绍" class="headerlink" title="MySQL介绍"></a>MySQL介绍</h3><p>MySQL是一种开放源代码的关系型数据库管理系统（RDBMS），使用最常用的数据库管理语言–结构化查询语言（SQL）进行数据库管理。<br>MySQL是开放源代码的，因此任何人都可以在General Public License的许可下下载并根据个性化的需要对其进行修改。<br>MySQL因为其速度、可靠性和适应性而备受关注。大多数人都认为在不需要事务化处理的情况下，MySQL是管理内容最好的选择。</p>
-<h3 id="MySQL优势"><a href="#MySQL优势" class="headerlink" title="MySQL优势"></a>MySQL优势</h3><p>由于 MySQL 数据库体积小、速度快、总体拥有成本低、开放源代码，其有着广泛的应用，一般中小型网站的开发都选择 MySQL 作为网站数据库。由于其社区版的性能卓越，因此搭配 PHP 和 Apache 服务器可组成良好的开发环境。</p>
-<blockquote>
-<p>总结来说就是：免费、开源、跨平台、性能好，活好还不要钱，谁不喜欢呢<span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span><span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
-</blockquote>
-<h3 id="下载MySQL"><a href="#下载MySQL" class="headerlink" title="下载MySQL"></a>下载MySQL</h3><p>首先我们打开<a href="https://www.mysql.com/">MySQL官网</a><code>https://www.mysql.com/</code>,在官网的首页有一个大大的<code>DOWNLOADS</code>，如下图:<br><img src="http://files.codedog.link/blog/typecho/MySQL.png" alt="MySQL.png"></p>
-<p>点击后会跳转到下图所示的页面，直接拉到页面底部点击<a href="https://dev.mysql.com/downloads/">MySQL Community (GPL) Downloads »</a><br><img src="http://files.codedog.link/blog/typecho/MySQL-MySQL-Downloads.png" alt="下载"></p>
-<p>接着会跳转到分类下载页面,常用的链接我给做了标注(“其实其它的部分没用过，部分不认识”)，如果你是<code>Windows</code>系统，直接点击<a href="https://dev.mysql.com/downloads/windows/">MySQL Installer for Windows</a>即可，如果是<code>Linux</code>可以按照你的<code>Linux</code>发行版本点击<a href="https://dev.mysql.com/downloads/repo/yum/">MySQL Yum Repository</a>或者<a href="https://dev.mysql.com/downloads/repo/apt/">MySQL APT Repository</a>进行安装</p>
-<blockquote>
-<p>不知道你们发现没有，上面两段话中所有带下划线的文字都可以点击，并且会直接跳转到文字描述的页面 <span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
-</blockquote>
-<p><img src="http://files.codedog.link/blog/typecho/MySQL-MySQL-Community-Downloads-a.png" alt="下载"><br>点击完对应的链接就到了选择<code>MySQL</code>版本的页面啦，可以按照需求进行选择下载安装包,这里我会进行<code>Windows</code>和<code>Ubuntu 18</code>下的安装演示(“没用过MacOS,需要的话也可以自行百度看一下”)，当前默认下载的版本是<code>MySQL 8.0</code>你也可以点击右上角的<code>Looking for previous GA versions?</code>进行版本选择</p>
-<p><img src="http://files.codedog.link/blog/typecho/MySQL-Download-MySQL-Installer.png" alt="Windows"></p>
-<p>接下来点击<code>No thanks, just start my download.</code>就可以进行下载啦，当然你也可以选择登录后再下载<br><img src="http://files.codedog.link/blog/typecho/MySQL-Begin-Your-Download.png" alt="No thanks, just start my download."></p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-        <category>重学MySQL</category>
-        <category>下载并安装MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>重学MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《重学MySQL》下载并安装MySQL(下)</title>
-    <url>/2020/11/16/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL/%E4%B8%8B%E8%BD%BD%E5%B9%B6%E5%AE%89%E8%A3%85MySQL-%E4%B8%8B/</url>
-    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
-<a id="more"></a>
-
-<blockquote>
-<p>废话一下，为什么下载和安装还要分两章写？因为博主只在晚上写博客，而自己的语言组织能力的确太差了，来来回回写，来来回回改，再加上调整配图，写完一篇洗个澡也差不多要睡觉了 </p>
-</blockquote>
-<h3 id="Windows下安装MySQL"><a href="#Windows下安装MySQL" class="headerlink" title="Windows下安装MySQL"></a>Windows下安装MySQL</h3><p>接下来进行Windows下MySQL的安装，在这之前请确保你已经下载了MySQL安装包，如果没有安装包，可以参考上一篇文章下载哦<br>双击运行下载的MySQL Installer，然后按照下图顺序即可（其实就是一路next<span class="github-emoji"><span>😏</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f60f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>）<br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-1.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-2.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-3.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-4.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-5.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-6.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-7.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-8.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-9.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-10.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-11.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-12.png" alt="MySQL-Installer"><br><img src="http://files.codedog.link/blog/typecho/MySQL-Installer-13.png" alt="MySQL-Installer"><br>到这里<code>windows</code>下的安装就基本结束了</p>
-<h3 id="Ubuntu-18下安装MySQL"><a href="#Ubuntu-18下安装MySQL" class="headerlink" title="Ubuntu 18下安装MySQL"></a>Ubuntu 18下安装MySQL</h3><p>在<code>Ubuntu 18</code>下，如果你没有版本的要求，则可以直接在命令行输入：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get update  #更新软件源</span><br><span class="line">sudo apt-get install mysql-server  #安装mysql</span><br></pre></td></tr></tbody></table></figure>
-<p>上述命令会安装以下包：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">apparmor</span><br><span class="line">mysql-client-5.7</span><br><span class="line">mysql-common</span><br><span class="line">mysql-server</span><br><span class="line">mysql-server-5.7</span><br><span class="line">mysql-server-core-5.7</span><br></pre></td></tr></tbody></table></figure>
-<p>因此无需再安装<code>mysql-client</code>等。安装过程会提示设置<code>mysql</code> <code>root</code>用户的密码，设置完成后等待自动安装即可。默认安装完成就启动了<code>mysql</code>。启动MySQL命令:<code>service mysql start</code>,关闭MySQL命令:<code>service mysql stop</code></p>
-<h3 id="Ubuntu-18下安装MySQL-8-0"><a href="#Ubuntu-18下安装MySQL-8-0" class="headerlink" title="Ubuntu 18下安装MySQL 8.0"></a>Ubuntu 18下安装MySQL 8.0</h3><p>如果你必须要使用<code>MySQL 8</code>,则需要执行以下命令删除已有的<code>MySQL</code>以及其依赖</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get remove mysql-common</span><br><span class="line">sudo apt-get autoremove --purge mysql-server-5.7 #最后的版本数字根据自己具体的版本进行相应的修改</span><br><span class="line">dpkg -l|grep ^rc|awk '{print$2}'|sudo xargs dpkg -P</span><br><span class="line">sudo apt-get autoremove --purge mysql-apt-config</span><br></pre></td></tr></tbody></table></figure>
-<p>接下来就是安装存储库软件包，需要使用上一章中下载的<code>mysql-apt-config_0.8.16-1_all.deb</code>,如果你没有下载可以去官网下载，下载后需要将其上传到服务器<br>也可以直接使用命令直接下载到服务器上</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">wget -c https://repo.mysql.com//mysql-apt-config_0.8.16-1_all.deb</span><br></pre></td></tr></tbody></table></figure>
-<p>接下来使用命令安装上一步下载的安装包</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo dpkg -i mysql-apt-config_0.8.16-1_all.deb</span><br></pre></td></tr></tbody></table></figure>
-<p>安装过程中提示选择安装版本，默认安装的就是8.0版本，所以直接选择“OK”确认即可，安装完成后同样执行:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get update  #更新软件源</span><br><span class="line">sudo apt-get install mysql-server  #安装mysql</span><br></pre></td></tr></tbody></table></figure>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-        <category>重学MySQL</category>
-        <category>下载并安装MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>重学MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《重学MySQL》MySQL的启动以及启动参数</title>
-    <url>/2020/11/17/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E5%90%AF%E5%8A%A8Mysql/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/</url>
-    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
-<a id="more"></a>
-
-<p><code>MySQL</code>的安装以及结束，接下来就要启动<code>MySQL</code>了，在启动之前，我们先打开安装好的<code>MySQL</code>目录看一下其有哪些可运行的程序，博主用的是<code>windows</code>操作系统，我的安装目录是<code>C:\Program Files\MySQL\MySQL Server 5.7</code>，如果你的和我不一样，可以打开你自己的目录。</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">bin     # 存放可执行文件</span><br><span class="line">docs    # 存放一些文档</span><br><span class="line">include # 存放一些头文件，如：mysql.h、mysql_ername.h等。</span><br><span class="line">lib     # 存放一系列库文件。</span><br><span class="line">share   # 存放字符集、语言等信息。</span><br><span class="line">LICENSE # 放在文本文档中打开看是啥 </span><br><span class="line">README  # 放在文本文档中打开看是啥 </span><br></pre></td></tr></tbody></table></figure>
-<p>上面以及表明了每个目录的作用，既然我们要运行<code>MySQL</code>，就打开<code>bin</code>目录，看看它下面有存放着哪些可执行程序:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">innochecksum.exe                    # 脱机innodb数据文件校验和检查</span><br><span class="line">lz4_decompress.exe                  # 用来解压缩 mysqlpump的LZ4压缩输出（说实话没关注过，后面博主会了解下）</span><br><span class="line">myisamchk.exe                       # 可以用来获得有关你的数据库表的统计信息或检查、修复、优化他们</span><br><span class="line">myisamlog.exe                       # 显示MyISAM日志文件内容</span><br><span class="line">myisampack.exe                      # 可以压缩MyISAM表</span><br><span class="line">myisam_ftdump.exe                   # 显示全文索引信息。</span><br><span class="line">mysql.exe                           # mysql客户端，用来连接并操作mysql服务的 （黑黑的那个窗口）</span><br><span class="line">mysqladmin.exe                      # 用于管理MySQL服务器客户端，修改密码等功能。</span><br><span class="line">mysqlbinlog.exe                     # 处理二进制日志文件的。</span><br><span class="line">mysqlcheck.exe                      # 表维护程序。</span><br><span class="line">mysqld.exe                          # mysql的服务端，我们口头意义上的连接mysql就是连接它.</span><br><span class="line">mysqldump.exe                       # 数据库备份程序。</span><br><span class="line">mysqlimport.exe                     # 数据导入程序。</span><br><span class="line">mysqlpump.exe                       # 数据库备份程序，比mysqldump更强。</span><br><span class="line">mysqlshow.exe                       # 显示数据库、表和列的信息。</span><br><span class="line">mysqlslap.exe                       # 负载仿真客户端。</span><br><span class="line">mysql_config_editor.exe             # MySQL的配置实用程序（后面会讲到）。</span><br><span class="line">mysql_embedded.exe</span><br><span class="line">mysql_plugin.exe                    # 配置MySQL服务器插件。</span><br><span class="line">mysql_secure_installation.exe       # 提高MySQL安装的安全性。</span><br><span class="line">mysql_ssl_rsa_setup.exe             # 创建 SSL/RSA 文件。</span><br><span class="line">mysql_tzinfo_to_sql.exe             # 加载时区表。</span><br><span class="line">mysql_upgrade.exe                   # 检查并升级MySQL表。</span><br><span class="line">my_print_defaults.exe               # 显示选项文件的选项。</span><br><span class="line">perror.exe                          # 解释错误代码。</span><br><span class="line">resolveip.exe                       # 解析主机名到IP地址或反之亦然。</span><br><span class="line">zlib_decompress.exe                 # 解压缩mysqlpump zlib压缩输出。</span><br></pre></td></tr></tbody></table></figure>
-<hr>
-<p>文章写了一半，博主突然脑子一热给自己笔记本装了黑苹果，后面的文章可能就要以<code>MacOS</code>作为演示平台了😂<br>这里博主再展示下在<code>MacOS</code>下的<code>MySQL</code>文件目录结构</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">lrwxr-xr-x   1 root  wheel         36 11 19 20:15 libprotobuf-lite.3.11.4.dylib -&gt; ../lib/libprotobuf-lite.3.11.4.dylib</span><br><span class="line">lrwxr-xr-x   1 root  wheel         31 11 19 20:15 libprotobuf.3.11.4.dylib -&gt; ../lib/libprotobuf.3.11.4.dylib</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6954720  9 25 05:44 lz4_decompress</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6878176  9 25 05:44 my_print_defaults</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7226816  9 25 05:44 myisam_ftdump</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7399536  9 25 05:44 myisamchk</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7175712  9 25 05:44 myisamlog</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7261536  9 25 05:44 myisampack</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8313088  9 25 05:44 mysql</span><br><span class="line">-rwxr-xr-x   1 root  wheel       5023  9 25 03:48 mysql_config</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6899536  9 25 05:44 mysql_config_editor</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7940400  9 25 05:44 mysql_secure_installation</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6939104  9 25 05:44 mysql_ssl_rsa_setup</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6803536  9 25 05:44 mysql_tzinfo_to_sql</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8186544  9 25 05:44 mysql_upgrade</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7951296  9 25 05:44 mysqladmin</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8582480  9 25 05:44 mysqlbinlog</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7969328  9 25 05:44 mysqlcheck</span><br><span class="line">-rwxr-xr-x   1 root  wheel   73581760  9 25 05:44 mysqld</span><br><span class="line">-rwxr-xr-x   1 root  wheel  269357824  9 25 05:44 mysqld-debug</span><br><span class="line">-rwxr-xr-x   1 root  wheel      27513  9 25 03:48 mysqld_multi</span><br><span class="line">-rwxr-xr-x   1 root  wheel      29164  9 25 03:48 mysqld_safe   # 我是启动脚本</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8051216  9 25 05:44 mysqldump</span><br><span class="line">-rwxr-xr-x   1 root  wheel       7690  9 25 03:48 mysqldumpslow</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7950928  9 25 05:44 mysqlimport</span><br><span class="line">-rwxr-xr-x   1 root  wheel    9011456  9 25 05:44 mysqlpump</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7941824  9 25 05:44 mysqlshow</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7973312  9 25 05:44 mysqlslap</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7597712  9 25 05:44 perror</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6831648  9 25 05:44 zlib_decompress</span><br></pre></td></tr></tbody></table></figure>
-<p>上面就是<code>bin</code>目录下可执行程序以及其作用，这里有很多我们不太需要去关注，目前只需要关注几个可执行程序：</p>
-<h3 id="mysqld"><a href="#mysqld" class="headerlink" title="mysqld"></a>mysqld</h3><p><code>mysqld</code>这个文件就是<code>MySQL</code>服务器程序，运行这个文件就可以直接启动一个<code>MySQL</code>服务进程。</p>
-<h3 id="mysqld-safe"><a href="#mysqld-safe" class="headerlink" title="mysqld_safe"></a>mysqld_safe</h3><p><code>mysqld_safe</code>脚本会在启动MySQL服务器后继续监控其运行情况，并在其死机时重新启动它。它通常做如下事情：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">检查系统和选项。</span><br><span class="line">检查MyISAM表。</span><br><span class="line">保持MySQL服务器窗口。</span><br><span class="line">启动并监视mysqld，如果因错误终止则重启。</span><br><span class="line">将mysqld的错误消息发送到数据目录中的host_name.err 文件。</span><br><span class="line">将mysqld_safe的屏幕输出发送到数据目录中的host_name.safe文件。</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="mysqld-multi"><a href="#mysqld-multi" class="headerlink" title="mysqld_multi"></a>mysqld_multi</h3><p><code>mysql</code>多实例，捡来理解就是在一台服务器上，运行多个<code>mysql</code>服务进程，这些<code>mysql</code>服务进程通过不同的socket来监听不同的数据端口，进而互不干涉的提供各自的服务</p>
-<h3 id="mysql-server"><a href="#mysql-server" class="headerlink" title="mysql.server"></a>mysql.server</h3><p><code>mysql.server</code>同样是服务端启动脚本，主要作用就是为了方便启动和关闭<code>mysql</code>服务，这个脚本会调用<code>mysql_safe</code>来启动<code>mysql</code>,需要注意的是这个文件并不在<code>bin</code>目录下，它的实际目录是安装目录的<code>support-files</code>文件夹下</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">/usr/local/mysql                               # 我的mysql安装目录</span><br><span class="line">/usr/local/mysql/support-files/mysql.server    # mysql.server文件位置</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="启动MySQL服务端"><a href="#启动MySQL服务端" class="headerlink" title="启动MySQL服务端"></a>启动MySQL服务端</h3><p>在<code>MacOS</code>下我使用如下命令启动<code>MySQL</code></p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo /usr/local/mysql/support-files/mysql.server start   # 启动MySQL</span><br><span class="line">sudo /usr/local/mysql/support-files/mysql.server stop   # 停止MySQL</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-<p>在Windows下可以在cmd中输入以下命令启动mysql，当然前提是你已经把mysql注册为服务了</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">net start MySQL # 启动MySQL</span><br><span class="line">net stop MySQL  # 停止MySQL</span><br><span class="line"></span><br><span class="line">"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysqld" --install # 用于注册服务</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="启动MySQL客户端"><a href="#启动MySQL客户端" class="headerlink" title="启动MySQL客户端"></a>启动MySQL客户端</h3><p>成功启动MySQL服务后，就可以运行客户端连接到启动的服务器了，MySQL的bin目录下也为我们提供了一系列的客户端程序,比如：<br><code>mysqladmin</code>、<code>mysqldump</code>、<code>mysql</code>等等，这里博主先重点介绍一下<code>mysql</code>，通过这个可执行文件可以让我们和刚刚启动的数据库服务程序进行交互，启动这个文件时需要一些参数，比如连接的服务器ip、端口、账号、密码，格式如下：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql -h [ip地址] -P [端口] -u [用户名] -p[密码]</span><br></pre></td></tr></tbody></table></figure>
-<blockquote>
-<p>注意：这里的参数<code>h、P、u、p</code>都是短形式的参数，参数p与值之间不能有空格，其余参数没有强制要求，还有这里的参数区分大小写，比如答谢的P代表的是端口号而小写的p是指密码。</p>
-</blockquote>
-<p>如果是服务器程序和客户端程序在一台电脑上（就像我们现在这样），可以省略掉部分参数，就像下面这样</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql -u[用户名] -p[密码]</span><br></pre></td></tr></tbody></table></figure>
-<p>而mysql默认有一个用户名为<code>root</code>的用户，密码就是安装的时候设置的密码我们可以使用上面的命令尝试和服务程序进行连接</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">lu@ludeMacBook-Pro bin % sudo ./mysql -uroot -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 11</span><br><span class="line">Server version: 8.0.22 MySQL Community Server - GPL</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br></pre></td></tr></tbody></table></figure>
-<p>这里可以看到，博主的命令<code>-p</code>后面并没有输入密码，这是mysql为了防止在你输入密码的时候，身边有其他人而你恰好不想让他看到你的密码。<br>如果我们想断开客户端与服务器的连接，可以在<code>mysql&gt;</code>后输入：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">quit</span><br><span class="line">exit</span><br><span class="line">\q</span><br></pre></td></tr></tbody></table></figure>
-<p>上面三个命令其中任意一个都可以断开客户端与服务端的连接并且关闭客户端，这里我们尝试输入<code>exit</code>:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql&gt; exit</span><br><span class="line">Bye</span><br></pre></td></tr></tbody></table></figure>
-<blockquote>
-<p>注意，这里只是关闭客户端与服务器的连接，并不是关闭服务器哦</p>
-</blockquote>
-<h3 id="客户端和服务器通讯"><a href="#客户端和服务器通讯" class="headerlink" title="客户端和服务器通讯"></a>客户端和服务器通讯</h3><p>mysql客户端和服务器之间的通讯协议是“半双工”的，这意味着，在任何一个时刻，要么由服务器向客户端发送数据，要么由客户端向服务器发送数据，这两个动作不能同时发生。这种协议让mysql通信简单快速，但也限制了mysql。一个明显的限制是，这意味着没办法进行流量限制。一旦一端开始发生消息，另一端要接收完整个消息才能响应他。<br>客户端用一个单独的数据包将查询传给服务器。一旦客户端发送了请求，他能做的事情就只是等待结果了。<br>相反的，一般服务器响应给用户的数据通常很多，由多个数据包组成。当服务器开始响应客户端请求时，客户端必须完整的接受整个返回结果，而不是简单的只收取前面几条结果，然后让服务器停止发送数据。<br>多数连接mysql的库函数都可以获得全部结果并缓存到内存里，还可以逐行获取所需要的数据。默认一般是获得全部结果并缓存到内存中。mysql通常需要等所有的数据都已经发送给客户端才能释放这条查询所占用的资源，所以接受全部结果并缓存通常可以减少服务器的压力，让查询能够早点结束、早点释放对应的资源。</p>
-<h3 id="服务器处理客户端的流程"><a href="#服务器处理客户端的流程" class="headerlink" title="服务器处理客户端的流程"></a>服务器处理客户端的流程</h3><p>在日常执行mysql语句的过程中,都是客户端进程向服务器进程发送一段文本(MySQL语句),服务器进程处理后再向客户端进程发送一段文本(处理结果). 看似很简单,其实不然,这内容有很多东西是需要注意的.下面用一张图来说明.<br><img src="http://files.codedog.link/blog/typecho/mysql%E5%9B%BE%E4%BE%8B.jpg"><br>用文字说明一下上面图片中的内容：</p>
-<ul>
-<li>客户端发送一条查询给服务器</li>
-<li>服务器先到查询缓存中查询，如果命中了缓存，则立刻返回存储在缓存中的结果，否则继续往下执行</li>
-<li>服务器对sql进行解析、预处理、在优化器生存对应的执行计划</li>
-<li>执行引擎根据生成的执行计划调用存储引擎来执行查询</li>
-<li>将结果返回给客户端</li>
-</ul>
-<h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><p>数据库存储引擎是数据库底层软件模块，它提供创建、查询、更新和删除等操作，不同的存储引擎提供不同的存储机制，所采用的存取算法也可能不同。而使用不同的存储引擎还可以获得特定的功能。在客户端中我们可以使用<code>show engines</code>来查看mysql支持的所有存储引擎</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql&gt; show engines;</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |</span><br><span class="line">| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |</span><br><span class="line">| MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |</span><br><span class="line">| FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |</span><br><span class="line">| MyISAM             | YES     | MyISAM storage engine                                          | NO           | NO   | NO         |</span><br><span class="line">| PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |</span><br><span class="line">| InnoDB             | DEFAULT | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |</span><br><span class="line">| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |</span><br><span class="line">| CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></tbody></table></figure>
-<blockquote>
-<p>Support 列的值表示某种引擎是否能使用，YES表示可以使用，NO表示不能使用，DEFAULT表示该引擎为当前默认的存储引擎。</p>
-</blockquote>
-<h3 id="如何选择存储引擎"><a href="#如何选择存储引擎" class="headerlink" title="如何选择存储引擎"></a>如何选择存储引擎</h3><p>不同的存储引擎都有各自的特点，以适应不同的需求。如表所示：</p>
-<table>
-<thead>
-<tr>
-<th>功能</th>
-<th>MylSAM</th>
-<th>MEMORY</th>
-<th>InnoDB</th>
-<th>Archive</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>存储限制</td>
-<td>256TB</td>
-<td>RAM</td>
-<td>64TB</td>
-<td>None</td>
-</tr>
-<tr>
-<td>支持事务</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>支持全文索引</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>支持树索引</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>支持哈希索引</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>支持数据缓存</td>
-<td>No</td>
-<td>N/A</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>支持外键</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-</tbody></table>
-<p>不过实际上我们常用的存储引擎也就两三种，这里给大家介绍一下</p>
-<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><p>支持事务处理，支持外键，支持崩溃修复能力和并发控制。如果需要对事务的完整性要求比较高（比如银行），要求实现并发控制（比如售票），那选择InnoDB有很大的优势。如果需要频繁的更新、删除操作的数据库，也可以选择InnoDB，因为支持事务的提交（commit）和回滚（rollback）。</p>
-<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><p>插入数据快，空间和内存使用比较低。如果表主要是用于插入新记录和读出记录，那么选择MyISAM能实现处理高效率。如果应用的完整性、并发性要求比较低，也可以使用。</p>
-<h4 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h4><p>所有的数据都在内存中，数据的处理速度快，但是安全性不高。如果需要很快的读写速度，对数据的安全性要求较低，可以选择MEMOEY。它对表的大小有要求，不能建立太大的表。所以，这类数据库只使用在相对较小的数据库表。</p>
-<blockquote>
-<p>吧啦吧啦了一通，自己看着其实也很头痛，大部分的内容其实没有必要都记住，只是让大家做个了解，如果有兴趣的话，可以自己再百度找篇博客深入了解下</p>
-</blockquote>
-<h3 id="设置和修改存储引擎的方法"><a href="#设置和修改存储引擎的方法" class="headerlink" title="设置和修改存储引擎的方法"></a>设置和修改存储引擎的方法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># 创建表时设定</span><br><span class="line">CREATE TABLE [表名] (id int, .....) ENGINE = [存储引擎]</span><br><span class="line"># 修改</span><br><span class="line">ALTER TABLE [表名] ENGINE = [存储引擎];</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>好啦，到这里本篇博客就结束了，这篇博客我也写了两三天，中间查资料，修修改改，还给笔记本装了个黑苹果😂第一次一个系列去写文章，和平时的感觉完全是两样，中间需要查询的资料很多，当然对我的提升也是很大的，下面一章估计也会写个几天，慢慢来吧，加油！！！</p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-        <category>重学MySQL</category>
-        <category>MySQL的启动以及启动参数</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>重学MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CentOS配置Java运行环境</title>
     <url>/2020/11/14/%E8%BF%90%E7%BB%B4/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/Linux/CentOS%E9%85%8D%E7%BD%AEJava%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<blockquote>
@@ -1559,6 +1422,261 @@
         <tag>环境配置</tag>
         <tag>nginx</tag>
         <tag>HTTPS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《重学MySQL》MySQL的启动以及启动参数</title>
+    <url>/2020/11/17/MySQL/%E9%87%8D%E5%AD%A6MySQL/%E5%90%AF%E5%8A%A8Mysql/MySQL%E7%9A%84%E5%90%AF%E5%8A%A8%E4%BB%A5%E5%8F%8A%E5%90%AF%E5%8A%A8%E5%8F%82%E6%95%B0/</url>
+    <content><![CDATA[<p><img src="http://files.codedog.link/blog/typecho/mysql.jpg" alt="MySQL"></p>
+<a id="more"></a>
+
+<p><code>MySQL</code>的安装以及结束，接下来就要启动<code>MySQL</code>了，在启动之前，先打开安装好的<code>MySQL</code>目录看一下其有哪些可运行的程序，博主用的是<code>windows</code>操作系统，我的安装目录是<code>C:\Program Files\MySQL\MySQL Server 5.7</code>，如果你的和我不一样，可以打开你自己的目录。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">bin     # 存放可执行文件</span><br><span class="line">docs    # 存放一些文档</span><br><span class="line">include # 存放一些头文件，如：mysql.h、mysql_ername.h等。</span><br><span class="line">lib     # 存放一系列库文件。</span><br><span class="line">share   # 存放字符集、语言等信息。</span><br><span class="line">LICENSE # 放在文本文档中打开看是啥 </span><br><span class="line">README  # 放在文本文档中打开看是啥 </span><br></pre></td></tr></tbody></table></figure>
+<p>上面以及表明了每个目录的作用，既然要运行<code>MySQL</code>，就打开<code>bin</code>目录，看看它下面有存放着哪些可执行程序:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">innochecksum.exe                    # 脱机innodb数据文件校验和检查</span><br><span class="line">lz4_decompress.exe                  # 用来解压缩 mysqlpump的LZ4压缩输出（说实话没关注过，后面博主会了解下）</span><br><span class="line">myisamchk.exe                       # 可以用来获得有关你的数据库表的统计信息或检查、修复、优化他们</span><br><span class="line">myisamlog.exe                       # 显示MyISAM日志文件内容</span><br><span class="line">myisampack.exe                      # 可以压缩MyISAM表</span><br><span class="line">myisam_ftdump.exe                   # 显示全文索引信息。</span><br><span class="line">mysql.exe                           # mysql客户端，用来连接并操作mysql服务的 （黑黑的那个窗口）</span><br><span class="line">mysqladmin.exe                      # 用于管理MySQL服务器客户端，修改密码等功能。</span><br><span class="line">mysqlbinlog.exe                     # 处理二进制日志文件的。</span><br><span class="line">mysqlcheck.exe                      # 表维护程序。</span><br><span class="line">mysqld.exe                          # mysql的服务端，口头意义上的连接mysql就是连接它.</span><br><span class="line">mysqldump.exe                       # 数据库备份程序。</span><br><span class="line">mysqlimport.exe                     # 数据导入程序。</span><br><span class="line">mysqlpump.exe                       # 数据库备份程序，比mysqldump更强。</span><br><span class="line">mysqlshow.exe                       # 显示数据库、表和列的信息。</span><br><span class="line">mysqlslap.exe                       # 负载仿真客户端。</span><br><span class="line">mysql_config_editor.exe             # MySQL的配置实用程序（后面会讲到）。</span><br><span class="line">mysql_embedded.exe</span><br><span class="line">mysql_plugin.exe                    # 配置MySQL服务器插件。</span><br><span class="line">mysql_secure_installation.exe       # 提高MySQL安装的安全性。</span><br><span class="line">mysql_ssl_rsa_setup.exe             # 创建 SSL/RSA 文件。</span><br><span class="line">mysql_tzinfo_to_sql.exe             # 加载时区表。</span><br><span class="line">mysql_upgrade.exe                   # 检查并升级MySQL表。</span><br><span class="line">my_print_defaults.exe               # 显示选项文件的选项。</span><br><span class="line">perror.exe                          # 解释错误代码。</span><br><span class="line">resolveip.exe                       # 解析主机名到IP地址或反之亦然。</span><br><span class="line">zlib_decompress.exe                 # 解压缩mysqlpump zlib压缩输出。</span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<p>文章写了一半，博主突然脑子一热给自己笔记本装了黑苹果，后面的文章可能就要以<code>MacOS</code>作为演示平台了😂<br>这里博主再展示下在<code>MacOS</code>下的<code>MySQL</code>文件目录结构</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">lrwxr-xr-x   1 root  wheel         36 11 19 20:15 libprotobuf-lite.3.11.4.dylib -&gt; ../lib/libprotobuf-lite.3.11.4.dylib</span><br><span class="line">lrwxr-xr-x   1 root  wheel         31 11 19 20:15 libprotobuf.3.11.4.dylib -&gt; ../lib/libprotobuf.3.11.4.dylib</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6954720  9 25 05:44 lz4_decompress</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6878176  9 25 05:44 my_print_defaults</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7226816  9 25 05:44 myisam_ftdump</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7399536  9 25 05:44 myisamchk</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7175712  9 25 05:44 myisamlog</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7261536  9 25 05:44 myisampack</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8313088  9 25 05:44 mysql</span><br><span class="line">-rwxr-xr-x   1 root  wheel       5023  9 25 03:48 mysql_config</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6899536  9 25 05:44 mysql_config_editor</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7940400  9 25 05:44 mysql_secure_installation</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6939104  9 25 05:44 mysql_ssl_rsa_setup</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6803536  9 25 05:44 mysql_tzinfo_to_sql</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8186544  9 25 05:44 mysql_upgrade</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7951296  9 25 05:44 mysqladmin</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8582480  9 25 05:44 mysqlbinlog</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7969328  9 25 05:44 mysqlcheck</span><br><span class="line">-rwxr-xr-x   1 root  wheel   73581760  9 25 05:44 mysqld</span><br><span class="line">-rwxr-xr-x   1 root  wheel  269357824  9 25 05:44 mysqld-debug</span><br><span class="line">-rwxr-xr-x   1 root  wheel      27513  9 25 03:48 mysqld_multi</span><br><span class="line">-rwxr-xr-x   1 root  wheel      29164  9 25 03:48 mysqld_safe   # 我是启动脚本</span><br><span class="line">-rwxr-xr-x   1 root  wheel    8051216  9 25 05:44 mysqldump</span><br><span class="line">-rwxr-xr-x   1 root  wheel       7690  9 25 03:48 mysqldumpslow</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7950928  9 25 05:44 mysqlimport</span><br><span class="line">-rwxr-xr-x   1 root  wheel    9011456  9 25 05:44 mysqlpump</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7941824  9 25 05:44 mysqlshow</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7973312  9 25 05:44 mysqlslap</span><br><span class="line">-rwxr-xr-x   1 root  wheel    7597712  9 25 05:44 perror</span><br><span class="line">-rwxr-xr-x   1 root  wheel    6831648  9 25 05:44 zlib_decompress</span><br></pre></td></tr></tbody></table></figure>
+<p>上面就是<code>bin</code>目录下可执行程序以及其作用，这里有很多不太需要去关注，目前只需要关注几个可执行程序：</p>
+<h3 id="mysqld"><a href="#mysqld" class="headerlink" title="mysqld"></a>mysqld</h3><p><code>mysqld</code>这个文件就是<code>MySQL</code>服务器程序，运行这个文件就可以直接启动一个<code>MySQL</code>服务进程。</p>
+<h3 id="mysqld-safe"><a href="#mysqld-safe" class="headerlink" title="mysqld_safe"></a>mysqld_safe</h3><p><code>mysqld_safe</code>脚本实际上会调用<code>mysqld</code>来启动服务，但它会在启动<code>MySQL</code>服务器后继续监控其运行情况，并在其死机时重新启动它。它通常做如下事情：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">检查系统和选项。</span><br><span class="line">检查MyISAM表。</span><br><span class="line">保持MySQL服务器窗口。</span><br><span class="line">启动并监视mysqld，如果因错误终止则重启。</span><br><span class="line">将mysqld的错误消息发送到数据目录中的host_name.err 文件。</span><br><span class="line">将mysqld_safe的屏幕输出发送到数据目录中的host_name.safe文件。</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="mysqld-multi"><a href="#mysqld-multi" class="headerlink" title="mysqld_multi"></a>mysqld_multi</h3><p><code>mysql</code>多实例，捡来理解就是在一台服务器上，运行多个<code>mysql</code>服务进程，这些<code>mysql</code>服务进程通过不同的socket来监听不同的数据端口，进而互不干涉的提供各自的服务</p>
+<h3 id="mysql-server"><a href="#mysql-server" class="headerlink" title="mysql.server"></a>mysql.server</h3><p><code>mysql.server</code>同样是服务端启动脚本，主要作用就是为了方便启动和关闭<code>mysql</code>服务，这个脚本会调用<code>mysql_safe</code>来启动<code>mysql</code>,需要注意的是这个文件并不在<code>bin</code>目录下，它的实际目录是安装目录的<code>support-files</code>文件夹下</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">/usr/local/mysql                               # 我的mysql安装目录</span><br><span class="line">/usr/local/mysql/support-files/mysql.server    # mysql.server文件位置</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="启动MySQL服务端"><a href="#启动MySQL服务端" class="headerlink" title="启动MySQL服务端"></a>启动MySQL服务端</h3><p>在<code>MacOS</code>下我使用如下命令启动<code>MySQL</code></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo /usr/local/mysql/support-files/mysql.server start   # 启动MySQL</span><br><span class="line">sudo /usr/local/mysql/support-files/mysql.server stop   # 停止MySQL</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>在Windows下可以在cmd中输入以下命令启动mysql，当然前提是你已经把mysql注册为服务了</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">net start MySQL # 启动MySQL</span><br><span class="line">net stop MySQL  # 停止MySQL</span><br><span class="line"></span><br><span class="line">"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysqld" --install # 用于注册服务</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="启动参数"><a href="#启动参数" class="headerlink" title="启动参数"></a>启动参数</h4><p>服务端启动的时候，可以通过指定一些启动参数来进行配置，比如使用<code>default-storage-engine</code>来指定服务端启动的时候默认的表存储引擎</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysqld --default-storage-engine=MyISAM</span><br></pre></td></tr></tbody></table></figure>
+<p>这样，<code>MySQL</code>启动后默认的表存储引擎就是<code>MyISAM</code>，每个可执行程序都有不同的选项，我们可以在可执行程序后面加上<code>--help</code>来查看其拥有的启动项以及默认的参数，而对于<code>mysqld</code>则需要使用<code>--verbose --help</code>来查看</p>
+<h4 id="通过配置文件启动"><a href="#通过配置文件启动" class="headerlink" title="通过配置文件启动"></a>通过配置文件启动</h4><p>上面介绍了如何通过在命令行后面以参数的形式启动<code>MySQL</code>，接下来介绍如何通过配置文件的方式启动<code>MySQL</code>，<code>MySQL</code>启动的时候会读取多个路径下的配置文件，这些配置文件的路径有的是固定的，有的是可以在命令行指定的，当然操作系统不同，配置文件的路径也有所不同。</p>
+<h5 id="Windows下的路径"><a href="#Windows下的路径" class="headerlink" title="Windows下的路径"></a>Windows下的路径</h5><p>在Windows中，MySQL会按照下列路径来找配置文件</p>
+<table>
+<thead>
+<tr>
+<th>路径名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%WINDIR%\my.ini、%WINDIR%\my.cnf</td>
+<td>%WINDIR%一般是指C:\WINDOWS，也可以在命令行使用 echo %WINDIR%查看</td>
+</tr>
+<tr>
+<td>C:\my.ini、C:\my.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>BASEDIR\my.ini、BASEDIR\my.cnf</td>
+<td>BASEDIR指的是MySQL安装路径</td>
+</tr>
+<tr>
+<td>defaults-extra-file</td>
+<td>数据库服务启动时在命令行后指定的额外配置文件</td>
+</tr>
+<tr>
+<td>%APPDATA%\MySQL.mylogin.cnf</td>
+<td>%appdata%就代表了C:Users\用户名\AppData\Roaming这个文件夹</td>
+</tr>
+</tbody></table>
+<h5 id="MacOS下"><a href="#MacOS下" class="headerlink" title="MacOS下"></a>MacOS下</h5><p><code>MacOS</code>或者<code>Linux</code>下可以在命令行使用<code>./mysqld --verbose --help |grep -A 1 'Default options'</code>查看<code>MySQL</code>的默认配置文件路径</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">lu@ludeMacBook-Pro bin % ./mysqld --verbose --help |grep -A 1 'Default options'</span><br><span class="line">Default options are read from the following files in the given order:</span><br><span class="line">/etc/my.cnf /etc/mysql/my.cnf /usr/local/mysql/etc/my.cnf ~/.my.cnf </span><br></pre></td></tr></tbody></table></figure>
+<table>
+<thead>
+<tr>
+<th>路径名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>/etc/my.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>/etc/mysql/my.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>/usr/local/mysql/etc/my.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>~/.my.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>defaults-extra-file</td>
+<td>数据库服务启动时在命令行后指定的额外配置文件</td>
+</tr>
+</tbody></table>
+<p>另外，上面提到过的<code>mysqld_safe</code>程序启动服务器时候，会间接的调用<code>mysqld</code>,所以传递给<code>mysqld_safe</code>的选项，如果<code>mysqld_safe</code>程序不处理，会接着传递给<code>mysqld</code>程序处理，比如<code>default-storage-engine</code>选项需要由<code>mysqld</code>处理，而<code>mysqld_safe</code>并不处理，如果我们运行</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysqld_safe --default-storage-engine=MyISAM</span><br></pre></td></tr></tbody></table></figure>
+<p>则<code>mysqld_safe</code>在调用<code>mysqld</code>时候，会把它处理不了的选项交给<code>mysqld</code>处理，</p>
+<blockquote>
+<p>上面列出的顺序就是mysql读取配置文件的顺序</p>
+</blockquote>
+<h4 id="配置文件的内容"><a href="#配置文件的内容" class="headerlink" title="配置文件的内容"></a>配置文件的内容</h4><p>上面说到，<code>MySQL</code>的<code>bin</code>目录下有多个可执行程序可以启动<code>MySQL</code>且启动的的时候可以在后面跟上启动参数，不同的程序会处理不同的启动参数，并且会把自己处理不了的参数传递给下一个可执行程序处理，而配置文件中同样可以通过<code>[]</code>来进行配置的区分</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">[server]</span><br><span class="line">option1 # 该选项不需要选项值 例如 skip-networking 配置该选项后mysql不再接受TCP/IP的方式连接</span><br><span class="line">option2 = option2 # 该选项有选项值  例如 prot=3306 配置服务启动时候的监听端口号</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">[mysqladmin]</span><br><span class="line">....</span><br></pre></td></tr></tbody></table></figure>
+<p>配置文件中的分组是为了给不同的启动程序读取，例如<code>mysqld</code>和<code>mysql</code>会分别读取<code>[mysqld]</code>和<code>[mysql]</code>下的内容，不过有两个选项组比较特殊：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">[server] 组下面的启动项将作用于所有的服务器程序</span><br><span class="line"></span><br><span class="line">[client] 组下面的启动项将作用于所有客户端程序</span><br></pre></td></tr></tbody></table></figure>
+<p>还有，<code>mysqld_safe</code>和<code>mysql.server</code>这两个程序在执行的时候都会读取<code>[mysqld]</code>分组中的内容，这里我找了个表格来演示下：</p>
+<table>
+<thead>
+<tr>
+<th>启动命令</th>
+<th>功能</th>
+<th>能读的组</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysqld</td>
+<td>启动服务器</td>
+<td>[mysqld]、[server]</td>
+</tr>
+<tr>
+<td>mysqld_safe</td>
+<td>启动服务器</td>
+<td>[mysqld]、[server]、[mysqld_safe]</td>
+</tr>
+<tr>
+<td>mysql.server</td>
+<td>启动服务器</td>
+<td>[mysqld]、[server]、[mysql.server]</td>
+</tr>
+<tr>
+<td>mysql</td>
+<td>启动客户端</td>
+<td>[mysql]、[client]</td>
+</tr>
+<tr>
+<td>mysqladmin</td>
+<td>启动客户端</td>
+<td>[mysqladmin]、[client]</td>
+</tr>
+<tr>
+<td>mysqldump</td>
+<td>启动客户端</td>
+<td>[mysqldump]、[client]</td>
+</tr>
+</tbody></table>
+<p>mysql会按照表格中的顺序依次读取各个配置文件的内容，如果我们在多个配置文件中设置了相同的启动选项，则依照最后一个文件内容为准，这里提供一份配置文件的中文详细说明（注意，仅仅用作参考）</p>
+<h4 id="配置文件参考"><a href="#配置文件参考" class="headerlink" title="配置文件参考"></a>配置文件参考</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">[client]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /tmp/mysql.sock</span><br><span class="line">[mysqld]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /tmp/mysql.sock</span><br><span class="line">basedir = /usr/local/mysql</span><br><span class="line">datadir = /data/mysql</span><br><span class="line">pid-file = /data/mysql/mysql.pid</span><br><span class="line">user = mysql</span><br><span class="line">bind-address = 0.0.0.0</span><br><span class="line">server-id = 1 #表示是本机的序号为1,一般来讲就是master的意思</span><br><span class="line">skip-name-resolve</span><br><span class="line"># 禁止MySQL对外部连接进行DNS解析，使用这一选项可以消除MySQL进行DNS解析的时间。但需要注意，如果开启该选项，</span><br><span class="line"># 则所有远程主机连接授权都要使用IP地址方式，否则MySQL将无法正常处理连接请求</span><br><span class="line">#skip-networking</span><br><span class="line">back_log = 600</span><br><span class="line"># MySQL能有的连接数量。当主要MySQL线程在一个很短时间内得到非常多的连接请求，这就起作用，</span><br><span class="line"># 然后主线程花些时间(尽管很短)检查连接并且启动一个新线程。back_log值指出在MySQL暂时停止回答新请求之前的短时间内多少个请求可以被存在堆栈中。</span><br><span class="line"># 如果期望在一个短时间内有很多连接，你需要增加它。也就是说，如果MySQL的连接数据达到max_connections时，新来的请求将会被存在堆栈中，</span><br><span class="line"># 以等待某一连接释放资源，该堆栈的数量即back_log，如果等待连接的数量超过back_log，将不被授予连接资源。</span><br><span class="line"># 另外，这值（back_log）限于您的操作系统对到来的TCP/IP连接的侦听队列的大小。</span><br><span class="line"># 你的操作系统在这个队列大小上有它自己的限制（可以检查你的OS文档找出这个变量的最大值），试图设定back_log高于你的操作系统的限制将是无效的。</span><br><span class="line">max_connections = 1000</span><br><span class="line"># MySQL的最大连接数，如果服务器的并发连接请求量比较大，建议调高此值，以增加并行连接数量，当然这建立在机器能支撑的情况下，因为如果连接数越多，介于MySQL会为每个连接提供连接缓冲区，就会开销越多的内存，所以要适当调整该值，不能盲目提高设值。可以过'conn%'通配符查看当前状态的连接数量，以定夺该值的大小。</span><br><span class="line">max_connect_errors = 6000</span><br><span class="line"># 对于同一主机，如果有超出该参数值个数的中断错误连接，则该主机将被禁止连接。如需对该主机进行解禁，执行：FLUSH HOST。</span><br><span class="line">open_files_limit = 65535</span><br><span class="line"># MySQL打开的文件描述符限制，默认最小1024;当open_files_limit没有被配置的时候，比较max_connections*5和ulimit -n的值，哪个大用哪个，</span><br><span class="line"># 当open_file_limit被配置的时候，比较open_files_limit和max_connections*5的值，哪个大用哪个。</span><br><span class="line">table_open_cache = 128</span><br><span class="line"># MySQL每打开一个表，都会读入一些数据到table_open_cache缓存中，当MySQL在这个缓存中找不到相应信息时，才会去磁盘上读取。默认值64</span><br><span class="line"># 假定系统有200个并发连接，则需将此参数设置为200*N(N为每个连接所需的文件描述符数目)；</span><br><span class="line"># 当把table_open_cache设置为很大时，如果系统处理不了那么多文件描述符，那么就会出现客户端失效，连接不上</span><br><span class="line">max_allowed_packet = 4M</span><br><span class="line"># 接受的数据包大小；增加该变量的值十分安全，这是因为仅当需要时才会分配额外内存。例如，仅当你发出长查询或MySQLd必须返回大的结果行时MySQLd才会分配更多内存。</span><br><span class="line"># 该变量之所以取较小默认值是一种预防措施，以捕获客户端和服务器之间的错误信息包，并确保不会因偶然使用大的信息包而导致内存溢出。</span><br><span class="line">binlog_cache_size = 1M</span><br><span class="line"># 一个事务，在没有提交的时候，产生的日志，记录到Cache中；等到事务提交需要提交的时候，则把日志持久化到磁盘。默认binlog_cache_size大小32K</span><br><span class="line">max_heap_table_size = 8M</span><br><span class="line"># 定义了用户可以创建的内存表(memory table)的大小。这个值用来计算内存表的最大行数值。这个变量支持动态改变</span><br><span class="line">tmp_table_size = 16M</span><br><span class="line"># MySQL的heap（堆积）表缓冲大小。所有联合在一个DML指令内完成，并且大多数联合甚至可以不用临时表即可以完成。</span><br><span class="line"># 大多数临时表是基于内存的(HEAP)表。具有大的记录长度的临时表 (所有列的长度的和)或包含BLOB列的表存储在硬盘上。</span><br><span class="line"># 如果某个内部heap（堆积）表大小超过tmp_table_size，MySQL可以根据需要自动将内存中的heap表改为基于硬盘的MyISAM表。还可以通过设置tmp_table_size选项来增加临时表的大小。也就是说，如果调高该值，MySQL同时将增加heap表的大小，可达到提高联接查询速度的效果</span><br><span class="line">read_buffer_size = 2M</span><br><span class="line"># MySQL读入缓冲区大小。对表进行顺序扫描的请求将分配一个读入缓冲区，MySQL会为它分配一段内存缓冲区。read_buffer_size变量控制这一缓冲区的大小。</span><br><span class="line"># 如果对表的顺序扫描请求非常频繁，并且你认为频繁扫描进行得太慢，可以通过增加该变量值以及内存缓冲区大小提高其性能</span><br><span class="line">read_rnd_buffer_size = 8M</span><br><span class="line"># MySQL的随机读缓冲区大小。当按任意顺序读取行时(例如，按照排序顺序)，将分配一个随机读缓存区。进行排序查询时，</span><br><span class="line"># MySQL会首先扫描一遍该缓冲，以避免磁盘搜索，提高查询速度，如果需要排序大量数据，可适当调高该值。但MySQL会为每个客户连接发放该缓冲空间，所以应尽量适当设置该值，以避免内存开销过大</span><br><span class="line">sort_buffer_size = 8M</span><br><span class="line"># MySQL执行排序使用的缓冲大小。如果想要增加ORDER BY的速度，首先看是否可以让MySQL使用索引而不是额外的排序阶段。</span><br><span class="line"># 如果不能，可以尝试增加sort_buffer_size变量的大小</span><br><span class="line">join_buffer_size = 8M</span><br><span class="line"># 联合查询操作所能使用的缓冲区大小，和sort_buffer_size一样，该参数对应的分配内存也是每连接独享</span><br><span class="line">thread_cache_size = 8</span><br><span class="line"># 这个值（默认8）表示可以重新利用保存在缓存中线程的数量，当断开连接时如果缓存中还有空间，那么客户端的线程将被放到缓存中，</span><br><span class="line"># 如果线程重新被请求，那么请求将从缓存中读取,如果缓存中是空的或者是新的请求，那么这个线程将被重新创建,如果有很多新的线程，</span><br><span class="line"># 增加这个值可以改善系统性能.通过比较Connections和Threads_created状态的变量，可以看到这个变量的作用。(–&gt;表示要调整的值)</span><br><span class="line"># 根据物理内存设置规则如下：</span><br><span class="line"># 1G&nbsp; —&gt; 8</span><br><span class="line"># 2G&nbsp; —&gt; 16</span><br><span class="line"># 3G&nbsp; —&gt; 32</span><br><span class="line"># 大于3G&nbsp; —&gt; 64</span><br><span class="line">query_cache_size = 8M</span><br><span class="line">#MySQL的查询缓冲大小（从4.0.1开始，MySQL提供了查询缓冲机制）使用查询缓冲，MySQL将SELECT语句和查询结果存放在缓冲区中，</span><br><span class="line"># 今后对于同样的SELECT语句（区分大小写），将直接从缓冲区中读取结果。根据MySQL用户手册，使用查询缓冲最多可以达到238%的效率。</span><br><span class="line"># 通过检查状态值'Qcache_%'，可以知道query_cache_size设置是否合理：如果Qcache_lowmem_prunes的值非常大，则表明经常出现缓冲不够的情况，</span><br><span class="line"># 如果Qcache_hits的值也非常大，则表明查询缓冲使用非常频繁，此时需要增加缓冲大小；如果Qcache_hits的值不大，则表明你的查询重复率很低，</span><br><span class="line"># 这种情况下使用查询缓冲反而会影响效率，那么可以考虑不用查询缓冲。此外，在SELECT语句中加入SQL_NO_CACHE可以明确表示不使用查询缓冲</span><br><span class="line">query_cache_limit = 2M</span><br><span class="line">#指定单个查询能够使用的缓冲区大小，默认1M</span><br><span class="line">key_buffer_size = 4M</span><br><span class="line">#指定用于索引的缓冲区大小，增加它可得到更好处理的索引(对所有读和多重写)，到你能负担得起那样多。如果你使它太大，</span><br><span class="line"># 系统将开始换页并且真的变慢了。对于内存在4GB左右的服务器该参数可设置为384M或512M。通过检查状态值Key_read_requests和Key_reads，</span><br><span class="line"># 可以知道key_buffer_size设置是否合理。比例key_reads/key_read_requests应该尽可能的低，</span><br><span class="line"># 至少是1:100，1:1000更好(上述状态值可以使用SHOW STATUS LIKE 'key_read%'获得)。注意：该参数值设置的过大反而会是服务器整体效率降低</span><br><span class="line">ft_min_word_len = 4</span><br><span class="line"># 分词词汇最小长度，默认4</span><br><span class="line">transaction_isolation = REPEATABLE-READ</span><br><span class="line"># MySQL支持4种事务隔离级别，他们分别是：</span><br><span class="line"># READ-UNCOMMITTED, READ-COMMITTED, REPEATABLE-READ, SERIALIZABLE.</span><br><span class="line"># 如没有指定，MySQL默认采用的是REPEATABLE-READ，ORACLE默认的是READ-COMMITTED</span><br><span class="line">log_bin = mysql-bin</span><br><span class="line">binlog_format = mixed</span><br><span class="line">expire_logs_days = 30 #超过30天的binlog删除</span><br><span class="line">log_error = /data/mysql/mysql-error.log #错误日志路径</span><br><span class="line">slow_query_log = 1</span><br><span class="line">long_query_time = 1 #慢查询时间 超过1秒则为慢查询</span><br><span class="line">slow_query_log_file = /data/mysql/mysql-slow.log</span><br><span class="line">performance_schema = 0</span><br><span class="line">explicit_defaults_for_timestamp</span><br><span class="line">#lower_case_table_names = 1 #不区分大小写</span><br><span class="line">skip-external-locking #MySQL选项以避免外部锁定。该选项默认开启</span><br><span class="line">default-storage-engine = InnoDB #默认存储引擎</span><br><span class="line">innodb_file_per_table = 1</span><br><span class="line"># InnoDB为独立表空间模式，每个数据库的每个表都会生成一个数据空间</span><br><span class="line"># 独立表空间优点：</span><br><span class="line"># 1．每个表都有自已独立的表空间。</span><br><span class="line"># 2．每个表的数据和索引都会存在自已的表空间中。</span><br><span class="line"># 3．可以实现单表在不同的数据库中移动。</span><br><span class="line"># 4．空间可以回收（除drop table操作处，表空不能自已回收）</span><br><span class="line"># 缺点：</span><br><span class="line"># 单表增加过大，如超过100G</span><br><span class="line"># 结论：</span><br><span class="line"># 共享表空间在Insert操作上少有优势。其它都没独立表空间表现好。当启用独立表空间时，请合理调整：innodb_open_files</span><br><span class="line">innodb_open_files = 500</span><br><span class="line"># 限制Innodb能打开的表的数据，如果库里的表特别多的情况，请增加这个。这个值默认是300</span><br><span class="line">innodb_buffer_pool_size = 64M</span><br><span class="line"># InnoDB使用一个缓冲池来保存索引和原始数据, 不像MyISAM.</span><br><span class="line"># 这里你设置越大,你在存取表里面数据时所需要的磁盘I/O越少.</span><br><span class="line"># 在一个独立使用的数据库服务器上,你可以设置这个变量到服务器物理内存大小的80%</span><br><span class="line"># 不要设置过大,否则,由于物理内存的竞争可能导致操作系统的换页颠簸.</span><br><span class="line"># 注意在32位系统上你每个进程可能被限制在 2-3.5G 用户层面内存限制,</span><br><span class="line"># 所以不要设置的太高.</span><br><span class="line">innodb_write_io_threads = 4</span><br><span class="line">innodb_read_io_threads = 4</span><br><span class="line"># innodb使用后台线程处理数据页上的读写 I/O(输入输出)请求,根据你的 CPU 核数来更改,默认是4</span><br><span class="line"># 注:这两个参数不支持动态改变,需要把该参数加入到my.cnf里，修改完后重启MySQL服务,允许值的范围从 1-64</span><br><span class="line">innodb_thread_concurrency = 0</span><br><span class="line"># 默认设置为 0,表示不限制并发数，这里推荐设置为0，更好去发挥CPU多核处理能力，提高并发量</span><br><span class="line">innodb_purge_threads = 1</span><br><span class="line"># InnoDB中的清除操作是一类定期回收无用数据的操作。在之前的几个版本中，清除操作是主线程的一部分，这意味着运行时它可能会堵塞其它的数据库操作。</span><br><span class="line"># 从MySQL5.5.X版本开始，该操作运行于独立的线程中,并支持更多的并发数。用户可通过设置innodb_purge_threads配置参数来选择清除操作是否使用单</span><br><span class="line"># 独线程,默认情况下参数设置为0(不使用单独线程),设置为 1 时表示使用单独的清除线程。建议为1</span><br><span class="line">innodb_flush_log_at_trx_commit = 2</span><br><span class="line"># 0：如果innodb_flush_log_at_trx_commit的值为0,log buffer每秒就会被刷写日志文件到磁盘，提交事务的时候不做任何操作（执行是由mysql的master thread线程来执行的。</span><br><span class="line"># 主线程中每秒会将重做日志缓冲写入磁盘的重做日志文件(REDO LOG)中。不论事务是否已经提交）默认的日志文件是ib_logfile0,ib_logfile1</span><br><span class="line"># 1：当设为默认值1的时候，每次提交事务的时候，都会将log buffer刷写到日志。</span><br><span class="line"># 2：如果设为2,每次提交事务都会写日志，但并不会执行刷的操作。每秒定时会刷到日志文件。要注意的是，并不能保证100%每秒一定都会刷到磁盘，这要取决于进程的调度。</span><br><span class="line"># 每次事务提交的时候将数据写入事务日志，而这里的写入仅是调用了文件系统的写入操作，而文件系统是有 缓存的，所以这个写入并不能保证数据已经写入到物理磁盘</span><br><span class="line"># 默认值1是为了保证完整的ACID。当然，你可以将这个配置项设为1以外的值来换取更高的性能，但是在系统崩溃的时候，你将会丢失1秒的数据。</span><br><span class="line"># 设为0的话，mysqld进程崩溃的时候，就会丢失最后1秒的事务。设为2,只有在操作系统崩溃或者断电的时候才会丢失最后1秒的数据。InnoDB在做恢复的时候会忽略这个值。</span><br><span class="line"># 总结</span><br><span class="line"># 设为1当然是最安全的，但性能页是最差的（相对其他两个参数而言，但不是不能接受）。如果对数据一致性和完整性要求不高，完全可以设为2，如果只最求性能，例如高并发写的日志服务器，设为0来获得更高性能</span><br><span class="line">innodb_log_buffer_size = 2M</span><br><span class="line"># 此参数确定些日志文件所用的内存大小，以M为单位。缓冲区更大能提高性能，但意外的故障将会丢失数据。MySQL开发人员建议设置为1－8M之间</span><br><span class="line">innodb_log_file_size = 32M</span><br><span class="line"># 此参数确定数据日志文件的大小，更大的设置可以提高性能，但也会增加恢复故障数据库所需的时间</span><br><span class="line">innodb_log_files_in_group = 3</span><br><span class="line"># 为提高性能，MySQL可以以循环方式将日志文件写到多个文件。推荐设置为3</span><br><span class="line">innodb_max_dirty_pages_pct = 90</span><br><span class="line"># innodb主线程刷新缓存池中的数据，使脏数据比例小于90%</span><br><span class="line">innodb_lock_wait_timeout = 120 </span><br><span class="line"># InnoDB事务在被回滚之前可以等待一个锁定的超时秒数。InnoDB在它自己的锁定表中自动检测事务死锁并且回滚事务。InnoDB用LOCK TABLES语句注意到锁定设置。默认值是50秒</span><br><span class="line">bulk_insert_buffer_size = 8M</span><br><span class="line"># 批量插入缓存大小， 这个参数是针对MyISAM存储引擎来说的。适用于在一次性插入100-1000+条记录时， 提高效率。默认值是8M。可以针对数据量的大小，翻倍增加。</span><br><span class="line">myisam_sort_buffer_size = 8M</span><br><span class="line"># MyISAM设置恢复表之时使用的缓冲区的尺寸，当在REPAIR TABLE或用CREATE INDEX创建索引或ALTER TABLE过程中排序 MyISAM索引分配的缓冲区</span><br><span class="line">myisam_max_sort_file_size = 10G</span><br><span class="line"># 如果临时文件会变得超过索引，不要使用快速排序索引方法来创建一个索引。注释：这个参数以字节的形式给出</span><br><span class="line">myisam_repair_threads = 1</span><br><span class="line"># 如果该值大于1，在Repair by sorting过程中并行创建MyISAM表索引(每个索引在自己的线程内)&nbsp; </span><br><span class="line">interactive_timeout = 28800</span><br><span class="line"># 服务器关闭交互式连接前等待活动的秒数。交互式客户端定义为在mysql_real_connect()中使用CLIENT_INTERACTIVE选项的客户端。默认值：28800秒（8小时）</span><br><span class="line">wait_timeout = 28800</span><br><span class="line"># 服务器关闭非交互连接之前等待活动的秒数。在线程启动时，根据全局wait_timeout值或全局interactive_timeout值初始化会话wait_timeout值，</span><br><span class="line"># 取决于客户端类型(由mysql_real_connect()的连接选项CLIENT_INTERACTIVE定义)。参数默认值：28800秒（8小时）</span><br><span class="line"># MySQL服务器所支持的最大连接数是有上限的，因为每个连接的建立都会消耗内存，因此我们希望客户端在连接到MySQL Server处理完相应的操作后，</span><br><span class="line"># 应该断开连接并释放占用的内存。如果你的MySQL Server有大量的闲置连接，他们不仅会白白消耗内存，而且如果连接一直在累加而不断开，</span><br><span class="line"># 最终肯定会达到MySQL Server的连接上限数，这会报'too many connections'的错误。对于wait_timeout的值设定，应该根据系统的运行情况来判断。</span><br><span class="line"># 在系统运行一段时间后，可以通过show processlist命令查看当前系统的连接状态，如果发现有大量的sleep状态的连接进程，则说明该参数设置的过大，</span><br><span class="line"># 可以进行适当的调整小些。要同时设置interactive_timeout和wait_timeout才会生效。</span><br><span class="line">[mysqldump]</span><br><span class="line">quick</span><br><span class="line">max_allowed_packet = 16M #服务器发送和接受的最大包长度</span><br><span class="line">[myisamchk]</span><br><span class="line">key_buffer_size = 8M</span><br><span class="line">sort_buffer_size = 8M</span><br><span class="line">read_buffer = 4M</span><br><span class="line">write_buffer = 4M</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="启动MySQL客户端"><a href="#启动MySQL客户端" class="headerlink" title="启动MySQL客户端"></a>启动MySQL客户端</h3><p>成功启动MySQL服务后，就可以运行客户端连接到启动的服务器了，MySQL的bin目录下也为我们提供了一系列的客户端程序,比如：<br><code>mysqladmin</code>、<code>mysqldump</code>、<code>mysql</code>等等，这里博主先重点介绍一下<code>mysql</code>，通过这个可执行文件可以让我们和刚刚启动的数据库服务程序进行交互，启动这个文件时需要一些参数，比如连接的服务器ip、端口、账号、密码，格式如下：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql -h [ip地址] -P [端口] -u [用户名] -p[密码]</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>注意：这里的参数<code>h、P、u、p</code>都是短形式的参数，参数p与值之间不能有空格，其余参数没有强制要求，还有这里的参数区分大小写，比如答谢的P代表的是端口号而小写的p是指密码。</p>
+</blockquote>
+<p>如果是服务器程序和客户端程序在一台电脑上（就像现在这样），可以省略掉部分参数，就像下面这样</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql -u[用户名] -p[密码]</span><br></pre></td></tr></tbody></table></figure>
+<p>而mysql默认有一个用户名为<code>root</code>的用户，密码就是安装的时候设置的密码，可以使用上面的命令尝试和服务程序进行连接</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">lu@ludeMacBook-Pro bin % sudo ./mysql -uroot -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 11</span><br><span class="line">Server version: 8.0.22 MySQL Community Server - GPL</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br></pre></td></tr></tbody></table></figure>
+<p>这里可以看到，博主的命令<code>-p</code>后面并没有输入密码，这是mysql为了防止在你输入密码的时候，身边有其他人而你恰好不想让他看到你的密码。<br>如果想断开客户端与服务器的连接，可以在<code>mysql&gt;</code>后输入：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">quit</span><br><span class="line">exit</span><br><span class="line">\q</span><br></pre></td></tr></tbody></table></figure>
+<p>上面三个命令其中任意一个都可以断开客户端与服务端的连接并且关闭客户端，这里尝试输入<code>exit</code>:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql&gt; exit</span><br><span class="line">Bye</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>注意，这里只是关闭客户端与服务器的连接，并不是关闭服务器哦</p>
+</blockquote>
+<h3 id="客户端和服务器通讯"><a href="#客户端和服务器通讯" class="headerlink" title="客户端和服务器通讯"></a>客户端和服务器通讯</h3><p>mysql客户端和服务器之间的通讯协议是“半双工”的，这意味着，在任何一个时刻，要么由服务器向客户端发送数据，要么由客户端向服务器发送数据，这两个动作不能同时发生。这种协议让mysql通信简单快速，但也限制了mysql。一个明显的限制是，这意味着没办法进行流量限制。一旦一端开始发生消息，另一端要接收完整个消息才能响应他。<br>客户端用一个单独的数据包将查询传给服务器。一旦客户端发送了请求，他能做的事情就只是等待结果了。<br>相反的，一般服务器响应给用户的数据通常很多，由多个数据包组成。当服务器开始响应客户端请求时，客户端必须完整的接受整个返回结果，而不是简单的只收取前面几条结果，然后让服务器停止发送数据。<br>多数连接mysql的库函数都可以获得全部结果并缓存到内存里，还可以逐行获取所需要的数据。默认一般是获得全部结果并缓存到内存中。mysql通常需要等所有的数据都已经发送给客户端才能释放这条查询所占用的资源，所以接受全部结果并缓存通常可以减少服务器的压力，让查询能够早点结束、早点释放对应的资源。</p>
+<h3 id="服务器处理客户端的流程"><a href="#服务器处理客户端的流程" class="headerlink" title="服务器处理客户端的流程"></a>服务器处理客户端的流程</h3><p>在日常执行mysql语句的过程中,都是客户端进程向服务器进程发送一段文本(MySQL语句),服务器进程处理后再向客户端进程发送一段文本(处理结果). 看似很简单,其实不然,这内容有很多东西是需要注意的.下面用一张图来说明.<br><img src="http://files.codedog.link/blog/typecho/mysql%E5%9B%BE%E4%BE%8B.jpg"><br>用文字说明一下上面图片中的内容：</p>
+<ul>
+<li>客户端发送一条查询给服务器</li>
+<li>服务器先到查询缓存中查询，如果命中了缓存，则立刻返回存储在缓存中的结果，否则继续往下执行</li>
+<li>服务器对sql进行解析、预处理、在优化器生存对应的执行计划</li>
+<li>执行引擎根据生成的执行计划调用存储引擎来执行查询</li>
+<li>将结果返回给客户端</li>
+</ul>
+<h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><p>数据库存储引擎是数据库底层软件模块，它提供创建、查询、更新和删除等操作，不同的存储引擎提供不同的存储机制，所采用的存取算法也可能不同。而使用不同的存储引擎还可以获得特定的功能。在客户端中可以使用<code>show engines</code>来查看mysql支持的所有存储引擎</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">mysql&gt; show engines;</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">| ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |</span><br><span class="line">| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |</span><br><span class="line">| MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |</span><br><span class="line">| FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |</span><br><span class="line">| MyISAM             | YES     | MyISAM storage engine                                          | NO           | NO   | NO         |</span><br><span class="line">| PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |</span><br><span class="line">| InnoDB             | DEFAULT | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |</span><br><span class="line">| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |</span><br><span class="line">| CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |</span><br><span class="line">+--------------------+---------+----------------------------------------------------------------+--------------+------+------------+</span><br><span class="line">9 rows in set (0.00 sec)</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>Support 列的值表示某种引擎是否能使用，YES表示可以使用，NO表示不能使用，DEFAULT表示该引擎为当前默认的存储引擎。</p>
+</blockquote>
+<h3 id="如何选择存储引擎"><a href="#如何选择存储引擎" class="headerlink" title="如何选择存储引擎"></a>如何选择存储引擎</h3><p>不同的存储引擎都有各自的特点，以适应不同的需求。如表所示：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>MylSAM</th>
+<th>MEMORY</th>
+<th>InnoDB</th>
+<th>Archive</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储限制</td>
+<td>256TB</td>
+<td>RAM</td>
+<td>64TB</td>
+<td>None</td>
+</tr>
+<tr>
+<td>支持事务</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持全文索引</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持树索引</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持哈希索引</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持数据缓存</td>
+<td>No</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>支持外键</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody></table>
+<p>不过实际上常用的存储引擎也就两三种，这里给大家介绍一下</p>
+<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><p>支持事务处理，支持外键，支持崩溃修复能力和并发控制。如果需要对事务的完整性要求比较高（比如银行），要求实现并发控制（比如售票），那选择InnoDB有很大的优势。如果需要频繁的更新、删除操作的数据库，也可以选择InnoDB，因为支持事务的提交（commit）和回滚（rollback）。</p>
+<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><p>插入数据快，空间和内存使用比较低。如果表主要是用于插入新记录和读出记录，那么选择MyISAM能实现处理高效率。如果应用的完整性、并发性要求比较低，也可以使用。</p>
+<h4 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h4><p>所有的数据都在内存中，数据的处理速度快，但是安全性不高。如果需要很快的读写速度，对数据的安全性要求较低，可以选择MEMOEY。它对表的大小有要求，不能建立太大的表。所以，这类数据库只使用在相对较小的数据库表。</p>
+<blockquote>
+<p>吧啦吧啦了一通，自己看着其实也很头痛，大部分的内容其实没有必要都记住，只是让大家做个了解，如果有兴趣的话，可以自己再百度找篇博客深入了解下</p>
+</blockquote>
+<h3 id="设置和修改存储引擎的方法"><a href="#设置和修改存储引擎的方法" class="headerlink" title="设置和修改存储引擎的方法"></a>设置和修改存储引擎的方法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># 创建表时设定</span><br><span class="line">CREATE TABLE [表名] (id int, .....) ENGINE = [存储引擎]</span><br><span class="line"># 修改</span><br><span class="line">ALTER TABLE [表名] ENGINE = [存储引擎];</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>好啦，到这里本篇博客就结束了，这篇博客我也写了两三天，中间查资料，修修改改，还给笔记本装了个黑苹果😂第一次一个系列去写文章，和平时的感觉完全是两样，中间需要查询的资料很多，当然对我的提升也是很大的，下面一章估计也会写个几天，慢慢来吧，加油！！！</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+        <category>重学MySQL</category>
+        <category>MySQL的启动以及启动参数</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>重学MySQL</tag>
       </tags>
   </entry>
 </search>
