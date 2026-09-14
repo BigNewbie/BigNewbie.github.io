@@ -219,7 +219,8 @@
     var envId = 'https://discuss.treehole.xyz/.netlify/functions/twikoo';
     var el = document.getElementById('tcomment');
     if (!el || !envId || (window.twikoo && typeof window.twikoo.init === 'function')) return;
-    var path = '/about/index.html';
+    
+    var path = '/about/index/';
     var script = document.createElement('script');
     script.src = 'https://registry.npmmirror.com/twikoo/1.7.19/files/dist/twikoo.min.js';
     script.async = true;
